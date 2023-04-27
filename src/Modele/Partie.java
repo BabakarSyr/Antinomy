@@ -1,5 +1,7 @@
 package Modele;
 
+import java.util.Random;
+
 public class Partie {
      PlateauDeJeu plateau;
      Joueur joueur1;
@@ -22,6 +24,7 @@ public class Partie {
         mainJoueur2 = new MainDeCartes();
         //plateau = new Plateau();
     }
+    
     /* 
     public void jouer() {
         while (!partieTerminee()) {
@@ -48,6 +51,7 @@ public class Partie {
             changerJoueurActuel();
         }
     }*/
+
     public boolean partieTerminee() {
         return joueur1.getNombreCristaux() == 5 || joueur2.getNombreCristaux() == 5;
     }
@@ -59,19 +63,19 @@ public class Partie {
         joueurActuel = joueurActuel == joueur1 ? joueur2 : joueur1;
     }
 
-    /* 
+    
     public void duel() {
         int totalJoueur1 = 0;
         int totalJoueur2 = 0;
     
         for (Carte carte : mainJoueur1.getCartes()) {
-            if (carte.getCouleur() != codex.getCouleurInterdite()) {
+            if (carte.getCouleur() !=couleurInterdite) {
                 totalJoueur1 += carte.getValeur();
             }
         }
     
         for (Carte carte : mainJoueur2.getCartes()) {
-            if (carte.getCouleur() != codex.getCouleurInterdite()) {
+            if (carte.getCouleur() != couleurInterdite) {
                 totalJoueur2 += carte.getValeur();
             }
         }
@@ -88,9 +92,8 @@ public class Partie {
             // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
             Random random = new Random();
             boolean egalite = (totalJoueur1 == totalJoueur2);
-            // Récupérez la couleur interdite à partir du Codex
-            Couleur couleurInterdite = codex.getCouleurInterdite(); 
-
+            
+            
             joueur1.getMain().melangerCartes();
             joueur2.getMain().melangerCartes();
             
@@ -121,8 +124,7 @@ public class Partie {
             }
         }
         
-    }*/
-    
+    }
 
     /* 
     public static void main(String[] args) {

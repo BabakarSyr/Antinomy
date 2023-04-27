@@ -12,4 +12,13 @@ public class Sorcier {
    public boolean getSensDuTemps() {
        return sensDuTemps;
    }
+
+
+
+   
+
+
+
+
+
 }
