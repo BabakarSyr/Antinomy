@@ -3,7 +3,6 @@ package Modele;
 enum TypeCarte {
     RELIQUE,
     SORCIER,
-    CODEX
 }
 enum Forme {
    PLUME,
@@ -19,6 +18,7 @@ enum Couleur {
    ROUGE
 }
 
+/* 
 class Codex extends Carte {
     public Codex(Couleur couleurInterdite) {
         super(null, null, 0, TypeCarte.CODEX, couleurInterdite);
@@ -34,34 +34,22 @@ class Codex extends Carte {
         }
         return couleurInterdite;
     }
-}
+}*/
+
 
 public class Carte {
      Forme forme;
      Couleur couleur;
      int valeur;
-     //boolean faceCachee;//correspond au codex si la carte est cachee
-     TypeCarte typeCarte;
+
      Couleur couleurInterdite;
 
 
-     public Carte(Forme forme, Couleur couleur, int valeur, TypeCarte typeCarte, Couleur couleurInterdite) {
+     public Carte(Forme forme, Couleur couleur, int valeur) {
          this.forme = forme;
          this.couleur = couleur;
          this.valeur = valeur;
-         this.typeCarte = typeCarte;
-         this.couleurInterdite = couleurInterdite;
      }
-
-     public Carte(){
-        
-     }
-
-
-
-
-
-
 
     
      public Couleur getCouleur() {
@@ -86,26 +74,6 @@ public class Carte {
         this.forme = forme;
     }
 
-    public TypeCarte getTypeCarte() {
-        return typeCarte;
-    }
 
-    public void setTypeCarte(TypeCarte typeCarte) {
-        this.typeCarte = typeCarte;
-    }
-
-
-
-
-    /*
-     * Carte sorcier1 = new Carte(null, null, 0, Carte.TypeCarte.SORCIER);
-Carte sorcier2 = new Carte(null, null, 0, Carte.TypeCarte.SORCIER);
-     */
-
-     /*
-      * Carte relique1 = new Carte(null, null, 0, Carte.TypeCarte.RELIQUE);
-      Carte codex = new Carte(null, null, 0, TypeCarte.CODEX, Couleur.ROUGE);
-
-      */
 
 }

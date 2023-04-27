@@ -1,8 +1,4 @@
 package Modele;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
 public class Partie {
      PlateauDeJeu plateau;
@@ -14,9 +10,7 @@ public class Partie {
      MainDeCartes mainJoueur2;
 
      Couleur couleurInterdite;
-    Codex codex;
-
-    Plateau plateau;
+    //Codex codex;
 
     public Partie(Joueur joueur1, Joueur joueur2) {
         this.joueur1 = joueur1;
@@ -26,9 +20,9 @@ public class Partie {
 
         mainJoueur1 = new MainDeCartes();
         mainJoueur2 = new MainDeCartes();
-        plateau = new Plateau();
+        //plateau = new Plateau();
     }
-
+    /* 
     public void jouer() {
         while (!partieTerminee()) {
             // Phase 1 : Déplacement du sorcier
@@ -53,8 +47,7 @@ public class Partie {
 
             changerJoueurActuel();
         }
-    }
-
+    }*/
     public boolean partieTerminee() {
         return joueur1.getNombreCristaux() == 5 || joueur2.getNombreCristaux() == 5;
     }
@@ -66,6 +59,7 @@ public class Partie {
         joueurActuel = joueurActuel == joueur1 ? joueur2 : joueur1;
     }
 
+    /* 
     public void duel() {
         int totalJoueur1 = 0;
         int totalJoueur2 = 0;
@@ -127,8 +121,9 @@ public class Partie {
             }
         }
         
-    }
+    }*/
     
+
     /* 
     public static void main(String[] args) {
         Joueur joueur1 = new Joueur("Alice");
