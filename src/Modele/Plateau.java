@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PlateauDeJeu {
+public class Plateau {
      List<Carte> cartesReliques;
      List<Carte> cartesSorciers;
      List<Carte> cartes_sur_plateau;
@@ -18,7 +18,7 @@ public class PlateauDeJeu {
 
 
 
-    public PlateauDeJeu() {
+    public Plateau() {
         cartesReliques = new ArrayList<>();
         cartes_sur_plateau = new ArrayList<>();
 
