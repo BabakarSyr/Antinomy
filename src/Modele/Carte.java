@@ -1,9 +1,4 @@
 package Modele;
-
-enum TypeCarte {
-    RELIQUE,
-    SORCIER,
-}
 enum Forme {
    PLUME,
    ANNEAU,
@@ -18,32 +13,12 @@ enum Couleur {
    ROUGE
 }
 
-/* 
-class Codex extends Carte {
-    public Codex(Couleur couleurInterdite) {
-        super(null, null, 0, TypeCarte.CODEX, couleurInterdite);
-    }
-
-    public boolean isCodex() {
-        return typeCarte == TypeCarte.CODEX;
-    }
-   
-    public Couleur getCouleurInterdite() {
-        if (!isCodex() ) {
-            throw new IllegalStateException("La carte n'est pas un Codex face visible");
-        }
-        return couleurInterdite;
-    }
-}*/
-
-
 public class Carte {
      Forme forme;
      Couleur couleur;
      int valeur;
 
-     Couleur couleurInterdite;
-
+    
 
      public Carte(Forme forme, Couleur couleur, int valeur) {
          this.forme = forme;
@@ -56,10 +31,6 @@ public class Carte {
         return couleur;
     }
 
-    public void setCouleur(Couleur couleur) {
-        this.couleur = couleur;
-    }
-
     public int getValeur() {
         return valeur;
     }
@@ -70,10 +41,14 @@ public class Carte {
     public Forme getForme() {
         return forme;
     }
-    public void setForme(Forme forme) {
-        this.forme = forme;
+
+
+    public String toString() {
+        return '{' +
+                "forme=" + forme +
+                ", couleur=" + couleur +
+                ", valeur=" + valeur +
+                '}';
     }
-
-
-
+    
 }

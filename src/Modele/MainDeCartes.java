@@ -7,7 +7,7 @@ public class MainDeCartes {
     ArrayList<Carte> cartes;
 
     public MainDeCartes() {
-        cartes = new ArrayList<>();
+        this.cartes = new ArrayList<>();
     }
 
     public ArrayList<Carte> getCartes() {
@@ -26,12 +26,13 @@ public class MainDeCartes {
         cartes.add(carte);
     }
 
-    public void retirerCarte(int index) {
-        cartes.remove(index);
+    //Fonction qui ajoute une carte au debut de la main du joueur
+    public void ajouterCarte(Carte carte, int index) {
+        cartes.add(index, carte);
     }
 
-    public int taille() {
-        return cartes.size();
+    public void retirerCarte(int index) {
+        cartes.remove(index);
     }
 
     //melanger les cartes de la main du joueur
@@ -39,22 +40,4 @@ public class MainDeCartes {
         Collections.shuffle(cartes);
     }
 
-
-    /* 
-    public void afficherCartes() {
-        for (Carte carte : cartes) {
-            System.out.println(carte);
-        }
-    }
-    
-    public void afficherCarte(int index) {
-        System.out.println(cartes.get(index));
-    }
-    public void modifierCarte(int index, Carte carte) {
-        cartes.set(index, carte);
-    }
-
-    public boolean possedeCarte(Carte carteRecherchee) {
-        return cartes.contains(carteRecherchee);
-    }*/
 }

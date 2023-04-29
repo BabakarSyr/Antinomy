@@ -1,121 +1,239 @@
 package Modele;
 
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
+
 
 public class Partie {
-     PlateauDeJeu plateau;
-     Joueur joueur1;
-     Joueur joueur2;
-     Joueur joueurActuel;
+     Plateau plateau;
     
-      MainDeCartes mainJoueur1;
-     MainDeCartes mainJoueur2;
+    
+     
+     
+    public Partie(Plateau plateau) {
+        this.plateau =plateau; 
+       
+    }
 
-     Couleur couleurInterdite;
-    //Codex codex;
 
-    public Partie(Joueur joueur1, Joueur joueur2) {
-        this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
-        this.plateau = new PlateauDeJeu();
-        this.joueurActuel = joueur1;
-
-        mainJoueur1 = new MainDeCartes();
-        mainJoueur2 = new MainDeCartes();
-        //plateau = new Plateau();
+    public boolean est_Possible_Placer_3cartes(String Direction) {
+        int posSorcier=plateau.joueurActif.sorcier.getPositionSorcier();
+        boolean possible=false;
+        int nbCarte=0;
+        switch(Direction) {
+            case "Gauche":
+                for(int i=posSorcier-1;i>=0;i--){
+                    nbCarte++;
+                }
+                break;
+                
+            case "Droit":
+                for(int i=posSorcier+1;i<plateau.continuum.size();i++){
+                    nbCarte++;
+                }
+                break;
+        }
+        if(nbCarte>=3)
+            possible= true;
+        return possible;
     }
     
-    /* 
-    public void jouer() {
-        while (!partieTerminee()) {
-            // Phase 1 : Déplacement du sorcier
-            Carte carteJouee = joueurActuel.choisirCarte();
-            plateau.deplacerSorcier(joueurActuel, carteJouee);
-
-            // Phase 2 : Vérification du Paradoxe
-            if (joueurActuel.aParadoxe()) {
-                joueurActuel.gagnerCristal();
-                plateau.echangerCartesParadoxe(joueurActuel);
+    public boolean isParadoxe(MainDeCartes mainJoueur) {
+        Couleur couleurInterdite =plateau.codex.getCouleurInterdite();
+        ArrayList<Carte> cartes = mainJoueur.getCartes();
+        
+        Couleur couleurPremiereCarte = cartes.get(0).getCouleur();
+        Forme formePremiereCarte = cartes.get(0).getForme();
+        int valeurPremiereCarte = cartes.get(0).getValeur();
+    
+        //carte.size=3 toujours
+        for (int i = 1; i < cartes.size(); i++) {
+            Carte carte = cartes.get(i);
+            if (carte.getCouleur() != couleurPremiereCarte) {
+               return false;
             }
+            if (carte.getForme() != formePremiereCarte) {
+                return false;
+            }
+            if (carte.getValeur() != valeurPremiereCarte) {
+               return false;
+            }
+            if (carte.getCouleur() == couleurInterdite) {
+                return false;
+            }
+        }
+    
+    
+        
+    
+        // Il y a un paradoxe si toutes les cartes ont la même couleur ou  la même forme ou  la même valeur
+        // et toutes les cartes sont de couleur différente de la couleur interdite
+        return true;
+    }
+    
 
-            // Phase 3 : Duel (si les sorciers sont sur la même case)
-            if (plateau.sorciersSurMemeCase()) {
-                Joueur autreJoueur = joueurActuel == joueur1 ? joueur2 : joueur1;
-                Joueur gagnantDuel = duel(joueurActuel, autreJoueur);
-                if (gagnantDuel != null) {
-                    gagnantDuel.volerCristal(autreJoueur);
-                    plateau.deplacerCristalCodex();
+    public void jouer(int indexCarteChoisie,String temps) {
+    
+        Carte carteChoisie = plateau.joueurActif.getMain().getCartes().get(indexCarteChoisie);
+        
+        switch(temps){
+            case "futur":
+                // On effectue l'action correspondante à la carte choisie
+                    if( plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.continuum)){
+                        plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.continuum);
+                        plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.continuum);
+                    }
+                    else{
+                        System.out.println("Vous ne pouvez pas aller dans le futur avec cette carte");
+                    }
+                    
+                break;
+            case "passe": 
+            if(plateau.joueurActif.sorcier.est_possible_aller_passe(carteChoisie, plateau.continuum)) {  
+                plateau.joueurActif.sorcier.deplacerPasse(carteChoisie, plateau.continuum);
+                plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.continuum);
+            }
+            else{
+                System.out.println("Vous ne pouvez pas aller dans le passe avec cette carte");
+            }
+            break;
+            
+        }
+    
+        // Vérifier si le joueur actif a un paradoxe
+        if(isParadoxe(plateau.joueurActif.getMain())){
+            System.out.println("Vous avez un paradoxe");
+
+            //Le joeur actif gagne 1 cristal
+            plateau.joueurActif.ajouterCristaux(1);
+           
+            //Le joueur melange les cartes entre ses mains
+            plateau.joueurActif.main.melangerCartes();
+
+            try (Scanner scanner = new Scanner(System.in)) {
+                System.out.println("Voulez-vous échanger vos cartes en main avec les cartes à gauche ou à droite du sorcier ? (Entrez gauche ou droite)");
+      
+                String direction = scanner.next().toLowerCase();
+                while(!est_Possible_Placer_3cartes(direction)){
+                    System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisissez une autre direction : gauche / droite");
+   
+                    direction = scanner.next().toLowerCase();
+                }
+
+         
+                switch(direction){
+                    case "gauche":
+                        plateau.joueurActif.jouer3Cartes(plateau.continuum, direction);
+                        break;
+                    case "droite":
+                        plateau.joueurActif.jouer3Cartes(plateau.continuum, direction);
+                    
+                        break;
                 }
             }
-
-            changerJoueurActuel();
+            plateau.codex.changerCouleurInterdite();
+          
+            
         }
-    }*/
 
+        if(isDuel())
+            duel();
+        
+        // Une fois que le joueur a terminé son tour, on change de joueur actif au niveau du plateau
+        plateau.changerJoueurActif();
+        
+    }
+    
+    
     public boolean partieTerminee() {
-        return joueur1.getNombreCristaux() == 5 || joueur2.getNombreCristaux() == 5;
-    }
-
-    private void changerJoueurActuel() {
-        /*
-         * Si le joueur actuel est le joueur 1, alors le joueur actuel devient le joueur 2.et vice versa
-         */
-        joueurActuel = joueurActuel == joueur1 ? joueur2 : joueur1;
+        return plateau.joueur1.getNombreCristaux() == 5 || plateau.joueur2.getNombreCristaux() == 5;
     }
 
     
+    //On a duel si positionSorcierJoueur1 == positionSorcierJoueur2
+    public boolean isDuel(){
+        int positionSorcierJoueur1 = plateau.joueur1.sorcier.getPositionSorcier();
+        int positionSorcierJoueur2 = plateau.joueur2.sorcier.getPositionSorcier();
+        return positionSorcierJoueur1 == positionSorcierJoueur2;
+    }
+
+
     public void duel() {
-        int totalJoueur1 = 0;
-        int totalJoueur2 = 0;
-    
-        for (Carte carte : mainJoueur1.getCartes()) {
+
+        int totalJoueur1= plateau.joueur1.getNombreCristaux();
+        int totalJoueur2 = plateau.joueur2.getNombreCristaux();
+
+
+        //Les 2 jouerurs affichent leur main
+        System.out.println("La main du joueur 1 est : ");
+        for(int i=0;i<3;i++){
+           
+            System.out.println("Carte "+i+" : "+plateau.joueur1.getMain().getCartes().get(i).toString());
+            
+        }
+       System.out.println();
+        System.out.println("La main du joueur 2 est : ");
+        for(int i=0;i<3;i++){
+            
+            System.out.println("Carte "+i+" : "+plateau.joueur2.getMain().getCartes().get(i).toString());
+        }
+
+
+
+
+        
+        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
+        for (Carte carte : plateau.joueur1.getMain().getCartes()) {
             if (carte.getCouleur() !=couleurInterdite) {
-                totalJoueur1 += carte.getValeur();
+                totalJoueur1 += carte.getValeur(couleurInterdite);
             }
         }
     
-        for (Carte carte : mainJoueur2.getCartes()) {
+        for (Carte carte : plateau.joueur2.getMain().getCartes()) {
             if (carte.getCouleur() != couleurInterdite) {
-                totalJoueur2 += carte.getValeur();
+                totalJoueur2 += carte.getValeur(couleurInterdite);
             }
         }
     
         if (totalJoueur1 > totalJoueur2) {
             // Le joueur 1 gagne le duel et vole un cristal au joueur 2
-            joueur1.volerCristal(joueur2);
-            System.out.println(joueur1.getNom() + " gagne le duel et vole un cristal à " + joueur2.getNom());
+            plateau.joueur1.volerCristal(plateau.joueur2);
+            System.out.println(plateau.joueur1.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur2.getNom());
         } else if (totalJoueur1 < totalJoueur2) {
             // Le joueur 2 gagne le duel et vole un cristal au joueur 1
-            joueur2.volerCristal(joueur1);
-            System.out.println(joueur2.getNom() + " gagne le duel et vole un cristal à " + joueur1.getNom());
+            if(plateau.joueur2.volerCristal(plateau.joueur1))
+                System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
+            else
+                System.out.println("Impossible de voler un cristal à " + plateau.joueur2.getNom() + " car il n'en a plus  ou n'en a pas.");
         } else {
             // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
             Random random = new Random();
             boolean egalite = (totalJoueur1 == totalJoueur2);
             
             
-            joueur1.getMain().melangerCartes();
-            joueur2.getMain().melangerCartes();
+            plateau.joueur1.getMain().melangerCartes();
+            plateau.joueur1.getMain().melangerCartes();
             
             while (egalite) {
                // Sélectionner une carte au hasard pour chaque joueur
-                int indexCarteJoueur1 = random.nextInt(joueur1.getMain().taille());
-                int indexCarteJoueur2 = random.nextInt(joueur2.getMain().taille());
+                int indexCarteJoueur1 = random.nextInt(3);
+                int indexCarteJoueur2 = random.nextInt(3);
 
-                Carte carteJoueur1 = joueur1.getMain().getCarte(indexCarteJoueur1);
-                Carte carteJoueur2 = joueur2.getMain().getCarte(indexCarteJoueur2);
+                Carte carteJoueur1 = plateau.joueur1.getMain().getCarte(indexCarteJoueur1);
+                Carte carteJoueur2 = plateau.joueur2.getMain().getCarte(indexCarteJoueur2);
 
                 // On compare  les valeurs des cartes en tenant compte de la couleur interdite
-                int valeurCarteJoueur1 = carteJoueur1.getValeur(couleurInterdite);
-                int valeurCarteJoueur2 = carteJoueur2.getValeur(couleurInterdite);
+                int valeurCarteJoueur1 = carteJoueur1.getValeur(plateau.codex.getCouleurInterdite());
+                int valeurCarteJoueur2 = carteJoueur2.getValeur(plateau.codex.getCouleurInterdite());
             
                 if (valeurCarteJoueur1 > valeurCarteJoueur2) {
-                    joueur1.volerCristal(joueur2);
-                    System.out.println(joueur1.getNom() + " gagne le duel et vole un cristal à " + joueur2.getNom());
+                    plateau.joueur1.volerCristal(plateau.joueur2);
+                    System.out.println(plateau.joueur1.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur2.getNom());
                     egalite = false;
                 } else if (valeurCarteJoueur1 < valeurCarteJoueur2) {
-                    joueur2.volerCristal(joueur1);
-                    System.out.println(joueur2.getNom() + " gagne le duel et vole un cristal à " + joueur1.getNom());
+                    plateau.joueur2.volerCristal(plateau.joueur1);
+                    System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
                     egalite = false;
                 } else {
                     System.out.println("Égalité à nouveau ! Les joueurs tirent de nouvelles cartes.");
@@ -126,14 +244,4 @@ public class Partie {
         
     }
 
-    /* 
-    public static void main(String[] args) {
-        Joueur joueur1 = new Joueur("Alice");
-        Joueur joueur2 = new Joueur("Bob");
-
-        Partie partie = new Partie(joueur1, joueur2);
-        partie.jouer();
-
-        System.out.println("Le gagnant est : " + (joueur1.getNombreCristaux() >= 5 ? joueur1.getNom() : joueur2.getNom()));
-    }*/
 }
