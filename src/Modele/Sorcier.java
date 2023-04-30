@@ -1,6 +1,10 @@
 package Modele;
 
+import java.util.ArrayList;
 import java.util.List;
+
+
+import Modele.Carte.Couleur;
 
 public class Sorcier {
     boolean sensDuTemps; // true si le futur est à droite et le passé à gauche, false sinon
@@ -82,33 +86,32 @@ public class Sorcier {
       
     }
     
-    public void deplacerPasse(Carte carteChoisie, List<Carte> continuum) {
-       
-            Forme formeCarte = carteChoisie.getForme();
-            Couleur couleurCarte = carteChoisie.getCouleur();
-            
-            if (sensDuTemps) {
-                // Si le passé du sorcier est à gauche
-                for (int i = positionSorcier - 1; i >= 0; i--) {
-                    if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
-                        positionSorcier = i;
-                        break;
-                    }
-                }
-            } else {
-                // Pour ce sorcier, le passé est à droite
-                for (int i = positionSorcier + 1; i < continuum.size(); i++) {
-                    if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
-                        positionSorcier = i;
-                        break;
-                    }
+    
+    public List<Integer> Position_Possible_Passe(Carte carteChoisie, List<Carte> continuum) {
+        Forme formeCarte = carteChoisie.getForme();
+        Couleur couleurCarte = carteChoisie.getCouleur();
+        List <Integer> positions = new ArrayList<Integer>();
+        if (sensDuTemps) {
+            for (int i = 0; i < positionSorcier; i++) {
+                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
+                    positions.add(i);
+                    System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
                 }
             }
-       
+        } else {
+            for (int i = positionSorcier + 1; i < continuum.size(); i++) {
+                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
+                   positions.add(i);
+                   System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
+                }
+            }
+        }
+        return positions;
     }
+    
+       
+}
     
 
 
 
-
-}

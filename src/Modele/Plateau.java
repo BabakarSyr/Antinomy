@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import Modele.Carte.Couleur;
+
 
 public class Plateau {
      public Joueur joueurActif;
@@ -14,7 +16,7 @@ public class Plateau {
    
    
 
-     List<Carte> continuum=new ArrayList<>();
+      List<Carte> continuum=new ArrayList<>();
 
      
     public Codex codex;
@@ -115,21 +117,6 @@ public class Plateau {
 
 
 
-    public String toString() {
-        String s = "";
-        s += "Joueur 1 : " + joueur1.getNom() + "\n";
-        s += "Joueur 2 : " + joueur2.getNom() + "\n";
-        s += "Joueur actif : " + joueurActif + "\n";
-       
-        //s += "Position Sorcier Joueur 1 : " + positionSorcierJoueur1 + "\n";
-        //s += "Position Sorcier Joueur 2 : " + positionSorcierJoueur2 + "\n";
-        s += "Codex : " + codex + "\n";
-        s += "Continuum : " + continuum + "\n";
-        //s += "Main Joueur 1 : " + mainJoueur1 + "\n";
-        //s += "Main Joueur 2 : " + mainJoueur2 + "\n";
-        return s;
-    }
-
     public void changerJoueurActif() {
         if (joueurActif == joueur1) {
             joueurActif = joueur2;
@@ -143,11 +130,42 @@ public class Plateau {
         return joueurActif;
 
     }
-   
+
+    public List<Carte> getContinuum() {
+        return continuum;
+    }
     public void afficher_continuum() {
         for (int i = 0; i < continuum.size(); i++) {
             System.out.println(i+":"+continuum.get(i));
         }
+    }
+
+    public void afficher_colorSorcier_continuum(int posSorcier1,int posSorcier2) {
+       //Il y a duel,on surligne en rouge la position
+        if(posSorcier1==posSorcier2){
+            System.out.println("\033[31m\033[7m"+posSorcier1+ "\033[0m:  " + continuum.get(posSorcier1) + "\n");
+            
+           
+        }
+        
+        for (int i = 0; i < continuum.size(); i++) {
+            if (i == posSorcier1) {
+                //Colorer en rose
+                System.out.print(" \033[95m\033[7m"+i+ "\033[0m:  " + continuum.get(i) + "\n");
+
+            } 
+            else if (i == posSorcier2) {
+                System.out.print(" \033[38;5;208m\033[7m"+i+ "\033[0m:  " + continuum.get(i) + "\n");
+            }
+            
+            else {
+                System.out.print(  i+":"+continuum.get(i)+"\n");
+            }
+        }
+        System.out.println();
+        
+      
+        
     }
     
 
@@ -177,11 +195,42 @@ public class Plateau {
 
 
     //Fonction qui me donne les cartes portant la couleur interdite sur le continuum
-    public  void pos_carte_couleur_interdite() {
+    public  List <Integer> pos_carte_couleur_interdite() {
+        List <Integer> pos = new ArrayList<>();
         for (int j = 0; j < continuum.size(); j++) {
             if (continuum.get(j).getCouleur() == codex.getCouleurInterdite()) {
-               System.out.println( j);
+                pos.add(j);
             }
         }
+        return pos;
     }
+
+
+    public String colorer_pos_sorcier(int pos_sorcier,int joueur) {
+        String s = "";
+        if (joueur == 1) {
+            for (int i = 0; i <=continuum.size(); i++) {
+                if (i == pos_sorcier ) {
+                    //La baguette du joueur1 colore en rose
+                    s = " \033[95m\033[7m" + pos_sorcier + "\033[0m!";
+                } else {
+                    s = "" + pos_sorcier;
+                }
+            }
+        } else {
+            for (int i = 0; i <=continuum.size(); i++) {
+                if (i == pos_sorcier ) {
+                    //La baguette du joueur2 colore en orange
+                    s = " \033[38;5;208m\033[7m" + pos_sorcier + "\033[0m!";
+                } else {
+                    s = "" + pos_sorcier;
+                }
+            }
+        }
+        return s;
+    }
+     
 }
+
+
+

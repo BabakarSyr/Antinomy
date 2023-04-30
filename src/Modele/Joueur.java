@@ -68,7 +68,7 @@ public class Joueur {
 
 
     //Equivalent echanger carte
-    public Carte jouerCarte(int index, List<Carte> continuum) {
+    public Carte jouerCarte(int index, List<Carte> continuum) {//index=[0-2]
         int positionSorcier = sorcier.getPositionSorcier();
         Carte carte = main.getCarte(index);
         main.retirerCarte(index);
@@ -84,22 +84,30 @@ public class Joueur {
     
     }
     public void jouer3Cartes(List<Carte> continuum,String Direction) {
+        //Main du joueur
+        
+        
         int positionSorcier = sorcier.getPositionSorcier();
         switch(Direction){
-            case "Gauche":
-                // Vérifier si on peut jouer 3 cartes à gauche
-                if (positionSorcier >= 3) {
+            case "gauche":
+               
+
                     for (int i = positionSorcier - 3; i < positionSorcier; i++) {
-                        jouerCarte(i, continuum);
+                        sorcier.setPositionSorcier(i);
+                        for(int j=0;j<3;j++){
+                            jouerCarte(j, continuum);
+                        }
                     }
-                }
+                
+                
                 break;
-            case "Droite":
-                // Vérifier si on peut jouer 3 cartes à droite
-                if (positionSorcier + 3 < continuum.size()) {
+            case "droite":
+              
                     for (int i = positionSorcier + 1; i <= positionSorcier + 3; i++) {
-                        jouerCarte(i, continuum);
-                    }
+                        sorcier.setPositionSorcier(i);
+                        for(int j=0;j<3;j++){
+                            jouerCarte(j, continuum);
+                        }
                 }
                 break;
         }

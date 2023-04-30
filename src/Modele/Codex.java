@@ -1,5 +1,7 @@
 package Modele;
 
+import Modele.Carte.Couleur;
+
 public class Codex {
      Couleur couleurInterdite;
      Carte carte;
@@ -17,6 +19,30 @@ public class Codex {
     public Couleur getCouleurInterdite() {
         return this.couleurInterdite;
     }
+
+    public String getCode(){
+        String code = "";
+        switch (this.couleurInterdite) {
+            case ROUGE:
+                code = "\033[31mROUGE\033[0m"; // Rouge
+                break;
+            case VERT:
+                code = "\033[32mVERT\033[0m"; // Vert
+                break;
+            case BLEU:
+                code = "\033[34mBLEU\033[0m"; // Bleu
+                break;
+            case VIOLET:
+                code = "\033[35mVIOLET\033[0m"; // Violet
+                break;
+            default:
+                code = "\033[0m"; // Couleur par défaut (blanc)
+                break;
+        }
+        return code;
+    }
+
+
     public void setCouleur(Couleur couleurInterdite) {
         this.couleurInterdite = couleurInterdite;
     }
