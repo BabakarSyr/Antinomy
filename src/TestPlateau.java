@@ -290,6 +290,10 @@ public class TestPlateau {
                 
                 i++;
             }
+            int score1 = plateau.getJoueur(1).getNombreCristaux();
+            int score2 = plateau.getJoueur(2).getNombreCristaux();
+            if(score1 > score2)
+                System.out.println("Le joueur "+plateau.getJoueur(1).getNom()+" a gagné avec un score de "+score1+" contre "+score2+" pour le joueur "+plateau.getJoueur(2).getNom());
             
         }
     }
