@@ -93,7 +93,7 @@ public class Joueur {
                
 
                     for (int i = positionSorcier - 3; i < positionSorcier; i++) {
-                        sorcier.setPositionSorcier(i);
+                        
                         for(int j=0;j<3;j++){
                             jouerCarte(j, continuum);
                         }
@@ -104,7 +104,7 @@ public class Joueur {
             case "droite":
               
                     for (int i = positionSorcier + 1; i <= positionSorcier + 3; i++) {
-                        sorcier.setPositionSorcier(i);
+                        
                         for(int j=0;j<3;j++){
                             jouerCarte(j, continuum);
                         }
