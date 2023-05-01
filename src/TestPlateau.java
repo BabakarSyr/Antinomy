@@ -264,6 +264,12 @@ public class TestPlateau {
                             plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
                             break;
                     }
+                    System.out.println("Voici le plateau apres votre coup :");
+                    if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
+                        plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_actif),plateau.getPositionSorcier(num_joueur_inactif));
+                    else
+                        plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_inactif),plateau.getPositionSorcier(num_joueur_actif));
+                        
                     plateau.codex.changerCouleurInterdite();
                     System.out.println("La couleur interdite est maintenant :"+ (String)plateau.codex.getCouleurInterdite().getCode());
                 }
