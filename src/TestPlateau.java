@@ -226,54 +226,60 @@ public class TestPlateau {
 
 
 
-                //Le duel est prioritaire sur le paradoxe
-                if(partie.isDuel())
-                    partie.duel();
+                //Le paradoxe est prioritaire sur le duel si le joueur a laz possibilité de faire un paradoxe et qu'il ya duel en meme temps
 
-                     // Vérifier si le joueur actif a un paradoxe apres qu'il ait joué
-                if(partie.isParadoxe(plateau.joueurActif.getMain())){
-                    System.out.println("Vous avez un paradoxe");
 
-                    //Afficher les cartes du joueur actif
-                    for(int j=0; j<3; j++){
-                        System.out.println("Carte "+(j+1)+" : "+plateau.joueurActif.getMain().getCartes().get(j).toString());
-                    }
-
-                    //Le joueur actif gagne 1 cristal
-                    plateau.joueurActif.ajouterCristaux(1);
-            
-                    System.out.println("Récapitulatif :");
-                    System.out.println("Le joueur "+plateau.joueur1.getNom()+" a en sa possession "+plateau.joueur1.getNombreCristaux()+" cristaux");
-                    System.out.println("Le joueur "+plateau.joueur2.getNom()+" a en sa possession "+plateau.joueur2.getNombreCristaux()+" cristaux");
+                    // Vérifier si le joueur actif a un paradoxe apres qu'il ait joué
+                    if(partie.isParadoxe(plateau.joueurActif.getMain())){
+                        System.out.println("Vous avez un paradoxe");
+    
+                        //Afficher les cartes du joueur actif
+                        for(int j=0; j<3; j++){
+                            System.out.println("Carte "+(j+1)+" : "+plateau.joueurActif.getMain().getCartes().get(j).toString());
+                        }
+    
+                        //Le joueur actif gagne 1 cristal
+                        plateau.joueurActif.ajouterCristaux(1);
                 
-                    //Le joueur melange les cartes entre ses mains
-                    plateau.joueurActif.getMain().melangerCartes();
-
-                    System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
-                    String direction = sc.next().toLowerCase();
-                    while(!partie.est_Possible_Placer_3cartes(direction)){
-                        System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
-        
-                        direction = sc.next().toLowerCase();
+                        System.out.println("Récapitulatif :");
+                        System.out.println("Le joueur "+plateau.joueur1.getNom()+" a en sa possession "+plateau.joueur1.getNombreCristaux()+" cristaux");
+                        System.out.println("Le joueur "+plateau.joueur2.getNom()+" a en sa possession "+plateau.joueur2.getNombreCristaux()+" cristaux");
+                    
+                        //Le joueur melange les cartes entre ses mains
+                        plateau.joueurActif.getMain().melangerCartes();
+    
+                        System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
+                        String direction = sc.next().toLowerCase();
+                        while(!partie.est_Possible_Placer_3cartes(direction)){
+                            System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
+            
+                            direction = sc.next().toLowerCase();
+                        }
+                        switch(direction){
+                            case "gauche":
+                                plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
+                                break;
+                            case "droite":
+                                plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
+                                break;
+                        }
+                        System.out.println("Voici le plateau apres votre coup :");
+                        if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
+                            plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_actif),plateau.getPositionSorcier(num_joueur_inactif));
+                        else
+                            plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_inactif),plateau.getPositionSorcier(num_joueur_actif));
+                            
+                        plateau.codex.changerCouleurInterdite();
+                        System.out.println("La couleur interdite est maintenant :"+ (String)plateau.codex.getCouleurInterdite().getCode());
                     }
-                    switch(direction){
-                        case "gauche":
-                            plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-                            break;
-                        case "droite":
-                            plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-                            break;
-                    }
-                    System.out.println("Voici le plateau apres votre coup :");
-                    if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
-                        plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_actif),plateau.getPositionSorcier(num_joueur_inactif));
-                    else
-                        plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_inactif),plateau.getPositionSorcier(num_joueur_actif));
-                        
+    
+                if(partie.isDuel()){
+                    partie.duel();
+                    //Changer la couleur interdite
                     plateau.codex.changerCouleurInterdite();
-                    System.out.println("La couleur interdite est maintenant :"+ (String)plateau.codex.getCouleurInterdite().getCode());
                 }
-                     
+
+                                      
                
 
 
@@ -300,6 +306,8 @@ public class TestPlateau {
             int score2 = plateau.getJoueur(2).getNombreCristaux();
             if(score1 > score2)
                 System.out.println("Le joueur "+plateau.getJoueur(1).getNom()+" a gagné avec un score de "+score1+" contre "+score2+" pour le joueur "+plateau.getJoueur(2).getNom());
+            else
+                System.out.println("Le joueur "+plateau.getJoueur(2).getNom()+" a gagné avec un score de "+score2+" contre "+score1+" pour le joueur "+plateau.getJoueur(1).getNom());
             
         }
     }

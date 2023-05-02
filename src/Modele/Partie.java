@@ -170,15 +170,24 @@ public class Partie {
 
         if (totalJoueur1 > totalJoueur2) {
             // Le joueur 1 gagne le duel et vole un cristal au joueur 2
-            if(plateau.joueur1.volerCristal(plateau.joueur2))
+            if(plateau.joueur1.volerCristal(plateau.joueur2)){
                 System.out.println(plateau.joueur1.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur2.getNom());
+                System.out.println("Récapitulatif des cristaux :");
+                System.out.println(plateau.joueur1.getNom() + " : " + plateau.joueur1.getNombreCristaux());
+                System.out.println(plateau.joueur2.getNom() + " : " + plateau.joueur2.getNombreCristaux());
+                return;
+            }
             else
                 System.out.println("Impossible de voler un cristal à " + plateau.joueur1.getNom() + " car il n'en a plus  ou n'en a pas.");
         } else if (totalJoueur1 < totalJoueur2) {
             // Le joueur 2 gagne le duel et vole un cristal au joueur 1
             if(plateau.joueur2.volerCristal(plateau.joueur1)){
                 System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
+                System.out.println("Récapitulatif des cristaux :");
+                System.out.println(plateau.joueur1.getNom() + " : " + plateau.joueur1.getNombreCristaux());
+                System.out.println(plateau.joueur2.getNom() + " : " + plateau.joueur2.getNombreCristaux());
                 return;
+                
             }
             else
                 System.out.println("Impossible de voler un cristal à " + plateau.joueur2.getNom() + " car il n'en a plus  ou n'en a pas.");
