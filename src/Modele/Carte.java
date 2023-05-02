@@ -1,10 +1,4 @@
 package Modele;
-
-enum TypeCarte {
-    RELIQUE,
-    SORCIER,
-    CODEX
-}
 enum Forme {
    PLUME,
    ANNEAU,
@@ -12,64 +6,53 @@ enum Forme {
    CRANE
 }
 
-enum Couleur {
-   VIOLET,
-   VERT,
-   BLEU,
-   ROUGE
-}
-
-class Codex extends Carte {
-    public Codex(Couleur couleurInterdite) {
-        super(null, null, 0, TypeCarte.CODEX, couleurInterdite);
-    }
-
-    public boolean isCodex() {
-        return typeCarte == TypeCarte.CODEX;
-    }
-   
-    public Couleur getCouleurInterdite() {
-        if (!isCodex() ) {
-            throw new IllegalStateException("La carte n'est pas un Codex face visible");
-        }
-        return couleurInterdite;
-    }
-}
 
 public class Carte {
+    public enum Couleur {
+        VIOLET,
+        VERT,
+        BLEU,
+        ROUGE;
+    
+            public String getCode() {
+                String code = "";
+                switch (this) {
+                    case ROUGE:
+                        code = "\033[31mROUGE\033[0m"; // Rouge
+                        break;
+                    case VERT:
+                        code = "\033[32mVERT\033[0m"; // Vert
+                        break;
+                    case BLEU:
+                        code = "\033[34mBLEU\033[0m"; // Bleu
+                        break;
+                    case VIOLET:
+                        code = "\033[35mVIOLET\033[0m"; // Violet
+                        break;
+                    default:
+                        code = "\033[0m"; // Couleur par défaut (blanc)
+                        break;
+                }
+                return code;
+            }
+        }
+    
+    
      Forme forme;
      Couleur couleur;
      int valeur;
-     //boolean faceCachee;//correspond au codex si la carte est cachee
-     TypeCarte typeCarte;
-     Couleur couleurInterdite;
 
+    
 
-     public Carte(Forme forme, Couleur couleur, int valeur, TypeCarte typeCarte, Couleur couleurInterdite) {
+     public Carte(Forme forme, Couleur couleur, int valeur) {
          this.forme = forme;
          this.couleur = couleur;
          this.valeur = valeur;
-         this.typeCarte = typeCarte;
-         this.couleurInterdite = couleurInterdite;
      }
-
-     public Carte(){
-        
-     }
-
-
-
-
-
-
 
     
      public Couleur getCouleur() {
         return couleur;
-    }
-
-    public void setCouleur(Couleur couleur) {
-        this.couleur = couleur;
     }
 
     public int getValeur() {
@@ -82,30 +65,17 @@ public class Carte {
     public Forme getForme() {
         return forme;
     }
-    public void setForme(Forme forme) {
-        this.forme = forme;
+
+
+ 
+    
+    public String toString() {
+        return "{" +
+        "forme=" + forme +
+        ", valeur=" + valeur +
+        ", couleur=" + couleur.getCode( )  +
+        '}';
     }
-
-    public TypeCarte getTypeCarte() {
-        return typeCarte;
-    }
-
-    public void setTypeCarte(TypeCarte typeCarte) {
-        this.typeCarte = typeCarte;
-    }
-
-
-
-
-    /*
-     * Carte sorcier1 = new Carte(null, null, 0, Carte.TypeCarte.SORCIER);
-Carte sorcier2 = new Carte(null, null, 0, Carte.TypeCarte.SORCIER);
-     */
-
-     /*
-      * Carte relique1 = new Carte(null, null, 0, Carte.TypeCarte.RELIQUE);
-      Carte codex = new Carte(null, null, 0, TypeCarte.CODEX, Couleur.ROUGE);
-
-      */
 
 }
+     

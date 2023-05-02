@@ -4,80 +4,233 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import Modele.Carte.Couleur;
+
 
 public class Plateau {
-     List<Carte> cartesReliques;
-     List<Carte> cartesSorciers;
-     List<Carte> cartes_sur_plateau;
-     Carte codex;
-     int positionSorcierJoueur1;
-     int positionSorcierJoueur2;
-    MainDeCartes mainJoueur1;
-    MainDeCartes mainJoueur2;
+     public Joueur joueurActif;
 
+     public Joueur joueur1;
+     public Joueur joueur2;
 
+   
+   
 
+      List<Carte> continuum=new ArrayList<>();
 
+     
+    public Codex codex;
+  
+    
+  
     public Plateau() {
-        cartesReliques = new ArrayList<>();
-        cartes_sur_plateau = new ArrayList<>();
-
-
-        cartesReliques.add(new Carte(Forme.PLUME, Couleur.VERT,1,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.PLUME, Couleur.VIOLET,2,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.PLUME, Couleur.BLEU,3,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.PLUME, Couleur.ROUGE,4,TypeCarte.RELIQUE, Couleur.VERT));
-
-        cartesReliques.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.ANNEAU, Couleur.VERT,4,TypeCarte.RELIQUE, Couleur.VERT));
-
-        cartesReliques.add(new Carte(Forme.CLE, Couleur.ROUGE,1,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.CLE, Couleur.VERT,2,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.CLE, Couleur.VIOLET,3,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.CLE, Couleur.BLEU,4,TypeCarte.RELIQUE, Couleur.VERT));
-
-        cartesReliques.add(new Carte(Forme.CRANE, Couleur.BLEU,1,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.CRANE, Couleur.ROUGE,2,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.CRANE, Couleur.VERT,3,TypeCarte.RELIQUE, Couleur.VERT));
-        cartesReliques.add(new Carte(Forme.CRANE, Couleur.VIOLET,4,TypeCarte.RELIQUE, Couleur.VERT));
-
-        // Mélanger les cartes Reliques
-        Collections.shuffle(cartesReliques);
-
         
-        // Créer les cartes Sorcier pour chaque joueur
-        Carte sorcierJoueur1 = new Carte(null, null, 0, TypeCarte.SORCIER,null);
-        Carte sorcierJoueur2 = new Carte(null, null, 0, TypeCarte.SORCIER, null);
-        cartesSorciers.add(sorcierJoueur1);
-        cartesSorciers.add(sorcierJoueur2);
+        
+        joueur1=new Joueur("",0);
+        joueur2=new Joueur("",0);
+      
+        joueurActif = joueur1;
+        codex=new Codex(new Carte(null, null,0));
 
-            
-        //On met mainetant prend les cartes de la pochette et on les met dans le plateau de jeu et on avant de poser les cartes sur le plateau,chaque joueur pioche 3 cartes et les met dans
-        // sa main et on met les 2 cartes sorciers dans le plateau et la derniere cartes relique restante sera le codex
+    
+        initialiser();
 
+       
+
+    }
+   
+
+    public void initialiser(){
+    
+
+        continuum.add(new Carte(Forme.PLUME, Couleur.VERT,1));
+        continuum.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
+        continuum.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
+        continuum.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
+
+        continuum.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
+        continuum.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
+        continuum.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3));
+        continuum.add(new Carte(Forme.ANNEAU, Couleur.VERT,4));
+
+        continuum.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
+        continuum.add(new Carte(Forme.CLE, Couleur.VERT,2));
+        continuum.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
+        continuum.add(new Carte(Forme.CLE, Couleur.BLEU,4));
+
+        continuum.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
+        continuum.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
+        continuum.add(new Carte(Forme.CRANE, Couleur.VERT,3));
+        continuum.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
+        
+        // Mélanger les cartes Reliques
+        Collections.shuffle(continuum);
+
+
+       
+        MainDeCartes mainJoueur1=new MainDeCartes();
+        MainDeCartes mainJoueur2=new MainDeCartes();
         // Distribuer les cartes RElique aux joueurs
         for(int i = 0; i < 3; i++) {
-            mainJoueur1.ajouterCarte(cartesReliques.get(0));
-            cartesReliques.remove(0);
-            mainJoueur2.ajouterCarte(cartesReliques.get(0));
-            cartesReliques.remove(0);
+            mainJoueur1.ajouterCarte(continuum.remove(0));
+         
+            mainJoueur2.ajouterCarte(continuum.remove(0));
+            
         }
+        joueur1.main=mainJoueur1;
+        joueur2.main=mainJoueur2;
+        
+
+        codex.setCarte(continuum.remove(continuum.size()-1));
+         /*Couleur interdite au debut du jeu
+         On place un cristal sur la couleur du Codex correspondant à la couleur de la carte la plus à gauche du continuum. 
+          Ce sera la couleur interdite.*/
+          Couleur couleurInterdite = continuum.get(0).getCouleur();
+          
+          codex.setCouleur(couleurInterdite);
+  
+   
+     
+
+     
        
-        //Ajouter toutes les cartes de cartes dans carte_sur_plateau sauf la derniere carte relique qui sera le codex
-        for(int i = 0; i < cartesReliques.size()-1; i++) {
-            cartes_sur_plateau.add(cartesReliques.get(i));
-            cartesReliques.remove(i);
-        }
-        //Ajouter la derniere carte relique qui sera le codex.Il ne reste normalement qu'une seule carte relique dans cartesReliques,donc cette cartes sera le codex
-        codex=cartesReliques.get(0);
 
-
-        // Initialisez les positions des cartes sorcier
-        positionSorcierJoueur1 = 0;
-        positionSorcierJoueur2 = 0;
     }
 
-    // ... Autres méthodes et fonctionnalités pour la classe PlateauDeJeu
+    public void setJoueurActif(int i) {
+        if(i==1)
+            joueurActif = joueur1;
+        else
+            joueurActif = joueur2;
+    
+    }
+
+
+    public Joueur getJoueur(int i) {
+        if (i == 1) {
+            return joueur1;
+        } else {
+            return joueur2;
+        }
+    }
+    
+
+
+
+    public void changerJoueurActif() {
+        if (joueurActif == joueur1) {
+            joueurActif = joueur2;
+        } else {
+            joueurActif = joueur1;
+        }
+    }
+
+
+    public Joueur getJoueurActif() {
+        return joueurActif;
+
+    }
+
+    public List<Carte> getContinuum() {
+        return continuum;
+    }
+    public void afficher_continuum() {
+        for (int i = 0; i < continuum.size(); i++) {
+            System.out.println(i+":"+continuum.get(i));
+        }
+    }
+
+    public void afficher_colorSorcier_continuum(int posSorcier1,int posSorcier2) {
+       //Il y a duel,on surligne en rouge la position
+        if(posSorcier1==posSorcier2){
+            System.out.println("\033[31m\033[7m"+posSorcier1+ "\033[0m:  " + continuum.get(posSorcier1) + "\n");
+            
+           
+        }
+        
+        for (int i = 0; i < continuum.size(); i++) {
+            if (i == posSorcier1) {
+                //Colorer en rose
+                System.out.print(" \033[95m\033[7m"+i+ "\033[0m:  " + continuum.get(i) + "\n");
+
+            } 
+            else if (i == posSorcier2) {
+                System.out.print(" \033[38;5;208m\033[7m"+i+ "\033[0m:  " + continuum.get(i) + "\n");
+            }
+            
+            else {
+                System.out.print(  i+":"+continuum.get(i)+"\n");
+            }
+        }
+        System.out.println();
+        
+      
+        
+    }
+    
+
+    public int getPositionSorcier(int joueur) {
+        if (joueur == 1) 
+            return joueur1.getSorcier().getPositionSorcier();
+        else 
+            return joueur2.getSorcier().getPositionSorcier();
+        
+    }
+
+    public void setTempsSorcier(int joueur) {
+        if (joueur == 1) {
+            joueur1.getSorcier().setSensDuTemps(true);
+        } else {
+            joueur2.getSorcier().setSensDuTemps(false);
+        }
+    }
+
+    public void setPositionSorcier(int pos, int joueur) {
+        if (joueur == 1) {
+            joueur1.getSorcier().setPositionSorcier(pos);
+        } else {
+            joueur2.getSorcier().setPositionSorcier(pos);
+        }
+    }
+
+
+    //Fonction qui me donne les cartes portant la couleur interdite sur le continuum
+    public  List <Integer> pos_carte_couleur_interdite() {
+        List <Integer> pos = new ArrayList<>();
+        for (int j = 0; j < continuum.size(); j++) {
+            if (continuum.get(j).getCouleur() == codex.getCouleurInterdite()) {
+                pos.add(j);
+            }
+        }
+        return pos;
+    }
+
+
+    public String colorer_pos_sorcier(int pos_sorcier,int joueur) {
+        String s = "";
+        if (joueur == 1) {
+            for (int i = 0; i <=continuum.size(); i++) {
+                if (i == pos_sorcier ) {
+                    //La baguette du joueur1 colore en rose
+                    s = " \033[95m\033[7m" + pos_sorcier + "\033[0m!";
+                } else {
+                    s = "" + pos_sorcier;
+                }
+            }
+        } else {
+            for (int i = 0; i <=continuum.size(); i++) {
+                if (i == pos_sorcier ) {
+                    //La baguette du joueur2 colore en orange
+                    s = " \033[38;5;208m\033[7m" + pos_sorcier + "\033[0m!";
+                } else {
+                    s = "" + pos_sorcier;
+                }
+            }
+        }
+        return s;
+    }
+     
 }
+
+
+

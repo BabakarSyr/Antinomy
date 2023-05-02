@@ -1,23 +1,27 @@
 package Modele;
+
+import java.util.List;
+
 public class Joueur {
     String nom;
-    int points;
     MainDeCartes main;
     int nombreCristaux;
+    public Sorcier sorcier;
+
 
     public Joueur(String nom, int nombreCristaux) {
         this.nom = nom;
-        points = 0;
-        main = new MainDeCartes();
         this.nombreCristaux = nombreCristaux;
+        this.sorcier = new Sorcier(true);
+        this.main = new MainDeCartes();
     }
+
+
 
     public int getNombreCristaux() {
         return nombreCristaux;
     }
-    public void setNombreCristaux(int nombreCristaux) {
-        this.nombreCristaux = nombreCristaux;
-    }
+   
     public void ajouterCristaux(int nombreCristaux) {
         this.nombreCristaux += nombreCristaux;
     }
@@ -26,15 +30,16 @@ public class Joueur {
     }
     
     //Voler un cristal à un autre joueur
-    public void volerCristal(Joueur autreJoueur) {
+    public boolean volerCristal(Joueur autreJoueur) {
         if (autreJoueur.getNombreCristaux() > 0) {
             //On ajoute un cristal au joueur actuel 
             this.ajouterCristaux(1);
             //on en retire un à l'autre joueur
             autreJoueur.retirerCristaux(1);
+            return true;
         }
         else {
-            System.out.println("Impossible de voler un cristal à " + autreJoueur.getNom() + " car il n'en a plus  ou n'en a pas.");
+            return false;
         }
     }
 
@@ -43,39 +48,76 @@ public class Joueur {
     public String getNom() {
         return nom;
     }
-
     public void setNom(String nom) {
         this.nom = nom;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public MainDeCartes getMain() {
         return main;
     }
 
-    public void setMain(MainDeCartes main) {
-        this.main = main;
+
+    public Sorcier getSorcier() {
+        return sorcier;
+    }
+    public void setSorcier(Sorcier sorcier) {
+        this.sorcier = sorcier;
     }
 
-    public void ajouterPoints(int points) {
-        this.points += points;
-    }
 
-    public void piocherCarte(Carte carte) {
-        main.ajouterCarte(carte);
-    }
 
-    public Carte jouerCarte(int index) {
+
+    //Equivalent echanger carte
+    public Carte jouerCarte(int index, List<Carte> continuum) {//index=[0-2]
+        int positionSorcier = sorcier.getPositionSorcier();
         Carte carte = main.getCarte(index);
         main.retirerCarte(index);
+    
+        // Échange de la carte avec la carte à la position du sorcier dans le continuum
+        Carte carteContinuum = continuum.get(positionSorcier);
+        continuum.set(positionSorcier, carte);
+    
+        // Ajouter la carte du continuum à la main du joueur
+        main.ajouterCarte(carteContinuum,index);
         return carte;
+
+    
     }
+    public void jouer3Cartes(List<Carte> continuum,String Direction) {
+        //Main du joueur
+        
+        
+        int positionSorcier = sorcier.getPositionSorcier();
+        switch(Direction){
+            case "gauche":
+               
+
+                    for (int i = positionSorcier - 3; i < positionSorcier; i++) {
+                        
+                        for(int j=0;j<3;j++){
+                            jouerCarte(j, continuum);
+                        }
+                    }
+                
+                
+                break;
+            case "droite":
+              
+                    for (int i = positionSorcier + 1; i <= positionSorcier + 3; i++) {
+                        
+                        for(int j=0;j<3;j++){
+                            jouerCarte(j, continuum);
+                        }
+                }
+                break;
+        }
+    }
+
+
+
+
+ 
+    
+
 }
 
