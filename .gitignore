@@ -7,3 +7,5 @@ compile.sh
 /src/Modele/carteV1couleur.java
 color.java
 /src/Modele/carteCouleurSurligne.java
+compileRandom1.sh
+compileRandom2.sh
