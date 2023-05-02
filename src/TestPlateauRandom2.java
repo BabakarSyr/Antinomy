@@ -1,6 +1,6 @@
 
 import Modele.Carte;
-import Modele.Partie;
+import Modele.Jeu;
 import Modele.Plateau;
 
 import java.util.List;
@@ -145,13 +145,13 @@ public class TestPlateauRandom2{
 
 
             System.out.println("Que la partie commence:");
-            Partie partie = new Partie(plateau);
+            Jeu jeu = new Jeu(plateau);
     
                 
             System.out.println("\nTest jouer");
             int i=0;
             //Tant que la partie n'est pas termin
-            while( !partie.partieTerminee() ){
+            while( !jeu.partieTerminee() ){
     
                 if(i>=1){
                     System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
@@ -229,11 +229,11 @@ public class TestPlateauRandom2{
 
 
                 //Le duel est prioritaire sur le paradoxe
-                if(partie.isDuel())
-                    partie.duel();
+                if(jeu.isDuel())
+                    jeu.duel();
 
                      // Vérifier si le joueur actif a un paradoxe apres qu'il ait joué
-                if(partie.isParadoxe(plateau.joueurActif.getMain())){
+                if(jeu.isParadoxe(plateau.joueurActif.getMain())){
                     System.out.println("Vous avez un paradoxe");
 
                     //Afficher les cartes du joueur actif
@@ -256,7 +256,7 @@ public class TestPlateauRandom2{
                     
                       
                          direction = rand.nextBoolean() ? "gauche" : "droite";
-                        while(!partie.est_Possible_Placer_3cartes(direction)){
+                        while(!jeu.est_Possible_Placer_3cartes(direction)){
                             
                             direction = rand.nextBoolean() ? "gauche" : "droite";
                         }

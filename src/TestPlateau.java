@@ -2,7 +2,7 @@
 import java.util.Scanner;
 
 import Modele.Carte;
-import Modele.Partie;
+import Modele.Jeu;
 import Modele.Plateau;
 
 import java.util.List;
@@ -146,13 +146,13 @@ public class TestPlateau {
     
     
             System.out.println("Que la partie commence:");
-            Partie partie = new Partie(plateau);
+            Jeu jeu = new Jeu(plateau);
     
                 
             System.out.println("\nTest jouer");
             int i=0;
             //Tant que la partie n'est pas termin
-            while( !partie.partieTerminee() ){
+            while( !jeu.partieTerminee() ){
     
                 if(i>=1){
                     System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
@@ -230,7 +230,7 @@ public class TestPlateau {
 
 
                     // Vérifier si le joueur actif a un paradoxe apres qu'il ait joué
-                    if(partie.isParadoxe(plateau.joueurActif.getMain())){
+                    if(jeu.isParadoxe(plateau.joueurActif.getMain())){
                         System.out.println("Vous avez un paradoxe");
     
                         //Afficher les cartes du joueur actif
@@ -250,7 +250,7 @@ public class TestPlateau {
     
                         System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
                         String direction = sc.next().toLowerCase();
-                        while(!partie.est_Possible_Placer_3cartes(direction)){
+                        while(!jeu.est_Possible_Placer_3cartes(direction)){
                             System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
             
                             direction = sc.next().toLowerCase();
@@ -273,8 +273,8 @@ public class TestPlateau {
                         System.out.println("La couleur interdite est maintenant :"+ (String)plateau.codex.getCouleurInterdite().getCode());
                     }
     
-                if(partie.isDuel()){
-                    partie.duel();
+                if(jeu.isDuel()){
+                    jeu.duel();
                     //Changer la couleur interdite
                     plateau.codex.changerCouleurInterdite();
                 }
