@@ -15,7 +15,12 @@ public class Jeu {
         this.plateau =plateau; 
        
     }
-
+    ///////
+    public Plateau getPlateau()
+    {
+        return this.plateau;
+    }
+    ///////
 
     public boolean est_Possible_Placer_3cartes(String Direction) {
         int posSorcier=plateau.joueurActif.sorcier.getPositionSorcier();
