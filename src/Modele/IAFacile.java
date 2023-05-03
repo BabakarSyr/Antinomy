@@ -9,8 +9,8 @@ public class IAFacile extends IA
     Jeu jeu;
     public IAFacile(Jeu j) 
     {
-		r = new Random();
         this.jeu = j;
+		r = new Random();
 	}
 
 

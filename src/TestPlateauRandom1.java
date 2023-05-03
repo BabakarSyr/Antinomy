@@ -156,7 +156,7 @@ public class TestPlateauRandom1{
                 
             System.out.println("\nTest jouer");
             int i=0;
-            //Tant que la partie n'est pas termin
+            //Tant que la partie n'est pas terminee
             while( !jeu.partieTerminee() ){
     
                 if(i>=1){
