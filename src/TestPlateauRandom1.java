@@ -31,7 +31,7 @@ public class TestPlateauRandom1{
             
             //System.out.print("Entrez le nom du joueur 2 : ");
             //le joueur2 est en orange
-            String nomJoueur2 = "\033[38;5;208m\033[7mOrdinateur\033[0m";
+            String nomJoueur2 = new String("\033[38;5;208m\033[7mIA Facile\033[0m");
             System.out.println();
            
 

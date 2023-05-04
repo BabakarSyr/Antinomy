@@ -1,9 +1,7 @@
 package Modele;
 import java.util.*;
-import Modele.Plateau;
-import Modele.Jeu;
 
-public class IAFacile extends IA 
+public class IAFacile 
 {
     Random r;
     Jeu jeu;
@@ -42,55 +40,40 @@ public class IAFacile extends IA
 
     public void calculerEmplacementsAccessibles(Carte a)
     {
-        
+        if (this.joueurIA.sorcier.est_possible_aller_futur(a, plateau.getContinuum()))
+        {
+            emplacementsAccessibles.add(positionIA + a.getValeur());
+        }
+        if (this.joueurIA.sorcier.est_possible_aller_passe(a, plateau.getContinuum())) 
+        {                        
+            List<Integer> positionsPossibles = plateau.getJoueur(this.ordreJoueur).sorcier.Position_Possible_Passe(a, plateau.getContinuum());
+
+            for (Integer e : positionsPossibles)
+            {
+                emplacementsAccessibles.add(e);
+            }
+        }
     }
 
 	public void joue() 
     {
-        String temps;
-        int indexCarteChoisie = r.nextInt(3); // Choisir une carte au hasard  
-        Carte carteChoisie = this.joueurIA.getMain().getCartes().get(indexCarteChoisie);
+        int indexCarteChoisie = 0; 
+        Carte carteChoisie;
         
-        calculerEmplacementsAccessibles(carteChoisie);
-
-        //choisis une autre carte de la main si pas de déplacements dans le passe ni le futur
-        while (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum()) == plateau.joueurActif.sorcier.est_possible_aller_passe(carteChoisie, plateau.getContinuum()) == false)
+        if (plateau.getJoueurActif() == this.joueurIA)
         {
-            indexCarteChoisie = r.nextInt(3); // Choisir une carte au hasard  
-            carteChoisie = plateau.joueurActif.getMain().getCartes().get(indexCarteChoisie);
-        }
-        if (!(plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())))
-        {
-            temps = "passe";
-        }
-        else if (!(plateau.joueurActif.sorcier.est_possible_aller_passe(carteChoisie, plateau.getContinuum())))
-        {
-            temps = "futur";
-        }
-        else
-        {
-            temps = r.nextBoolean() ? "futur" : "passe"; // Choisir un temps au hasar
-        }
-        switch (temps) 
-        {
-            case "futur":
-                if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum()))
-                {
-                    plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.getContinuum());
-                    plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
-                }
-                break;
-            case "passe":
-                if (plateau.joueurActif.sorcier.est_possible_aller_passe(carteChoisie, plateau.getContinuum())) 
-                {                        
-                    List<Integer> positionsPossibles = plateau.joueurActif.sorcier.Position_Possible_Passe(carteChoisie, plateau.getContinuum());
-                    int position = positionsPossibles.get(r.nextInt(positionsPossibles.size()));
-                    //mettre à jour la position du sorcier
-                    plateau.joueurActif.sorcier.setPositionSorcier(position);
-                    //jouer la carte
-                    plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
-                }
-                break;
+            this.emplacementsAccessibles.clear();
+            while (this.emplacementsAccessibles.isEmpty())
+            {
+                indexCarteChoisie = r.nextInt(3);
+                carteChoisie = this.joueurIA.getMain().getCartes().get(indexCarteChoisie);
+                calculerEmplacementsAccessibles(carteChoisie);
+            }
+        
+            int emplacementChoisi = emplacementsAccessibles.get(r.nextInt(emplacementsAccessibles.size()));
+            this.plateau.setPositionSorcier(emplacementChoisi, this.ordreJoueur);
+            this.positionIA = emplacementChoisi;
+            Carte f = plateau.getJoueur(this.ordreJoueur).jouerCarte(indexCarteChoisie, this.plateau.getContinuum());
         }
     }
 
