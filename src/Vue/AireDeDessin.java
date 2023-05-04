@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import Modele.Carte;
 import Modele.Jeu;
+import Modele.ZoneClic;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ public class AireDeDessin extends JComponent {
 	Point position;
 	ArrayList<Image> image;
 	Jeu jeu;
-	int hauteurCarte, largeurCarte, debutContinuumY, hauteurContinuum, largeurContinuum;
+	int hauteurCarte, largeurCarte, debutContinuumX, debutContinuumY, hauteurContinuum, largeurContinuum,
+		debutMainJoueurX, debutMainJoueurY, finMainJoueurX, finMainJoueurY;
 	int width, height;
 	ImageJeu anneau_bleu, anneau_rouge, anneau_vert, anneau_violet,
 		cle_bleu, cle_rouge, cle_vert, cle_violet,
@@ -66,6 +68,17 @@ public class AireDeDessin extends JComponent {
 
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
+	}
+	public ZoneClic getZoneClic(){
+		int x = (int)position.getX();
+		int y = (int)position.getY();
+		if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= hauteurContinuum))){
+			return ZoneClic.CONTINUUM;
+		}
+		if(((x >= debutMainJoueurX) && (x <= finMainJoueurX) && (y >= debutMainJoueurY) && (y <= finMainJoueurY))){
+			return ZoneClic.MAIN_JOUEUR_COURANT;
+		}
+		return ZoneClic.HORS_ZONE;
 	}
 
 	public void paintComponent(Graphics g) {

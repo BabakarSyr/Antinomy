@@ -21,7 +21,7 @@ public class Antinomy {
 	public static void main(String[] args) {
 		Plateau plateau = new Plateau();
 		Jeu jeu = new Jeu(plateau);
-		CollecteurEvenements control = new ControleurMediateur();
+		CollecteurEvenements control = new ControleurMediateur(jeu);
 		switch (typeInterface) {
 			case "Graphique":
 				DemoFenetre.demarrer(jeu, control);
