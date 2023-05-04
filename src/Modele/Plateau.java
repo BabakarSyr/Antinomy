@@ -2,7 +2,6 @@ package Modele;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import Modele.Carte.Couleur;
 
@@ -12,7 +11,7 @@ public class Plateau {
 
      public Joueur joueur1;
      public Joueur joueur2;
-    List<Carte> continuum=new ArrayList<>();
+    ArrayList<Carte> continuum=new ArrayList<>();
 
      
     public Codex codex;
@@ -141,7 +140,7 @@ public class Plateau {
 
     }
 
-    public List<Carte> getContinuum() {
+    public ArrayList<Carte> getContinuum() {
         return continuum;
     }
     public void afficher_continuum() {
@@ -205,8 +204,8 @@ public class Plateau {
 
 
     //Fonction qui me donne les cartes portant la couleur interdite sur le continuum
-    public  List <Integer> pos_carte_couleur_interdite() {
-        List <Integer> pos = new ArrayList<>();
+    public  ArrayList <Integer> pos_carte_couleur_interdite() {
+        ArrayList <Integer> pos = new ArrayList<>();
         for (int j = 0; j < continuum.size(); j++) {
             if (continuum.get(j).getCouleur() == codex.getCouleurInterdite()) {
                 pos.add(j);

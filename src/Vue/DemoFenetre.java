@@ -26,9 +26,10 @@ public class DemoFenetre implements Runnable {
 	public void run() {
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("Ma fenetre a moi");
+		frame.setSize(500, 300);
 
 		// Ajout de notre composant de dessin dans la fenetre
-		AireDeDessin aire = new AireDeDessin();
+		AireDeDessin aire = new AireDeDessin(jeu);
 		frame.add(aire);
 
 		// Ecoute des évènements liés à la souris dans l'AireDeDessin
@@ -38,7 +39,7 @@ public class DemoFenetre implements Runnable {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// On fixe la taille et on demarre
-		frame.setSize(500, 300);
+		
 		frame.setVisible(true);
 	}
 }

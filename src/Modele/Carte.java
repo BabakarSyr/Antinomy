@@ -35,6 +35,20 @@ public class Carte {
                 }
                 return code;
             }
+            public String getCouleur() {
+                switch (this) {
+                    case ROUGE:
+                        return "ROUGE";
+                    case VERT:
+                        return "VERT";
+                    case BLEU:
+                        return "BLEU";
+                    case VIOLET:
+                        return "VIOLET";
+                    default:
+                        return "BRUH";
+                }
+            }
         }
     
     
@@ -67,7 +81,9 @@ public class Carte {
     }
 
 
- 
+    public String getCarte() {
+        return forme + "_" + couleur.getCouleur();
+    }
     
     public String toString() {
         return "{" +
