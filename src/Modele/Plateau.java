@@ -12,11 +12,7 @@ public class Plateau {
 
      public Joueur joueur1;
      public Joueur joueur2;
-
-   
-   
-
-      List<Carte> continuum=new ArrayList<>();
+    List<Carte> continuum=new ArrayList<>();
 
      
     public Codex codex;
@@ -113,6 +109,20 @@ public class Plateau {
             return joueur2;
         }
     }
+
+    public Joueur getJoueurParNom(String nom)
+    {
+        if (joueur1.getNom() == nom)
+        {
+            return joueur1;
+        }
+        else if (joueur2.getNom() == nom)
+        {
+            return joueur2;
+        }
+        return null;
+    }
+
     
 
 
