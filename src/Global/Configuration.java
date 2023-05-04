@@ -36,13 +36,13 @@ public class Configuration {
 
 	protected Configuration() {
 		// On charge les propriétés
-		InputStream in = ouvre("gaufre.cfg");
+		InputStream in = ouvre("antinomy.cfg");
 		Properties defaut = new Properties();
-		chargerProprietes(defaut, in, "gaufre.cfg");
+		chargerProprietes(defaut, in, "antinomy.cfg");
 		// Il faut attendre le dernier moment pour utiliser le logger
 		// car celui-ci s'initialise avec les propriétés
 		String message = "Fichier de propriétés defaut.cfg chargé";
-		String nom = System.getProperty("user.home") + File.separator + ".gaufre_empoisonnee";
+		String nom = System.getProperty("user.home") + File.separator + ".antinomy";
 		try {
 			in = new FileInputStream(nom);
 			prop = new Properties(defaut);
@@ -84,7 +84,7 @@ public class Configuration {
 	public Logger logger() {
 		if (logger == null) {
 			System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s : %5$s%n");
-			logger = Logger.getLogger("GaufreEmpoisonnee.Logger");
+			logger = Logger.getLogger("Antinomy.Logger");
 			logger.setLevel(Level.parse(lis("LogLevel")));
 		}
 		return logger;
