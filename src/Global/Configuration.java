@@ -97,7 +97,7 @@ public class Configuration {
 		InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(s);
 		if (in == null) {
 			// Le logger n'est pas forcément en place à ce moment là
-			System.err.println("impossible de charger le ressource " + s);
+			System.err.println("impossible de charger la ressource " + s);
 			System.exit(1);
 		}
 		return in;
