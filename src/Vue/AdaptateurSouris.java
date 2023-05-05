@@ -8,21 +8,31 @@ public class AdaptateurSouris extends MouseAdapter {
 	AireDeDessin aire;
 	CollecteurEvenements c;
 
-	public AdaptateurSouris(AireDeDessin a) {
+	public AdaptateurSouris(AireDeDessin a, CollecteurEvenements c) {
 		aire = a;
+		this.c = c;
 	}
 
 	//TODO ajouter action à faire si on clique dans la ZONE CONTINUUM
 	@Override
 	public void mousePressed(MouseEvent e) {
 		aire.fixePosition(e.getX(), e.getY());
+		int indiceCarte;
 		switch(aire.getZoneClic()){
 			case CONTINUUM:
 				//Faire quelque chose
+				System.out.println("clic CONTINUUM");
+				indiceCarte = aire.getCarte();
+				c.clicCarteContinuum(indiceCarte);
+				break;
 			case MAIN_JOUEUR_COURANT:
 				//Jouer une carte
-				c.clicCarteMain();
+				System.out.println("clic MAIN_JOUEUR_COURANT");
+				indiceCarte = aire.getCarte();
+				c.clicCarteMain(indiceCarte);
+				break;
 			default:
+				System.out.println("clic plateau");
 				break;
 		};
 	}

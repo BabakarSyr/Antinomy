@@ -33,7 +33,7 @@ public class DemoFenetre implements Runnable {
 		frame.add(aire);
 
 		// Ecoute des évènements liés à la souris dans l'AireDeDessin
-		aire.addMouseListener(new AdaptateurSouris(aire));
+		aire.addMouseListener(new AdaptateurSouris(aire, controleur));
 
 		// Un clic sur le bouton de fermeture clos l'application
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

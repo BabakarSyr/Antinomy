@@ -15,7 +15,8 @@ public class AireDeDessin extends JComponent {
 	Point position;
 	ArrayList<Image> image;
 	Jeu jeu;
-	int hauteurCarte, largeurCarte, debutContinuumX, debutContinuumY, hauteurContinuum, largeurContinuum,
+	int hauteurCarte, largeurCarte, 
+		debutContinuumX, debutContinuumY, finContinuumX, finContinuumY, hauteurContinuum, largeurContinuum,
 		debutMainJoueurX, debutMainJoueurY, finMainJoueurX, finMainJoueurY;
 	int width, height;
 	ImageJeu anneau_bleu, anneau_rouge, anneau_vert, anneau_violet,
@@ -27,7 +28,30 @@ public class AireDeDessin extends JComponent {
 	public AireDeDessin(Jeu j) {
 		
 		jeu = j;
+		compteur = 1;
+		chargerImages();
+		initialisationCoordonnées();
+	}
 
+	private void initialisationCoordonnées() {
+		// Dimension Carte
+		hauteurCarte = 0;
+		largeurCarte = 0;
+
+		// Coordonnées continuum
+		debutContinuumX = 0;
+		debutContinuumY = 0;
+		hauteurContinuum = 0;
+		largeurContinuum = 0;
+
+		//Coordonnées Main Joueur actif
+		debutMainJoueurX = 0;
+		debutMainJoueurY = 0;
+		finMainJoueurX = 0;
+		finMainJoueurY = 0;
+	}
+
+	public void chargerImages(){
 		String image1 = "anneau_bleu";
 		String image2 = "anneau_rouge";
 		String image3 = "anneau_vert";
@@ -62,23 +86,27 @@ public class AireDeDessin extends JComponent {
 		plume_rouge = new ImageJeu(image14);
 		plume_vert = new ImageJeu(image15);
 		plume_violet = new ImageJeu(image16);
-
-		compteur = 1;
 	}
-
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
 	}
 	public ZoneClic getZoneClic(){
 		int x = (int)position.getX();
 		int y = (int)position.getY();
-		if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= hauteurContinuum))){
+		System.out.println(debutContinuumX + " "+ largeurContinuum);
+		System.out.println(debutContinuumY + " "+ hauteurContinuum);
+		if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
 			return ZoneClic.CONTINUUM;
 		}
 		if(((x >= debutMainJoueurX) && (x <= finMainJoueurX) && (y >= debutMainJoueurY) && (y <= finMainJoueurY))){
 			return ZoneClic.MAIN_JOUEUR_COURANT;
 		}
 		return ZoneClic.HORS_ZONE;
+	}
+
+	public int getCarte(){
+		int indiceCarte = (int)position.getX()/largeurCarte;
+		return indiceCarte;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -100,19 +128,17 @@ public class AireDeDessin extends JComponent {
 		// On efface tout
 		drawable.clearRect(0, 0, width, height);
 
-		// On affiche une petite image au milieu
-		
+		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
-		//drawable.drawImage(img1.image(), position.x+600, position.y+200, 400, 600, null);
-		//drawable.drawImage(img2.image(), position.x+500, position.y+200, 400, 600, null);
-		//drawable.drawImage(img3.image(), position.x+400, position.y+200, 400, 600, null);
 	}
 
 	void tracerContinuum(){
 		hauteurCarte = getHeight()/4;
 		largeurCarte = getWidth()/8;
-		System.out.println("largeur : "+largeurCarte +" hauteur : "+ hauteurCarte);
+		System.out.println("largeur : "+getWidth() +" hauteur : "+ getHeight());
 		debutContinuumY = hauteurCarte;
+		finContinuumX = debutContinuumX + largeurContinuum;
+		finContinuumY = debutContinuumY + hauteurContinuum;
 		hauteurContinuum = hauteurCarte;
 		largeurContinuum = getWidth();
 		ArrayList<Carte> continuum = jeu.getPlateau().getContinuum();

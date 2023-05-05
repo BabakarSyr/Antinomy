@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 
 import Global.Configuration;
+import Modele.Carte;
 import Modele.EtatJeu;
 import Modele.Jeu;
 import Structures.Iterateur;
@@ -19,9 +20,11 @@ public class ControleurMediateur implements CollecteurEvenements {
     boolean IAActive;
     Jeu jeu;
     EtatJeu etatJeu;
+    Carte carteSelectionnee;
     
     public ControleurMediateur(Jeu j) {
         this.jeu = j;
+        etatJeu = EtatJeu.DEBUT_TOUR;
 	}
 
     // ============ Clic Souris ================
@@ -45,7 +48,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     //TODO Compléter méthode clicCarteMain
     @Override
-    public void clicCarteMain() {
+    public void clicCarteMain(int indiceCarte) {
         switch(etatJeu){
             case DEBUT_TOUR:
                 previsualisationDeplacement();
@@ -58,10 +61,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
     //TODO Compléter méthode clicCarteContinuum
     @Override
-    public void clicCarteContinuum() {
+    public void clicCarteContinuum(int indiceCarte) {
+        System.out.println(etatJeu);
         switch(etatJeu){
             case CARTE_SELECTIONNEE:
                 //Jouer coup
+                jeu.getPlateau().joueurActif.jouerCarte(indiceCarte, jeu.getPlateau().getContinuum());
             default:
                 break;
         }
