@@ -50,17 +50,31 @@ public class TestPlateau {
                 Random rand = new Random();
                 num_joueur_actif = rand.nextInt(2)+1 ;  // [1-2]
                 plateau.setJoueurActif(num_joueur_actif );  // [1-2]
+                if (num_joueur_actif==1)
+                {
+                    plateau.getJoueur(1).sorcier.setSensDuTemps(true);
+                    plateau.getJoueur(2).sorcier.setSensDuTemps(false);
+                }
+                else
+                {
+                    plateau.getJoueur(1).sorcier.setSensDuTemps(false);
+                    plateau.getJoueur(2).sorcier.setSensDuTemps(true);
+                }
             }
             else if (dejaVuJoueur1.equals("oui")) {
                 num_joueur_actif = 1;
             
                 plateau.setJoueurActif(num_joueur_actif);
+                plateau.getJoueur(1).sorcier.setSensDuTemps(true);
+                plateau.getJoueur(2).sorcier.setSensDuTemps(false);
             }
            else {
                 num_joueur_actif = 2;
                 plateau.setJoueurActif(num_joueur_actif);
+                plateau.getJoueur(1).sorcier.setSensDuTemps(false);
+                plateau.getJoueur(2).sorcier.setSensDuTemps(true);
            }
-           int num_joueur_inactif =plateau.getJoueurActif() == plateau.getJoueur(1) ? 2 : 1;
+           int num_joueur_inactif = plateau.getJoueurActif() == plateau.getJoueur(1) ? 2 : 1;
 
 
 
@@ -91,14 +105,14 @@ public class TestPlateau {
             
           
            
-           // Lecture de la carte à jouer
-          System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
-           for (int i =0 ;i < 3; i++) {
-               int j=i+1;
-               System.out.print("Carte " + j  +"="+ plateau.joueurActif.getMain().getCartes().get(i).toString() + " ");
-               System.out.println();
-           }
-           System.out.print("\nTu dois choisir de le placer au niveau d'une carte sur le continuum portant la couleur interdite : ");
+            // Lecture de la carte à jouer
+            System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
+            for (int i =0 ;i < 3; i++) {
+                int j=i+1;
+                System.out.print("Carte " + j  +"="+ plateau.joueurActif.getMain().getCartes().get(i).toString() + " ");
+                System.out.println();
+            }
+            System.out.print("\nTu dois choisir de le placer au niveau d'une carte sur le continuum portant la couleur interdite : ");
     
           
             in= sc.next();
