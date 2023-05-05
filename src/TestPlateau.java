@@ -274,9 +274,12 @@ public class TestPlateau {
                     }
     
                 if(jeu.isDuel()){
-                    jeu.duel();
-                    //Changer la couleur interdite
-                    plateau.codex.changerCouleurInterdite();
+                    System.out.println("couleur interdite :");
+                    if (jeu.duel())
+                    {
+                        //Changer la couleur interdite
+                        plateau.codex.changerCouleurInterdite();
+                    }
                 }
 
                                       

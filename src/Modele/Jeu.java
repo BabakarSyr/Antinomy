@@ -15,6 +15,7 @@ public class Jeu {
         this.plateau =plateau; 
        
     }
+
     ////////
     public Plateau getPlateau()
     {
@@ -120,7 +121,7 @@ public class Jeu {
 
     
     public boolean partieTerminee() {
-        return plateau.joueur1.getNombreCristaux() == 5 || plateau.joueur2.getNombreCristaux() == 5;
+        return plateau.joueur1.getNombreCristaux() == 3 || plateau.joueur2.getNombreCristaux() == 3;
     }
 
     
@@ -132,11 +133,11 @@ public class Jeu {
     }
 
 
-    public void duel() {
+    public boolean duel() {
         System.out.println("C'est l'heure du Duel!");
         System.out.println("Rappel,la couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
-        int totalJoueur1= plateau.joueur1.getNombreCristaux();
-        int totalJoueur2 = plateau.joueur2.getNombreCristaux();
+        int valeurMainJoueur1= 0;
+        int valeurMainJoueur2 = 0;
 
 
         //Les 2 jouerurs affichent leur main
@@ -158,83 +159,80 @@ public class Jeu {
 
         
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        for (Carte carte : plateau.joueur1.getMain().getCartes()) {
-            if (carte.getCouleur() !=couleurInterdite) {
-                totalJoueur1 += carte.getValeur(couleurInterdite);
-            }
+        System.out.println("couleur interdite :" + couleurInterdite);
+        for (Carte carte : plateau.joueur1.getMain().getCartes()) 
+        {
+            valeurMainJoueur1 += carte.getValeur(couleurInterdite);
+            System.out.println("carte : " + carte.getForme() + carte.getCouleur() + carte.getValeur());
         }
     
         for (Carte carte : plateau.joueur2.getMain().getCartes()) {
-            if (carte.getCouleur() != couleurInterdite) {
-                totalJoueur2 += carte.getValeur(couleurInterdite);
-            }
+            valeurMainJoueur2 += carte.getValeur(couleurInterdite);
+            System.out.println("carte : " + carte.getForme() + carte.getCouleur() + carte.getValeur());
         }
-        System.out.println("Le total de points du joueur " +plateau.joueur1.getNom()+ " est :" +totalJoueur1);
-        System.out.println("Le total de points du joueur " +plateau.joueur2.getNom()+ " est :" +totalJoueur2);
+        System.out.println("Le total de points du joueur " +plateau.joueur1.getNom()+ " est :" +valeurMainJoueur1);
+        System.out.println("Le total de points du joueur " +plateau.joueur2.getNom()+ " est :" +valeurMainJoueur2);
 
 
-        if (totalJoueur1 > totalJoueur2) {
+        if (valeurMainJoueur1 > valeurMainJoueur2) {
             // Le joueur 1 gagne le duel et vole un cristal au joueur 2
             if(plateau.joueur1.volerCristal(plateau.joueur2)){
                 System.out.println(plateau.joueur1.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur2.getNom());
                 System.out.println("Récapitulatif des cristaux :");
                 System.out.println(plateau.joueur1.getNom() + " : " + plateau.joueur1.getNombreCristaux());
                 System.out.println(plateau.joueur2.getNom() + " : " + plateau.joueur2.getNombreCristaux());
-                return;
+                return true;
             }
             else
                 System.out.println("Impossible de voler un cristal à " + plateau.joueur1.getNom() + " car il n'en a plus  ou n'en a pas.");
-        } else if (totalJoueur1 < totalJoueur2) {
+                return false;
+        }
+        if (valeurMainJoueur1 < valeurMainJoueur2) {
             // Le joueur 2 gagne le duel et vole un cristal au joueur 1
             if(plateau.joueur2.volerCristal(plateau.joueur1)){
                 System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
                 System.out.println("Récapitulatif des cristaux :");
                 System.out.println(plateau.joueur1.getNom() + " : " + plateau.joueur1.getNombreCristaux());
                 System.out.println(plateau.joueur2.getNom() + " : " + plateau.joueur2.getNombreCristaux());
-                return;
+                return true;
                 
             }
             else
                 System.out.println("Impossible de voler un cristal à " + plateau.joueur2.getNom() + " car il n'en a plus  ou n'en a pas.");
-                return;
+                return false;
+        } 
+        // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
+        Random random = new Random();
+        //boolean egalite = true;
+            
+            
+        plateau.joueur1.getMain().melangerCartes();
+        plateau.joueur2.getMain().melangerCartes();
+            
+       // Sélectionner une carte au hasard pour chaque joueur
+        int indexCarteJoueur1 = random.nextInt(3);
+        int indexCarteJoueur2 = random.nextInt(3);
+
+        Carte carteJoueur1 = plateau.joueur1.getMain().getCarte(indexCarteJoueur1);
+        System.out.println(plateau.joueur1.getNom() + " tire la carte " + carteJoueur1.toString());
+        Carte carteJoueur2 = plateau.joueur2.getMain().getCarte(indexCarteJoueur2);
+
+        System.out.println(plateau.joueur2.getNom() + " tire la carte " + carteJoueur2.toString());
+        // On compare  les valeurs des cartes en tenant compte de la couleur interdite
+        int valeurCarteJoueur1 = carteJoueur1.getValeur(plateau.codex.getCouleurInterdite());
+        int valeurCarteJoueur2 = carteJoueur2.getValeur(plateau.codex.getCouleurInterdite());
+            
+        if (valeurCarteJoueur1 > valeurCarteJoueur2) {
+            plateau.joueur1.volerCristal(plateau.joueur2);
+            System.out.println(plateau.joueur1.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur2.getNom());
+            return true;
+        } else if (valeurCarteJoueur1 < valeurCarteJoueur2) {
+            plateau.joueur2.volerCristal(plateau.joueur1);
+            System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
+            return true;
         } else {
-            // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
-            Random random = new Random();
-            boolean egalite = true;
-            
-            
-            plateau.joueur1.getMain().melangerCartes();
-            plateau.joueur2.getMain().melangerCartes();
-            
-            while (egalite) {
-               // Sélectionner une carte au hasard pour chaque joueur
-                int indexCarteJoueur1 = random.nextInt(3);
-                int indexCarteJoueur2 = random.nextInt(3);
-
-                Carte carteJoueur1 = plateau.joueur1.getMain().getCarte(indexCarteJoueur1);
-                System.out.println(plateau.joueur1.getNom() + " tire la carte " + carteJoueur1.toString());
-                Carte carteJoueur2 = plateau.joueur2.getMain().getCarte(indexCarteJoueur2);
-                System.out.println(plateau.joueur2.getNom() + " tire la carte " + carteJoueur2.toString());
-
-                // On compare  les valeurs des cartes en tenant compte de la couleur interdite
-                int valeurCarteJoueur1 = carteJoueur1.getValeur(plateau.codex.getCouleurInterdite());
-                int valeurCarteJoueur2 = carteJoueur2.getValeur(plateau.codex.getCouleurInterdite());
-            
-                if (valeurCarteJoueur1 > valeurCarteJoueur2) {
-                    plateau.joueur1.volerCristal(plateau.joueur2);
-                    System.out.println(plateau.joueur1.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur2.getNom());
-                    egalite = false;
-                } else if (valeurCarteJoueur1 < valeurCarteJoueur2) {
-                    plateau.joueur2.volerCristal(plateau.joueur1);
-                    System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
-                    egalite = false;
-                } else {
-                    System.out.println("Égalité à nouveau ! Les joueurs tirent de nouvelles cartes.");
-                    egalite = true;
-                }
-            }
+            System.out.println("Égalité!");
+            return false;
         }
-        
     }
-
 }

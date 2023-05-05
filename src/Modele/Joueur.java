@@ -87,28 +87,27 @@ public class Joueur {
         //Main du joueur
         
         
-        int positionSorcier = sorcier.getPositionSorcier();
+        //int positionSorcier = sorcier.getPositionSorcier();
+        int indexSorcier = sorcier.getPositionSorcier();
+        int j = 0;
         switch(Direction){
             case "gauche":
-               
-
-                    for (int i = positionSorcier - 3; i < positionSorcier; i++) {
-                        
-                        for(int j=0;j<3;j++){
-                            jouerCarte(j, continuum);
-                        }
+                    for (int i = indexSorcier - 3; i < indexSorcier; i++) {
+                        sorcier.setPositionSorcier(i);
+                        jouerCarte(j, continuum);
+                        j++;
                     }
-                
+                    sorcier.setPositionSorcier(indexSorcier);
                 
                 break;
             case "droite":
-              
-                    for (int i = positionSorcier + 1; i <= positionSorcier + 3; i++) {
-                        
-                        for(int j=0;j<3;j++){
-                            jouerCarte(j, continuum);
-                        }
+            
+                for (int i = indexSorcier + 1; i < indexSorcier + 4; i++) {
+                    sorcier.setPositionSorcier(i);
+                    jouerCarte(j, continuum);
+                    j++;
                 }
+                sorcier.setPositionSorcier(indexSorcier);
                 break;
         }
     }
