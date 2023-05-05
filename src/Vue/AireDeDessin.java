@@ -48,7 +48,7 @@ public class AireDeDessin extends JComponent {
 		// Chargement de l'image de la même manière que le fichier de niveaux
 		anneau_bleu = new ImageJeu(image1);
 		anneau_rouge = new ImageJeu(image2);
-		//anneau_vert = new ImageJeu(image3);
+		anneau_vert = new ImageJeu(image3);
 		anneau_violet = new ImageJeu(image4);
 		cle_bleu = new ImageJeu(image5);
 		cle_rouge = new ImageJeu(image6);
@@ -161,8 +161,7 @@ public class AireDeDessin extends JComponent {
 				drawable.drawImage(anneau_rouge.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			case "ANNEAU_VERT":
-				//todo remplacer par anneau vert
-				drawable.drawImage(anneau_rouge.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(anneau_vert.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			case "ANNEAU_VIOLET":
 				drawable.drawImage(anneau_violet.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
