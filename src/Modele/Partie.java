@@ -2,7 +2,6 @@ package Modele;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 import Modele.Carte.Couleur;
 
@@ -83,35 +82,6 @@ public class Partie {
     }
     
 
-    public void paradoxe(){
-      
-
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Voulez-vous échanger vos cartes en main avec les cartes à gauche ou à droite du sorcier ? (Entrez gauche ou droite)");
-
-            String direction = scanner.next().toLowerCase();
-            while(!est_Possible_Placer_3cartes(direction)){
-                System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisissez une autre direction : gauche / droite");
-
-                direction = scanner.next().toLowerCase();
-            }
-
-    
-            switch(direction){
-                case "gauche":
-                    plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-                    break;
-                case "droite":
-                    plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-                
-                    break;
-            }
-        }
-       
-  
-    
-    }
-    
 
     
     public boolean partieTerminee() {
@@ -130,10 +100,16 @@ public class Partie {
     public void duel() {
         System.out.println("C'est l'heure du Duel!");
         System.out.println("Rappel,la couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
-        int totalJoueur1= plateau.joueur1.getNombreCristaux();
-        int totalJoueur2 = plateau.joueur2.getNombreCristaux();
+        System.out.println("Recapitulatif des cristaux :");
+        int nbCristauxJoueur1= plateau.joueur1.getNombreCristaux();
+        int nbCristauxJoueur2 = plateau.joueur2.getNombreCristaux();
+        System.out.println(plateau.joueur1.getNom() + " : " + nbCristauxJoueur1);
+        System.out.println(plateau.joueur2.getNom() + " : " + nbCristauxJoueur2);
 
 
+
+        int totalJoueur1 = 0;
+        int totalJoueur2 = 0;
         //Les 2 jouerurs affichent leur main
         System.out.println("La main du joueur 1 est : ");
         for(int i=0;i<3;i++){
@@ -154,15 +130,15 @@ public class Partie {
         
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
         for (Carte carte : plateau.joueur1.getMain().getCartes()) {
-            if (carte.getCouleur() !=couleurInterdite) {
+          
                 totalJoueur1 += carte.getValeur(couleurInterdite);
-            }
+            
         }
     
         for (Carte carte : plateau.joueur2.getMain().getCartes()) {
-            if (carte.getCouleur() != couleurInterdite) {
+     
                 totalJoueur2 += carte.getValeur(couleurInterdite);
-            }
+            
         }
         System.out.println("Le total de points du joueur " +plateau.joueur1.getNom()+ " est :" +totalJoueur1);
         System.out.println("Le total de points du joueur " +plateau.joueur2.getNom()+ " est :" +totalJoueur2);
@@ -173,8 +149,10 @@ public class Partie {
             if(plateau.joueur1.volerCristal(plateau.joueur2)){
                 System.out.println(plateau.joueur1.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur2.getNom());
                 System.out.println("Récapitulatif des cristaux :");
-                System.out.println(plateau.joueur1.getNom() + " : " + plateau.joueur1.getNombreCristaux());
-                System.out.println(plateau.joueur2.getNom() + " : " + plateau.joueur2.getNombreCristaux());
+                System.out.println(plateau.joueur1.getNom() + " : " + nbCristauxJoueur1);
+                System.out.println(plateau.joueur2.getNom() + " : " + nbCristauxJoueur2);
+                //Changer la couleur interdite
+                plateau.codex.changerCouleurInterdite();
                 return;
             }
             else
@@ -184,8 +162,10 @@ public class Partie {
             if(plateau.joueur2.volerCristal(plateau.joueur1)){
                 System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
                 System.out.println("Récapitulatif des cristaux :");
-                System.out.println(plateau.joueur1.getNom() + " : " + plateau.joueur1.getNombreCristaux());
-                System.out.println(plateau.joueur2.getNom() + " : " + plateau.joueur2.getNombreCristaux());
+                System.out.println(plateau.joueur1.getNom() + " : " + nbCristauxJoueur1);
+                System.out.println(plateau.joueur2.getNom() + " : " + nbCristauxJoueur2);
+                //Changer la couleur interdite
+                plateau.codex.changerCouleurInterdite();
                 return;
                 
             }
@@ -200,7 +180,7 @@ public class Partie {
             
             plateau.joueur1.getMain().melangerCartes();
             plateau.joueur2.getMain().melangerCartes();
-            
+            int i=0;
             while (egalite) {
                // Sélectionner une carte au hasard pour chaque joueur
                 int indexCarteJoueur1 = random.nextInt(3);
@@ -224,9 +204,16 @@ public class Partie {
                     System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
                     egalite = false;
                 } else {
+                    if(i==1){
+                        System.out.println("Duel annulé.");
+                        //La couleur interdite ne change pas
+                        return;
+                    }
+                    else
                     System.out.println("Égalité à nouveau ! Les joueurs tirent de nouvelles cartes.");
                     egalite = true;
                 }
+                i++;
             }
         }
         

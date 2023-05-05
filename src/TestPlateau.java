@@ -275,8 +275,7 @@ public class TestPlateau {
     
                 if(partie.isDuel()){
                     partie.duel();
-                    //Changer la couleur interdite
-                    plateau.codex.changerCouleurInterdite();
+                    
                 }
 
                                       

@@ -108,7 +108,25 @@ public class Sorcier {
         }
         return positions;
     }
-    
+
+
+    public List<Integer> calculerEmplacementsAccessibles(Carte carte, List<Carte> continuum) {
+        List<Integer> positions = new ArrayList<Integer>();
+        if (est_possible_aller_futur(carte, continuum)) {
+            if(sensDuTemps)
+                 positions.add(positionSorcier + carte.getValeur());
+            else
+                    positions.add(positionSorcier - carte.getValeur());
+        }
+        if (est_possible_aller_passe(carte, continuum)) {
+            positions.addAll(Position_Possible_Passe(carte, continuum));
+        }
+        return positions;
+        
+    }
+
+
+   
        
 }
     

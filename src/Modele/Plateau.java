@@ -40,7 +40,14 @@ public class Plateau {
     }
    
 
-    public void initialiser(){
+    public Plateau(Joueur joueur1, Joueur joueur2, Codex codex) {
+        this.joueur1 = joueur1;
+        this.joueur2 = joueur2;
+        this.codex = codex;
+    }
+
+
+    public List<Carte> initialiser(){
     
 
         continuum.add(new Carte(Forme.PLUME, Couleur.VERT,1));
@@ -90,11 +97,7 @@ public class Plateau {
           codex.setCouleur(couleurInterdite);
   
    
-     
-
-     
-       
-
+        return continuum;
     }
 
     public void setJoueurActif(int i) {
