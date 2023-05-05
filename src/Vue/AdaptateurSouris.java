@@ -2,6 +2,7 @@ package Vue;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import Modele.ZoneClic;
 
 public class AdaptateurSouris extends MouseAdapter {
@@ -22,13 +23,13 @@ public class AdaptateurSouris extends MouseAdapter {
 			case CONTINUUM:
 				//Faire quelque chose
 				System.out.println("clic CONTINUUM");
-				indiceCarte = aire.getCarte();
+				indiceCarte = aire.getCarte(ZoneClic.CONTINUUM);
 				c.clicCarteContinuum(indiceCarte);
 				break;
 			case MAIN_JOUEUR_COURANT:
 				//Jouer une carte
 				System.out.println("clic MAIN_JOUEUR_COURANT");
-				indiceCarte = aire.getCarte();
+				indiceCarte = aire.getCarte(ZoneClic.MAIN_JOUEUR_COURANT);
 				c.clicCarteMain(indiceCarte);
 				break;
 			default:

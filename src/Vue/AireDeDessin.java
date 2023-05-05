@@ -103,10 +103,16 @@ public class AireDeDessin extends JComponent {
 		}
 		return ZoneClic.HORS_ZONE;
 	}
-
-	public int getCarte(){
-		int indiceCarte = (int)position.getX()/largeurCarte;
-		return indiceCarte;
+	//TODO à améliorer pour récuperer l'indice de la carte d'une meilleure maniere
+	public int getCarte(ZoneClic zoneCarte){
+		switch(zoneCarte){
+			case MAIN_JOUEUR_COURANT:
+				return (int)(position.getX()-debutMainJoueurX)/(largeurCarte);
+			case CONTINUUM:
+				return (int)position.getX()/largeurCarte;
+			default:
+				return -1;
+		}
 	}
 
 	public void paintComponent(Graphics g) {
