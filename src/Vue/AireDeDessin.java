@@ -130,7 +130,7 @@ public class AireDeDessin extends JComponent {
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
 		tracerMainJoueurActif();
-		tracerMainJoueurSecondaire(true);
+		tracerMainJoueurSecondaire(false);
 	}
 
 	void tracerContinuum(){
