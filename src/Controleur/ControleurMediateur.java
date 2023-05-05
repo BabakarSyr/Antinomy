@@ -20,7 +20,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     boolean IAActive;
     Jeu jeu;
     EtatJeu etatJeu;
-    Carte carteSelectionnee;
+    int carteSelectionnee;
     
     public ControleurMediateur(Jeu j) {
         this.jeu = j;
@@ -51,14 +51,22 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void clicCarteMain(int indiceCarte) {
         switch(etatJeu){
             case DEBUT_TOUR:
+                carteSelectionnee = indiceCarte;
                 previsualisationDeplacement();
                 break;
             case CARTE_SELECTIONNEE:
-                previsualisationDeplacement();
+                if(indiceCarte != carteSelectionnee){
+                    carteSelectionnee = indiceCarte;
+                    previsualisationDeplacement();
+                }else{
+                    annulerPrevisualisation();
+                }
             default:
                 break;
         }
     }
+    
+
     //TODO Compléter méthode clicCarteContinuum
     @Override
     public void clicCarteContinuum(int indiceCarte) {
@@ -75,6 +83,10 @@ public class ControleurMediateur implements CollecteurEvenements {
     //TODO Compléter méthode prévisualisationDeplacement
     public void previsualisationDeplacement(){
         etatJeu = EtatJeu.CARTE_SELECTIONNEE;
+    }
+
+    private void annulerPrevisualisation() {
+        etatJeu = EtatJeu.DEBUT_TOUR;
     }
     
 }

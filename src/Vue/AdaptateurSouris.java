@@ -24,12 +24,14 @@ public class AdaptateurSouris extends MouseAdapter {
 				//Faire quelque chose
 				System.out.println("clic CONTINUUM");
 				indiceCarte = aire.getCarte(ZoneClic.CONTINUUM);
+				System.out.println("carte " + indiceCarte);
 				c.clicCarteContinuum(indiceCarte);
 				break;
 			case MAIN_JOUEUR_COURANT:
 				//Jouer une carte
 				System.out.println("clic MAIN_JOUEUR_COURANT");
 				indiceCarte = aire.getCarte(ZoneClic.MAIN_JOUEUR_COURANT);
+				System.out.println("carte " + indiceCarte);
 				c.clicCarteMain(indiceCarte);
 				break;
 			default:

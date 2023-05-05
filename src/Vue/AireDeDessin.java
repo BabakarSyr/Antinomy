@@ -17,12 +17,14 @@ public class AireDeDessin extends JComponent {
 	Jeu jeu;
 	int hauteurCarte, largeurCarte, 
 		debutContinuumX, debutContinuumY, finContinuumX, finContinuumY, hauteurContinuum, largeurContinuum,
-		debutMainJoueurX, debutMainJoueurY, finMainJoueurX, finMainJoueurY;
+		debutMainJoueurActifX, debutMainJoueurActifY, finMainJoueurActifX, finMainJoueurActifY,
+		debutMainJoueurSecondaireX, debutMainJoueurSecondaireY, finMainJoueurSecondaireX, finMainJoueurSecondaireY;
 	int width, height;
 	ImageJeu anneau_bleu, anneau_rouge, anneau_vert, anneau_violet,
 		cle_bleu, cle_rouge, cle_vert, cle_violet,
 		crane_bleu, crane_rouge, crane_vert, crane_violet,
-		plume_bleu, plume_rouge, plume_vert, plume_violet;
+		plume_bleu, plume_rouge, plume_vert, plume_violet,
+		codex;
 	Graphics2D drawable;
 
 	public AireDeDessin(Jeu j) {
@@ -45,47 +47,38 @@ public class AireDeDessin extends JComponent {
 		largeurContinuum = 0;
 
 		//Coordonnées Main Joueur actif
-		debutMainJoueurX = 0;
-		debutMainJoueurY = 0;
-		finMainJoueurX = 0;
-		finMainJoueurY = 0;
+		debutMainJoueurActifX = 0;
+		debutMainJoueurActifY = 0;
+		finMainJoueurActifX = 0;
+		finMainJoueurActifY = 0;
+
+		//Coordonnées Main Joueur secondaire
+		debutMainJoueurSecondaireX = 0;
+		debutMainJoueurSecondaireY = 0;
+		finMainJoueurSecondaireX = 0;
+		finMainJoueurSecondaireY = 0;
 	}
 
 	public void chargerImages(){
-		String image1 = "anneau_bleu";
-		String image2 = "anneau_rouge";
-		String image3 = "anneau_vert";
-		String image4 = "anneau_violet";
-		String image5 = "cle_bleu";
-		String image6 = "cle_rouge";
-		String image7 = "cle_vert";
-		String image8 = "cle_violet";
-		String image9 = "crane_bleu";
-		String image10 = "crane_rouge";
-		String image11 = "crane_vert";
-		String image12 = "crane_violet";
-		String image13 = "plume_bleu";
-		String image14 = "plume_rouge";
-		String image15 = "plume_vert";
-		String image16 = "plume_violet";
-
+		
 		// Chargement de l'image de la même manière que le fichier de niveaux
-		anneau_bleu = new ImageJeu(image1);
-		anneau_rouge = new ImageJeu(image2);
-		anneau_vert = new ImageJeu(image3);
-		anneau_violet = new ImageJeu(image4);
-		cle_bleu = new ImageJeu(image5);
-		cle_rouge = new ImageJeu(image6);
-		cle_vert = new ImageJeu(image7);
-		cle_violet = new ImageJeu(image8);
-		crane_bleu = new ImageJeu(image9);
-		crane_rouge = new ImageJeu(image10);
-		crane_vert = new ImageJeu(image11);
-		crane_violet = new ImageJeu(image12);
-		plume_bleu = new ImageJeu(image13);
-		plume_rouge = new ImageJeu(image14);
-		plume_vert = new ImageJeu(image15);
-		plume_violet = new ImageJeu(image16);
+		anneau_bleu = new ImageJeu("anneau_bleu");
+		anneau_rouge = new ImageJeu("anneau_rouge");
+		anneau_vert = new ImageJeu("anneau_vert");
+		anneau_violet = new ImageJeu("anneau_violet");
+		cle_bleu = new ImageJeu("cle_bleu");
+		cle_rouge = new ImageJeu("cle_rouge");
+		cle_vert = new ImageJeu("cle_vert");
+		cle_violet = new ImageJeu("cle_violet");
+		crane_bleu = new ImageJeu("crane_bleu");
+		crane_rouge = new ImageJeu("crane_rouge");
+		crane_vert = new ImageJeu("crane_vert");
+		crane_violet = new ImageJeu("crane_violet");
+		plume_bleu = new ImageJeu("plume_bleu");
+		plume_rouge = new ImageJeu("plume_rouge");
+		plume_vert = new ImageJeu("plume_vert");
+		plume_violet = new ImageJeu("plume_violet");
+		codex = new ImageJeu("codex");
 	}
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
@@ -93,12 +86,10 @@ public class AireDeDessin extends JComponent {
 	public ZoneClic getZoneClic(){
 		int x = (int)position.getX();
 		int y = (int)position.getY();
-		System.out.println(debutContinuumX + " "+ largeurContinuum);
-		System.out.println(debutContinuumY + " "+ hauteurContinuum);
 		if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
 			return ZoneClic.CONTINUUM;
 		}
-		if(((x >= debutMainJoueurX) && (x <= finMainJoueurX) && (y >= debutMainJoueurY) && (y <= finMainJoueurY))){
+		if(((x >= debutMainJoueurActifX) && (x <= finMainJoueurActifX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
 			return ZoneClic.MAIN_JOUEUR_COURANT;
 		}
 		return ZoneClic.HORS_ZONE;
@@ -107,7 +98,7 @@ public class AireDeDessin extends JComponent {
 	public int getCarte(ZoneClic zoneCarte){
 		switch(zoneCarte){
 			case MAIN_JOUEUR_COURANT:
-				return (int)(position.getX()-debutMainJoueurX)/(largeurCarte);
+				return (int)(position.getX()-debutMainJoueurActifX)/(largeurCarte);
 			case CONTINUUM:
 				return (int)position.getX()/largeurCarte;
 			default:
@@ -126,6 +117,8 @@ public class AireDeDessin extends JComponent {
 		// On reccupere quelques infos provenant de la partie JComponent
 		width = getSize().width;
 		height = getSize().height;
+		hauteurCarte = getHeight()/5;
+		largeurCarte = getWidth()/9;
 
 		// Si la position n'est pas fixée, on calcule le centre de la zone et un rayon
 		if (position == null)
@@ -136,94 +129,97 @@ public class AireDeDessin extends JComponent {
 
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
+		tracerMainJoueurActif();
+		tracerMainJoueurSecondaire(true);
 	}
 
 	void tracerContinuum(){
-		hauteurCarte = getHeight()/4;
-		largeurCarte = getWidth()/8;
-		System.out.println("largeur : "+getWidth() +" hauteur : "+ getHeight());
-		debutContinuumY = hauteurCarte;
-		finContinuumX = debutContinuumX + largeurContinuum;
-		finContinuumY = debutContinuumY + hauteurContinuum;
+		debutContinuumY = 2*hauteurCarte;
 		hauteurContinuum = hauteurCarte;
 		largeurContinuum = getWidth();
+		finContinuumX = debutContinuumX + largeurContinuum;
+		finContinuumY = debutContinuumY + hauteurContinuum;
+		
 		ArrayList<Carte> continuum = jeu.getPlateau().getContinuum();
 		for(int i =0; i< continuum.size(); i++){
-			tracerCarteContinuum(continuum.get(i), i);
+			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
 	}
 
-	void tracerMainJoueur(boolean numJoueur){
-		if(numJoueur){
-			ArrayList<Carte> main = jeu.getPlateau().getContinuum();
+	// Trace les cartes du joueur actif (joueur du bas)
+	void tracerMainJoueurActif(){
+
+		debutMainJoueurActifX = 3*largeurCarte;
+		debutMainJoueurActifY = height-hauteurCarte;
+		finMainJoueurActifX = 6*largeurCarte;
+		finMainJoueurActifY = height;
+
+		ArrayList<Carte> main = jeu.getPlateau().getJoueurActif().getMain().getCartes();
+		for(int i =0; i< main.size(); i++){
+			drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY, largeurCarte, hauteurCarte, null);
+		}
+		
+	}
+
+	// Trace les cartes du joueur secondaire (joueur du haut)
+	// mainOuverte : True si on veut voir le jeu du joueur secondaire
+	//				 False sinon, trace le dos des cartes
+	void tracerMainJoueurSecondaire(boolean mainOuverte){
+		
+		debutMainJoueurSecondaireX = 3*largeurCarte;
+		debutMainJoueurSecondaireY = 0;
+		finMainJoueurSecondaireX = 6*largeurCarte;
+		finMainJoueurSecondaireY = hauteurCarte;
+		if(mainOuverte){
+			ArrayList<Carte> main = jeu.getPlateau().getJoueur(2).getMain().getCartes();
 			for(int i =0; i< main.size(); i++){
-				tracerCarteMain(main.get(i), i);
+				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
+			}
+		}else{
+			for(int i =0; i< 3; i++){
+				drawable.drawImage(codex.image(), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
 			}
 		}
-		else{
-			ArrayList<Carte> main = jeu.getPlateau().getContinuum();
-			for(int i =0; i< main.size(); i++){
-				tracerCarteMain(main.get(i), i);
-			}
-		}
 	}
 
-	void tracerCarteMain(Carte carte, int position){
+	//TODO créer méthode mettant à jour le booleen mainOuverte
 
-	}
-
-	void tracerCarteContinuum(Carte carte, int position){
+	private Image imageCarte(Carte carte) {
 		switch (carte.getCarte()){
 			case "CRANE_BLEU":
-				drawable.drawImage(crane_bleu.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return crane_bleu.image();
 			case "CRANE_ROUGE":
-				drawable.drawImage(crane_rouge.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return crane_rouge.image();
 			case "CRANE_VERT":
-				drawable.drawImage(crane_vert.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return crane_vert.image();
 			case "CRANE_VIOLET":
-				drawable.drawImage(crane_violet.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return crane_violet.image();
 			case "ANNEAU_BLEU":
-				drawable.drawImage(anneau_bleu.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return anneau_bleu.image();
 			case "ANNEAU_ROUGE":
-				drawable.drawImage(anneau_rouge.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return anneau_rouge.image();
 			case "ANNEAU_VERT":
-				drawable.drawImage(anneau_vert.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return anneau_vert.image();
 			case "ANNEAU_VIOLET":
-				drawable.drawImage(anneau_violet.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return anneau_violet.image();
 			case "CLE_BLEU":
-				drawable.drawImage(cle_bleu.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return cle_bleu.image();
 			case "CLE_ROUGE":
-				drawable.drawImage(cle_rouge.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return cle_rouge.image();
 			case "CLE_VERT":
-				drawable.drawImage(cle_vert.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return cle_vert.image();
 			case "CLE_VIOLET":
-				drawable.drawImage(cle_violet.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return cle_violet.image();
 			case "PLUME_BLEU":
-				drawable.drawImage(plume_bleu.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return plume_bleu.image();
 			case "PLUME_ROUGE":
-				drawable.drawImage(plume_rouge.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return plume_rouge.image();
 			case "PLUME_VERT":
-				drawable.drawImage(plume_vert.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return plume_vert.image();
 			case "PLUME_VIOLET":
-				drawable.drawImage(plume_violet.image(), largeurCarte*position, debutContinuumY, largeurCarte, hauteurCarte, null);
-				break;
+				return plume_violet.image();
 			default:
-				break;
+				return null;
 		}
 	}
 
