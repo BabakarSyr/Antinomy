@@ -9,4 +9,6 @@ color.java
 .history
 compileRandom1.sh
 compileRandom2.sh
+compileDifficile.sh
 IADifficile.java
+TestPlateauDifficile.java

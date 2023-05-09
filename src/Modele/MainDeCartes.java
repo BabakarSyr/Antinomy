@@ -10,6 +10,10 @@ public class MainDeCartes {
         this.cartes = new ArrayList<>();
     }
 
+    public MainDeCartes(ArrayList<Carte> arrayList) {
+        this.cartes = arrayList;
+    }
+
     public ArrayList<Carte> getCartes() {
         return cartes;
     }
@@ -17,7 +21,7 @@ public class MainDeCartes {
     public void setCartes(ArrayList<Carte> cartes) {
         this.cartes = cartes;
     }
-
+    
     public Carte getCarte(int index) {
         return cartes.get(index);
     }
@@ -39,5 +43,24 @@ public class MainDeCartes {
     public void melangerCartes() {
         Collections.shuffle(cartes);
     }
+
+
+    //Fonction qui recherche la valeur la plus faible des cartes entre les main du joueur et renvoie toutes les cartes avec cette valeur
+    public ArrayList<Carte> getCartesPlusFaibleValeur() {
+        ArrayList<Carte> cartesPlusFaibleValeur = new ArrayList<>();
+        int valeurMin = 0;
+        for (Carte carte : cartes) {
+            if (carte.getValeur() < valeurMin) {
+                valeurMin = carte.getValeur();
+            }
+        }
+        for (Carte carte : cartes) {
+            if (carte.getValeur() == valeurMin) {
+                cartesPlusFaibleValeur.add(carte);
+            }
+        }
+        return cartesPlusFaibleValeur;
+    }
+
 
 }

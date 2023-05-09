@@ -95,14 +95,13 @@ public class Sorcier {
             for (int i = 0; i < positionSorcier; i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
                     positions.add(i);
-                    System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
+                    
                 }
             }
         } else {
             for (int i = positionSorcier + 1; i < continuum.size(); i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
                    positions.add(i);
-                   System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
                 }
             }
         }
