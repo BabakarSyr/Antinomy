@@ -59,12 +59,12 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     //TODO Compléter méthode clicCarteContinuum
     @Override
-    public void clicCarteContinuum(int indiceCarte) {
+    public void clicCarteContinuum(int indiceCarteContinuum) {
         System.out.println(etatJeu);
         switch(etatJeu){
             case CARTE_SELECTIONNEE:
                 //Jouer coup
-                jeu.plateau().joueurActif.jouerCarte(carteSelectionnee, jeu.plateau().getContinuum());
+                jeu.jouerCarte(carteSelectionnee, indiceCarteContinuum);
                 etatJeu = EtatJeu.DEBUT_TOUR;
             default:
                 break;
