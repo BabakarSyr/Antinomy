@@ -25,18 +25,12 @@ public class Plateau {
       
         joueurActif = joueur1;
         codex=new Codex(new Carte(null, null,0));
-
     
         initialiser();
-
-       
-
     }
    
-
     public void initialiser(){
     
-
         continuum.add(new Carte(Forme.PLUME, Couleur.VERT,1));
         continuum.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
         continuum.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
@@ -60,8 +54,6 @@ public class Plateau {
         // Mélanger les cartes Reliques
         Collections.shuffle(continuum);
 
-
-       
         MainDeCartes mainJoueur1=new MainDeCartes();
         MainDeCartes mainJoueur2=new MainDeCartes();
         // Distribuer les cartes RElique aux joueurs
@@ -74,7 +66,6 @@ public class Plateau {
         joueur1.main=mainJoueur1;
         joueur2.main=mainJoueur2;
         
-
         codex.setCarte(continuum.remove(continuum.size()-1));
          /*Couleur interdite au debut du jeu
          On place un cristal sur la couleur du Codex correspondant à la couleur de la carte la plus à gauche du continuum. 
@@ -82,13 +73,6 @@ public class Plateau {
           Couleur couleurInterdite = continuum.get(0).getCouleur();
           
           codex.setCouleur(couleurInterdite);
-  
-   
-     
-
-     
-       
-
     }
 
     public void setJoueurActif(int i) {
@@ -96,7 +80,6 @@ public class Plateau {
             joueurActif = joueur1;
         else
             joueurActif = joueur2;
-    
     }
 
 
@@ -123,71 +106,47 @@ public class Plateau {
 
     public boolean deplacementFuturPossible(Carte carteChoisie) {
         int valeurCarte = carteChoisie.getValeur();
-        
         //Si le futur du sorcier est a droite
         if(joueurActif == joueur1){
             return (joueurActif.sorcier().positionSorcier + valeurCarte < continuum.size());
-        } 
-        
+        }
         // le futur est a gauche
         else{
             return (joueurActif.sorcier().positionSorcier - valeurCarte >= 0);
         }
-        
     }
 
     public boolean deplacementPassePossible(Carte carteChoisie) {
-           
         Forme formeCarte = carteChoisie.getForme();
         Couleur couleurCarte = carteChoisie.getCouleur();
 
         //Si le passé du sorcier est à gauche
         if(joueurActif == joueur1){
             for (int i = joueurActif.sorcier().positionSorcier - 1; i >= 0; i--) {
-                if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) 
-                    return true;       
+                if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
+                    return true;
+                }        
             }
         } 
         //Le passé du sorcier est à droite
         else {
             for (int i = joueurActif.sorcier().positionSorcier + 1; i < continuum.size(); i++) {
-                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) 
+                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
                     return true;
-                
+                }
             }
         }
-
         return false;
     }
 
-    public ArrayList<Integer> calculerEmplacementsAccessibles(Carte a)
-    {
-        ArrayList<Integer> positionsPossibles = new ArrayList<>();
-        if (this.deplacementFuturPossible(a))
-        {
-            if(joueurActif == joueur1)
-            {
-                positionsPossibles.add(joueurActif.sorcier().positionSorcier + a.getValeur());
-            }
-            else
-            {
-                positionsPossibles.add(joueurActif.sorcier().positionSorcier - a.getValeur());
-            }
-        }
-        if (deplacementPassePossible(a)) 
-        {                        
-            ArrayList<Integer> pos = this.Position_Possible_Passe(a);
-            positionsPossibles.addAll(pos);
-        }
-
-        return positionsPossibles;
-    }
-
-    public ArrayList<Integer> Position_Possible_Passe(Carte carteChoisie) {
+    public ArrayList<Integer> cartesAccessibles(Carte carteChoisie) {
         Forme formeCarte = carteChoisie.getForme();
         Couleur couleurCarte = carteChoisie.getCouleur();
         ArrayList <Integer> positions = new ArrayList<Integer>();
         if(joueurActif == joueur1){
+            if (this.deplacementFuturPossible(carteChoisie)){
+                positions.add(joueurActif.sorcier().positionSorcier + carteChoisie.getValeur());
+            }
             for (int i = 0; i < joueurActif.sorcier().positionSorcier; i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
                     positions.add(i);
@@ -195,6 +154,9 @@ public class Plateau {
                 }
             }
         } else {
+            if (this.deplacementFuturPossible(carteChoisie)){
+                positions.add(joueurActif.sorcier().positionSorcier - carteChoisie.getValeur());
+            }
             for (int i = joueurActif.sorcier().positionSorcier + 1; i < continuum.size(); i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
                    positions.add(i);
@@ -213,7 +175,6 @@ public class Plateau {
         }
     }
 
-
     public Joueur getJoueurActif() {
         return joueurActif;
 
@@ -222,7 +183,7 @@ public class Plateau {
     public ArrayList<Carte> getContinuum() {
         return continuum;
     }
-    public void afficher_continuum() {
+    public void afficherContinuum() {
         for (int i = 0; i < continuum.size(); i++) {
             System.out.println(i+":"+continuum.get(i));
         }
@@ -232,8 +193,6 @@ public class Plateau {
        //Il y a duel,on surligne en rouge la position
         if(posSorcier1==posSorcier2){
             System.out.println("\033[31m\033[7m"+posSorcier1+ "\033[0m:  " + continuum.get(posSorcier1) + "\n");
-            
-           
         }
         
         for (int i = 0; i < continuum.size(); i++) {
@@ -251,9 +210,6 @@ public class Plateau {
             }
         }
         System.out.println();
-        
-      
-        
     }
     
 
@@ -262,7 +218,6 @@ public class Plateau {
             return joueur1.sorcier.getPositionSorcier();
         else 
             return joueur2.sorcier.getPositionSorcier();
-        
     }
 
     public void setTempsSorcier(int joueur) {
@@ -273,18 +228,8 @@ public class Plateau {
         }
     }
 
-    //TODO supprimer ou remplacer cette methode
-    /*public void setPositionSorcier(int pos, int joueur) {
-        if (joueur == 1) {
-            joueur1.sorcier.setPositionSorcier(pos);
-        } else {
-            joueur2.sorcier.setPositionSorcier(pos);
-        }
-    }*/
-
-
     //Fonction qui me donne les cartes portant la couleur interdite sur le continuum
-    public  ArrayList <Integer> pos_carte_couleur_interdite() {
+    public  ArrayList <Integer> positionsDepartPossible() {
         ArrayList <Integer> pos = new ArrayList<>();
         for (int j = 0; j < continuum.size(); j++) {
             if (continuum.get(j).getCouleur() == codex.getCouleurInterdite()) {
@@ -294,8 +239,7 @@ public class Plateau {
         return pos;
     }
 
-
-    public String colorer_pos_sorcier(int pos_sorcier,int joueur) {
+    public String colorerPositionSorcier(int pos_sorcier,int joueur) {
         String s = "";
         if (joueur == 1) {
             for (int i = 0; i <=continuum.size(); i++) {
@@ -318,7 +262,6 @@ public class Plateau {
         }
         return s;
     }
-     
 }
 
 

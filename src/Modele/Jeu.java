@@ -217,31 +217,24 @@ public class Jeu {
         return plateau.joueur1.getNombreCristaux() == 3 || plateau.joueur2.getNombreCristaux() == 3;
     }
 
-    
     //On a duel si positionSorcierJoueur1 == positionSorcierJoueur2
     public boolean isDuel(){
-        int positionSorcierJoueur1 = plateau.joueur1.sorcier.getPositionSorcier();
-        int positionSorcierJoueur2 = plateau.joueur2.sorcier.getPositionSorcier();
-        return positionSorcierJoueur1 == positionSorcierJoueur2;
+        return plateau.joueur1.sorcier.getPositionSorcier() == plateau.joueur2.sorcier.getPositionSorcier();
     }
 
     public void jouerCarte(int indiceCarteMain, int indiceContinuum){
-        Joueur joueur = joueurActif();
-        if(deplacementPossible(indiceCarteMain, indiceContinuum)){
-            //???
-            //(indiceContinuum);
+        if(estDeplacementPossible(indiceCarteMain, indiceContinuum)){
+            deplacerSorcier(indiceContinuum);
             echangerCarte(indiceCarteMain, indiceContinuum);
         }
     }
 
-    public boolean deplacementPossible(int indiceCarteMain, int indiceContinuum){
-        Joueur joueur = joueurActif();
-        ArrayList<Integer> indiceList = plateau.calculerEmplacementsAccessibles(joueur.getMain().getCarte(indiceCarteMain));
-        return indiceList.contains(indiceContinuum);
+    public boolean estDeplacementPossible(int indiceCarteMain, int indiceContinuum){
+        return plateau.cartesAccessibles(joueurActif().getMain().getCarte(indiceCarteMain)).contains(indiceContinuum);
     }
 
-    public void deplacerSorcier(int positionSorcier, int indicejoueur) {
-        plateau.getJoueur(indicejoueur).sorcier.positionSorcier = positionSorcier;
+    public void deplacerSorcier(int positionSorcier) {
+        joueurActif().sorcier.positionSorcier = positionSorcier;
     }
 
     //Equivalent echanger carte
@@ -258,36 +251,22 @@ public class Jeu {
             joueur.getMain().ajouterCarte(carteContinuum,indiceCarteMain);
     }
 
-    public int indiceJoueur(Joueur j)
-    {
-        if (j==this.plateau.joueur1)
-        {
-            return 1;
-        }
-        return 2;
-    }
-
     // echange les 3 cartes en main avec 3 cartes du plateau suite à un paradoxe
     public void echangerParadoxe(boolean futur) {
         Joueur joueur = joueurActif();
-        int indiceJoueur = indiceJoueur(joueur);
         int indexSorcier = joueur.sorcier.getPositionSorcier();
         int j = 0;
         if(futur){
             for (int i = indexSorcier - 3; i < indexSorcier; i++) {
-                deplacerSorcier(i, indiceJoueur);
                 echangerCarte(j, i);
                 j++;
             }
-            deplacerSorcier(indexSorcier, indiceJoueur);
         }
         else{
             for (int i = indexSorcier + 1; i < indexSorcier + 4; i++) {
-                deplacerSorcier(i, indiceJoueur);
                 echangerCarte(j, i);
                 j++;
             }
-            deplacerSorcier(indexSorcier, indiceJoueur);
         }
     }
 
@@ -298,7 +277,6 @@ public class Jeu {
     public ArrayList<Carte> continuum(){
         return plateau.getContinuum();
     }
-
 
     public void duel() 
     {
