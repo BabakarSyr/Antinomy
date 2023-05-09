@@ -88,47 +88,27 @@ public class Jeu {
         return possible;
     }
     
-    public boolean isParadoxe(MainDeCartes mainJoueur) {
+    public boolean estParadoxe(MainDeCartes mainJoueur) {
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
         ArrayList<Carte> cartes = mainJoueur.getCartes();
     
         boolean memeCouleur = true;
         boolean memeForme = true;
         boolean memeValeur = true;
-        boolean differentCouleurInterdite = true;
-    
+        
+        Carte carte = cartes.get(0);
+        if (carte.getCouleur() == couleurInterdite) {
+            return false;
+        }
         for (int i = 1; i < cartes.size(); i++) {
-            if (cartes.get(i).getForme() != cartes.get(0).getForme()) {
-                memeForme = false;
-                break;
+            if (cartes.get(i).getCouleur() == couleurInterdite) {
+                return false;
             }
+            memeCouleur = (cartes.get(i).getCouleur() != carte.getCouleur());
+            memeForme = (cartes.get(i).getForme() != carte.getForme());
+            memeValeur = (cartes.get(i).getValeur() != carte.getValeur());
         }
-    
-        for (int i = 1; i < cartes.size(); i++) {
-            if (cartes.get(i).getValeur() != cartes.get(0).getValeur()) {
-                memeValeur = false;
-                break;
-            }
-        }
-    
-        for (Carte carte : cartes) {
-            if (carte.getCouleur() == couleurInterdite) {
-                differentCouleurInterdite = false;
-                break;
-            }
-        }
-
-        for (int i = 1; i < cartes.size(); i++) {
-            if (cartes.get(i).getCouleur() != cartes.get(0).getCouleur()) {
-                memeCouleur = false;
-                break;
-            }
-        }
-    
-
-        // Il y a un paradoxe si toutes les cartes ont la même couleur ou la même forme ou la même valeur
-        // et toutes les cartes sont de couleur différente de la couleur interdite
-        return (memeCouleur || memeForme || memeValeur) && differentCouleurInterdite;
+        return memeCouleur || memeForme || memeValeur;
     }
     
 
