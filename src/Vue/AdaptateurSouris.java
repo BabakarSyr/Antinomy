@@ -26,6 +26,7 @@ public class AdaptateurSouris extends MouseAdapter {
 				indiceCarte = aire.getCarte(ZoneClic.CONTINUUM);
 				System.out.println("carte " + indiceCarte);
 				c.clicCarteContinuum(indiceCarte);
+				aire.repaint();
 				break;
 			case MAIN_JOUEUR_COURANT:
 				//Jouer une carte
@@ -33,6 +34,7 @@ public class AdaptateurSouris extends MouseAdapter {
 				indiceCarte = aire.getCarte(ZoneClic.MAIN_JOUEUR_COURANT);
 				System.out.println("carte " + indiceCarte);
 				c.clicCarteMain(indiceCarte);
+				aire.repaint();
 				break;
 			default:
 				System.out.println("clic plateau");

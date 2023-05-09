@@ -74,7 +74,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         switch(etatJeu){
             case CARTE_SELECTIONNEE:
                 //Jouer coup
-                jeu.getPlateau().joueurActif.jouerCarte(indiceCarte, jeu.getPlateau().getContinuum());
+                jeu.getPlateau().joueurActif.jouerCarte(carteSelectionnee, jeu.getPlateau().getContinuum());
+                etatJeu = EtatJeu.DEBUT_TOUR;
             default:
                 break;
         }

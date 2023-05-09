@@ -118,7 +118,7 @@ public class AireDeDessin extends JComponent {
 		width = getSize().width;
 		height = getSize().height;
 		hauteurCarte = getHeight()/5;
-		largeurCarte = getWidth()/9;
+		largeurCarte = getWidth()/10;
 
 		// Si la position n'est pas fixée, on calcule le centre de la zone et un rayon
 		if (position == null)
@@ -144,6 +144,7 @@ public class AireDeDessin extends JComponent {
 		for(int i =0; i< continuum.size(); i++){
 			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
+		drawable.drawImage(codex.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
 	}
 
 	// Trace les cartes du joueur actif (joueur du bas)
