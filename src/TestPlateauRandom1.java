@@ -190,7 +190,8 @@ public class TestPlateauRandom1{
                             case "futur":
                                 if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())) {
                                     plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.getContinuum());
-                                    plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
+                                    //TODO corriger la ligne commentee
+                                    //plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
                                     actionReussie = true; // L'action a réussi, on peut sortir de la boucle
                                 } else {
                                     System.out.println("Vous ne pouvez pas aller dans le futur .Vous ne pouvez aller que dans le passe avec cette carte");
@@ -210,7 +211,8 @@ public class TestPlateauRandom1{
                                     //mettre à jour la position du sorcier
                                     plateau.joueurActif.sorcier.setPositionSorcier(position);
                                     //jouer la carte
-                                    plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
+                                    //TODO corriger la ligne commentee
+                                    //plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
                                     actionReussie = true; // L'action a réussi, on peut sortir de la boucle
                                 } else {
                                     System.out.println("Vous ne pouvez pas aller dans le passe .Vous ne pouvez aller que dans le futur avec cette carte");
@@ -229,7 +231,8 @@ public class TestPlateauRandom1{
                         case "futur":
                             if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())) {
                                 plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.getContinuum());
-                                plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
+                                //TODO corriger la ligne commentee
+                                //plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
                             }
                             break;
                         case "passe":
@@ -239,7 +242,8 @@ public class TestPlateauRandom1{
                                 //mettre à jour la position du sorcier
                                 plateau.joueurActif.sorcier.setPositionSorcier(position);
                                 //jouer la carte
-                                plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
+                                //TODO corriger la ligne commentee
+                                //plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
                             }
                             break;
                     }
