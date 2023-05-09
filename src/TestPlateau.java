@@ -6,7 +6,6 @@ import Modele.Jeu;
 import Modele.Plateau;
 
 import java.util.List;
-import java.util.Random;
 
 public class TestPlateau {
     public static void main(String[] args) {

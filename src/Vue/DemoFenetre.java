@@ -4,8 +4,7 @@ import javax.swing.* ;
 //import java.awt.* ;
 
 import Modele.*;
-import Controleur.ControleurMediateur;
-import Vue.CollecteurEvenements;
+
 
 // L'interface runnable déclare une méthode run
 public class DemoFenetre implements Runnable {

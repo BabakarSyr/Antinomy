@@ -73,7 +73,7 @@ public class IAFacile
             int emplacementChoisi = emplacementsAccessibles.get(r.nextInt(emplacementsAccessibles.size()));
             this.plateau.setPositionSorcier(emplacementChoisi, this.ordreJoueur);
             this.positionIA = emplacementChoisi;
-            Carte f = plateau.getJoueur(this.ordreJoueur).jouerCarte(indexCarteChoisie, this.plateau.getContinuum());
+            //Carte f = plateau.getJoueur(this.ordreJoueur).jouerCarte(indexCarteChoisie, this.plateau.getContinuum());
         }
     }
 

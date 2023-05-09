@@ -1,5 +1,5 @@
 package Structures;
-import Structures.Iterateur;
+
 
 public interface Sequence<E> {
 	void insereQueue(E element);
