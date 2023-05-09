@@ -21,7 +21,53 @@ public class Jeu {
     {
         return this.plateau;
     }
+    
+    public void definir_ordres_joueurs(Plateau plateau, String dejaVuJoueur1, String dejaVuJoueur2)
+    {
+      if ((dejaVuJoueur1.equals("non") && dejaVuJoueur2.equals("non")) || (dejaVuJoueur1.equals("oui") && dejaVuJoueur2.equals("oui"))) 
+      {
+        Random rand = new Random();
+        int num_joueur_actif = rand.nextInt(2)+1 ;  // [1-2]
+        plateau.setJoueurActif(num_joueur_actif);  // [1-2]
+        if (num_joueur_actif==1)
+        {
+          plateau.getJoueur(1).sorcier.setSensDuTemps(true);
+          plateau.getJoueur(2).sorcier.setSensDuTemps(false);
+        }
+        else
+        {
+          plateau.getJoueur(1).sorcier.setSensDuTemps(false);
+          plateau.getJoueur(2).sorcier.setSensDuTemps(true);
+        }
+      }
+      else if (dejaVuJoueur1.equals("oui")) 
+      {
+        int num_joueur_actif = 1;
+        plateau.setJoueurActif(num_joueur_actif);
+        plateau.getJoueur(1).sorcier.setSensDuTemps(true);
+        plateau.getJoueur(2).sorcier.setSensDuTemps(false);
+      }
+      else 
+      {
+        int num_joueur_actif = 2;
+        plateau.setJoueurActif(num_joueur_actif);
+        plateau.getJoueur(1).sorcier.setSensDuTemps(false);
+        plateau.getJoueur(2).sorcier.setSensDuTemps(true);
+      }
+    }
+
+    public void afficher_cartes_main()
+    {
+        for (int i =0 ;i < 3; i++) 
+        {
+            int j=i+1;
+            System.out.print("Carte " + j  +"="+ plateau.joueurActif.getMain().getCartes().get(i).toString() + " ");
+            System.out.println();
+        }
+    }
+    
     ////////
+    
 
     public boolean est_Possible_Placer_3cartes(String Direction) {
         int posSorcier=plateau.joueurActif.sorcier.getPositionSorcier();
@@ -89,33 +135,50 @@ public class Jeu {
     }
     
 
-    public void paradoxe(){
-      
-
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Voulez-vous échanger vos cartes en main avec les cartes à gauche ou à droite du sorcier ? (Entrez gauche ou droite)");
-
-            String direction = scanner.next().toLowerCase();
-            while(!est_Possible_Placer_3cartes(direction)){
-                System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisissez une autre direction : gauche / droite");
-
-                direction = scanner.next().toLowerCase();
-            }
-
-    
-            switch(direction){
-                case "gauche":
-                    plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-                    break;
-                case "droite":
-                    plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-                
-                    break;
-            }
+    public void paradoxe()
+    {
+      try (Scanner scanner = new Scanner(System.in)) 
+      {
+        if(isParadoxe(plateau.joueurActif.getMain()))
+        {
+          System.out.println("Vous avez un paradoxe");
+        
+          //Afficher les cartes du joueur actif
+          afficher_cartes_main();
+        
+          //Le joueur actif gagne 1 cristal
+          plateau.joueurActif.ajouterCristaux(1);
+                    
+          System.out.println("Récapitulatif :");
+          System.out.println("Le joueur "+plateau.joueur1.getNom()+" a en sa possession "+plateau.joueur1.getNombreCristaux()+" cristaux");
+          System.out.println("Le joueur "+plateau.joueur2.getNom()+" a en sa possession "+plateau.joueur2.getNombreCristaux()+" cristaux");
+                        
+          //Le joueur melange les cartes entre ses mains
+          plateau.joueurActif.getMain().melangerCartes();
+        
+          System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
+          String direction = scanner.next().toLowerCase();
+          while(!est_Possible_Placer_3cartes(direction))
+          {
+            System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
+            direction = scanner.next().toLowerCase();
+          }
+          plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
+          plateau.codex.changerCouleurInterdite();
+          System.out.println("La nouvelle couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
+          
+          
+          System.out.println("Voici le plateau apres votre coup :");
+          if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
+          {
+            plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(1),plateau.getPositionSorcier(1));
+          }
+          else
+          {
+            plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(2),plateau.getPositionSorcier(2));
+          }
         }
-       
-  
-    
+      }
     }
     
 
@@ -133,7 +196,10 @@ public class Jeu {
     }
 
 
-    public boolean duel() {
+    public void duel() 
+    {
+      if (isDuel())
+      {
         System.out.println("C'est l'heure du Duel!");
         System.out.println("Rappel,la couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
         int valeurMainJoueur1= 0;
@@ -181,11 +247,13 @@ public class Jeu {
                 System.out.println("Récapitulatif des cristaux :");
                 System.out.println(plateau.joueur1.getNom() + " : " + plateau.joueur1.getNombreCristaux());
                 System.out.println(plateau.joueur2.getNom() + " : " + plateau.joueur2.getNombreCristaux());
-                return true;
+                
+                plateau.codex.changerCouleurInterdite();
+                return;
             }
             else
                 System.out.println("Impossible de voler un cristal à " + plateau.joueur1.getNom() + " car il n'en a plus  ou n'en a pas.");
-                return false;
+                return;
         }
         if (valeurMainJoueur1 < valeurMainJoueur2) {
             // Le joueur 2 gagne le duel et vole un cristal au joueur 1
@@ -194,12 +262,14 @@ public class Jeu {
                 System.out.println("Récapitulatif des cristaux :");
                 System.out.println(plateau.joueur1.getNom() + " : " + plateau.joueur1.getNombreCristaux());
                 System.out.println(plateau.joueur2.getNom() + " : " + plateau.joueur2.getNombreCristaux());
-                return true;
+                
+                plateau.codex.changerCouleurInterdite();
+                return;
                 
             }
             else
                 System.out.println("Impossible de voler un cristal à " + plateau.joueur2.getNom() + " car il n'en a plus  ou n'en a pas.");
-                return false;
+                return;
         } 
         // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
         Random random = new Random();
@@ -225,14 +295,19 @@ public class Jeu {
         if (valeurCarteJoueur1 > valeurCarteJoueur2) {
             plateau.joueur1.volerCristal(plateau.joueur2);
             System.out.println(plateau.joueur1.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur2.getNom());
-            return true;
+            
+            plateau.codex.changerCouleurInterdite();
+            return;
         } else if (valeurCarteJoueur1 < valeurCarteJoueur2) {
             plateau.joueur2.volerCristal(plateau.joueur1);
             System.out.println(plateau.joueur2.getNom() + " gagne le duel et vole un cristal à " + plateau.joueur1.getNom());
-            return true;
+            
+            plateau.codex.changerCouleurInterdite();
+            return;
         } else {
             System.out.println("Égalité!");
-            return false;
+            return;
         }
     }
+  }
 }

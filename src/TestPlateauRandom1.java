@@ -251,15 +251,18 @@ public class TestPlateauRandom1{
                 //Si le nom du joeuur actif est le meme que celui du joueur 1
                 System.out.println("Voici le plateau apres votre coup :");
                 if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
+                {
                     plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_actif),plateau.getPositionSorcier(num_joueur_inactif));
+                }
                 else
+                {
                     plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_inactif),plateau.getPositionSorcier(num_joueur_actif));
-
+                }
 
 
                 //Le duel est prioritaire sur le paradoxe
-                if(jeu.isDuel())
-                    jeu.duel();
+                
+                jeu.duel();
 
                      // Vérifier si le joueur actif a un paradoxe apres qu'il ait joué
                 if(jeu.isParadoxe(plateau.joueurActif.getMain())){
@@ -283,7 +286,7 @@ public class TestPlateauRandom1{
                     System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
                     String direction;
                     if (plateau.getJoueurActif().getNom().equals(nomJoueur1)){
-                         direction = sc.next().toLowerCase();
+                        direction = sc.next().toLowerCase();
                         while(!jeu.est_Possible_Placer_3cartes(direction)){
                             System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
             
