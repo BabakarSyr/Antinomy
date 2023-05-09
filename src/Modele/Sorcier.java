@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import Modele.Carte.Couleur;
 
 public class Sorcier {
     boolean sensDuTemps; // true si le futur est à droite et le passé à gauche, false sinon

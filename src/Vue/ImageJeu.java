@@ -1,16 +1,14 @@
 package Vue;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
-import Global.Configuration;
 
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+
 import java.io.File;
 
 public class ImageJeu {

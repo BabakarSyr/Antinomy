@@ -1,7 +1,5 @@
 package Modele;
 
-import Modele.Carte.Couleur;
-
 public class Codex {
      Couleur couleurInterdite;
      Carte carte;

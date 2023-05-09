@@ -1,18 +1,8 @@
 package Controleur;
 
-import java.io.File;
-import java.io.IOException;
 
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-
-import Global.Configuration;
-import Modele.Carte;
 import Modele.EtatJeu;
 import Modele.Jeu;
-import Structures.Iterateur;
-import Structures.Sequence;
 import Vue.CollecteurEvenements;
 
 public class ControleurMediateur implements CollecteurEvenements {

@@ -1,8 +1,4 @@
 
-
-import java.io.InputStream;
-
-import javax.swing.* ;
 //import java.awt.* ;
 
 import Controleur.ControleurMediateur;
@@ -10,7 +6,7 @@ import Global.Configuration;
 import Modele.Jeu;
 import Modele.Plateau;
 import Vue.CollecteurEvenements;
-import Vue.DemoFenetre;
+import Vue.InterfaceGraphique;
 
 
 // L'interface runnable déclare une méthode run
@@ -24,7 +20,7 @@ public class Antinomy {
 		CollecteurEvenements control = new ControleurMediateur(jeu);
 		switch (typeInterface) {
 			case "Graphique":
-				DemoFenetre.demarrer(jeu, control);
+				InterfaceGraphique.demarrer(jeu, control);
 				break;
 			default:
 				Configuration.erreur("Interface inconnue");
