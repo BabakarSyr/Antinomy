@@ -121,9 +121,89 @@ public class Plateau {
         return null;
     }
 
-    
+    public boolean deplacementFuturPossible(Carte carteChoisie) {
+        int valeurCarte = carteChoisie.getValeur();
+        
+        //Si le futur du sorcier est a droite
+        if(joueurActif == joueur1){
+            return (joueurActif.sorcier().positionSorcier + valeurCarte < continuum.size());
+        } 
+        
+        // le futur est a gauche
+        else{
+            return (joueurActif.sorcier().positionSorcier - valeurCarte >= 0);
+        }
+        
+    }
 
+    public boolean deplacementPassePossible(Carte carteChoisie) {
+           
+        Forme formeCarte = carteChoisie.getForme();
+        Couleur couleurCarte = carteChoisie.getCouleur();
 
+        //Si le passé du sorcier est à gauche
+        if(joueurActif == joueur1){
+            for (int i = joueurActif.sorcier().positionSorcier - 1; i >= 0; i--) {
+                if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) 
+                    return true;       
+            }
+        } 
+        //Le passé du sorcier est à droite
+        else {
+            for (int i = joueurActif.sorcier().positionSorcier + 1; i < continuum.size(); i++) {
+                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) 
+                    return true;
+                
+            }
+        }
+
+        return false;
+    }
+
+    public ArrayList<Integer> calculerEmplacementsAccessibles(Carte a)
+    {
+        ArrayList<Integer> positionsPossibles = new ArrayList<>();
+        if (this.deplacementFuturPossible(a))
+        {
+            if(joueurActif == joueur1)
+            {
+                positionsPossibles.add(joueurActif.sorcier().positionSorcier + a.getValeur());
+            }
+            else
+            {
+                positionsPossibles.add(joueurActif.sorcier().positionSorcier - a.getValeur());
+            }
+        }
+        if (deplacementPassePossible(a)) 
+        {                        
+            ArrayList<Integer> pos = this.Position_Possible_Passe(a);
+            positionsPossibles.addAll(pos);
+        }
+
+        return positionsPossibles;
+    }
+
+    public ArrayList<Integer> Position_Possible_Passe(Carte carteChoisie) {
+        Forme formeCarte = carteChoisie.getForme();
+        Couleur couleurCarte = carteChoisie.getCouleur();
+        ArrayList <Integer> positions = new ArrayList<Integer>();
+        if(joueurActif == joueur1){
+            for (int i = 0; i < joueurActif.sorcier().positionSorcier; i++) {
+                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
+                    positions.add(i);
+                    System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
+                }
+            }
+        } else {
+            for (int i = joueurActif.sorcier().positionSorcier + 1; i < continuum.size(); i++) {
+                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
+                   positions.add(i);
+                   System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
+                }
+            }
+        }
+        return positions;
+    }
 
     public void changerJoueurActif() {
         if (joueurActif == joueur1) {

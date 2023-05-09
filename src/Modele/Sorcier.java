@@ -33,45 +33,6 @@ public class Sorcier {
         this.sensDuTemps = sensDuTemps;
     }
 
-    
-   public boolean est_possible_aller_futur(Carte carteChoisie,List<Carte> continuum) {
-    int valeurCarte = carteChoisie.getValeur();
-    
-    //Si le futur du sorcier est a droite
-    if (sensDuTemps) 
-        return (positionSorcier + valeurCarte < continuum.size());
-    
-    // le futur est a gauche
-    else 
-        return (positionSorcier - valeurCarte >= 0);
-    
-    }
-
-    public boolean est_possible_aller_passe(Carte carteChoisie, List<Carte> continuum) {
-       
-        Forme formeCarte = carteChoisie.getForme();
-        Couleur couleurCarte = carteChoisie.getCouleur();
-
-        //Si le passé du sorcier est à gauche
-        if (sensDuTemps) {
-            for (int i = positionSorcier - 1; i >= 0; i--) {
-                if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) 
-                    return true;       
-            }
-        } 
-        //Le passé du sorcier est à droite
-        else {
-            for (int i = positionSorcier + 1; i < continuum.size(); i++) {
-                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) 
-                    return true;
-                
-            }
-        }
-
-        return false;
-    }
-
-
     public void deplacerFutur(Carte carteChoisie, List<Carte> continuum) {
         
             int valeurCarte = carteChoisie.getValeur(); 
@@ -86,27 +47,7 @@ public class Sorcier {
     }
     
     
-    public List<Integer> Position_Possible_Passe(Carte carteChoisie, List<Carte> continuum) {
-        Forme formeCarte = carteChoisie.getForme();
-        Couleur couleurCarte = carteChoisie.getCouleur();
-        List <Integer> positions = new ArrayList<Integer>();
-        if (sensDuTemps) {
-            for (int i = 0; i < positionSorcier; i++) {
-                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
-                    positions.add(i);
-                    System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
-                }
-            }
-        } else {
-            for (int i = positionSorcier + 1; i < continuum.size(); i++) {
-                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
-                   positions.add(i);
-                   System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
-                }
-            }
-        }
-        return positions;
-    }
+
     
        
 }

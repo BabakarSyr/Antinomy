@@ -15,8 +15,7 @@ public class Antinomy {
 	final static String typeInterface = "Graphique";
 
 	public static void main(String[] args) {
-		Plateau plateau = new Plateau();
-		Jeu jeu = new Jeu(plateau);
+		Jeu jeu = new Jeu();
 		CollecteurEvenements control = new ControleurMediateur(jeu);
 		switch (typeInterface) {
 			case "Graphique":

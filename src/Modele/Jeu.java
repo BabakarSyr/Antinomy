@@ -9,9 +9,8 @@ public class Jeu {
      Plateau plateau;
     
     
-    public Jeu(Plateau plateau) {
-        this.plateau =plateau; 
-       
+    public Jeu() {
+		this.plateau = new Plateau();
     }
 
     ////////
@@ -193,8 +192,19 @@ public class Jeu {
         return positionSorcierJoueur1 == positionSorcierJoueur2;
     }
 
+    public void jouerCarte(int indiceCarteMain, int indiceContinuum){
+        Joueur joueur = joueurActif();
+        if(deplacementPossible(indiceCarteMain, indiceContinuum)){
+            deplacerSorcier(indiceContinuum);
+            echangerCarte(indiceCarteMain, indiceContinuum);
+        }
+    }
+    public boolean deplacementPossible(){
+        return plateau.deplacementPossible();
+    }
+
     //Equivalent echanger carte
-    public Carte echangerCarte(int indiceCarteMain, int indiceContinuum) {//indiceCarteMain=[0-2]
+    public void echangerCarte(int indiceCarteMain, int indiceContinuum) {//indiceCarteMain=[0-2]
             Joueur joueur = joueurActif();
             Carte carte = joueur.getMain().getCarte(indiceCarteMain);
             joueur.getMain().retirerCarte(indiceCarteMain);
@@ -205,8 +215,8 @@ public class Jeu {
         
             // Ajouter la carte du continuum à la main du joueur
             joueur.getMain().ajouterCarte(carteContinuum,indiceCarteMain);
-            return carte;
     }
+
     // echange les 3 cartes en main avec 3 cartes du plateau suite à un paradoxe
     public void echangerParadoxe(boolean futur) {
         Joueur joueur = joueurActif();

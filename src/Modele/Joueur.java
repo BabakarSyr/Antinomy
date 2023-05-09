@@ -57,7 +57,7 @@ public class Joueur {
     }
 
 
-    public Sorcier getSorcier() {
+    public Sorcier sorcier() {
         return sorcier;
     }
     public void setSorcier(Sorcier sorcier) {
