@@ -95,7 +95,7 @@ public class Jeu {
         boolean memeCouleur = true;
         boolean memeForme = true;
         boolean memeValeur = true;
-        
+
         Carte carte = cartes.get(0);
         if (carte.getCouleur() == couleurInterdite) {
             return false;
@@ -116,7 +116,7 @@ public class Jeu {
     {
       try (Scanner scanner = new Scanner(System.in)) 
       {
-        if(isParadoxe(plateau.joueurActif.getMain()))
+        if(estParadoxe(plateau.joueurActif.getMain()))
         {
           System.out.println("Vous avez un paradoxe");
         
