@@ -46,7 +46,7 @@ public class Partie {
         return copie;
     }
     
-
+    
     
     public void setNbTours(int nbTours) {
         this.nbTours = nbTours;
