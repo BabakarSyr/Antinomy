@@ -18,9 +18,6 @@ public class Sorcier {
    public int getPositionSorcier() {
        return positionSorcier;
    }
-   public void setPositionSorcier(int positionSorcier) {
-       this.positionSorcier = positionSorcier;
-   }
 
     public void getSensDuTemps() {
         if(sensDuTemps)

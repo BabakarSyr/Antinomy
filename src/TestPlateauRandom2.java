@@ -11,8 +11,9 @@ public class TestPlateauRandom2{
         int num_joueur_actif ;
         Random rand = new Random();
 
+        Jeu jeu = new Jeu();
 
-        Plateau plateau = new Plateau();
+        Plateau plateau = jeu.plateau();
         System.out.println("Bienvenue dans le jeu de l'antinomy !");
         System.out.println();
 
@@ -101,7 +102,7 @@ public class TestPlateauRandom2{
            
             //les positions possibles sont dans la liste possible.On choisit une position au hasard
             int pos = possible.get(rand.nextInt(possible.size()));
-            plateau.setPositionSorcier(pos,1);
+            jeu.deplacerSorcier(pos,1);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
            plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
 
@@ -123,7 +124,7 @@ public class TestPlateauRandom2{
             int pos2 = possible.get(rand.nextInt(possible.size()));
             
           
-            plateau.setPositionSorcier(pos2,2);
+            jeu.deplacerSorcier(pos2,2);
             
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_inactif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_inactif));
                 
@@ -145,12 +146,13 @@ public class TestPlateauRandom2{
 
 
             System.out.println("Que la partie commence:");
-            Jeu jeu = new Jeu(plateau);
     
                 
             System.out.println("\nTest jouer");
             int i=0;
+            //TODO decommenter et modifier
             //Tant que la partie n'est pas termin
+            /* 
             while( !jeu.partieTerminee() ){
     
                 if(i>=1){
@@ -197,7 +199,7 @@ public class TestPlateauRandom2{
                                
                                 int position = positionsPossibles.get(rand.nextInt(positionsPossibles.size()));
                                 //mettre à jour la position du sorcier
-                                plateau.joueurActif.sorcier.setPositionSorcier(position);
+                                //plateau.joueurActif.sorcier.setPositionSorcier(position);
                                 //jouer la carte
                                 plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
                                 actionReussie = true; // L'action a réussi, on peut sortir de la boucle
@@ -265,10 +267,10 @@ public class TestPlateauRandom2{
                     
                     switch(direction){
                         case "gauche":
-                            plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
+                            //plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
                             break;
                         case "droite":
-                            plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
+                            //plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
                             break;
                     }
                     System.out.println("Voici le plateau apres votre coup :");
@@ -302,7 +304,7 @@ public class TestPlateauRandom2{
          
                 
                 i++;
-            }
+            }*/
             int score1 = plateau.getJoueur(1).getNombreCristaux();
             int score2 = plateau.getJoueur(2).getNombreCristaux();
             if(score1 > score2)
@@ -314,3 +316,4 @@ public class TestPlateauRandom2{
     }
     
 }
+

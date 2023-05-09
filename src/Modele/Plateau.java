@@ -67,7 +67,7 @@ public class Plateau {
         // Distribuer les cartes RElique aux joueurs
         for(int i = 0; i < 3; i++) {
             mainJoueur1.ajouterCarte(continuum.remove(0));
-         
+        
             mainJoueur2.ajouterCarte(continuum.remove(0));
             
         }
@@ -259,27 +259,28 @@ public class Plateau {
 
     public int getPositionSorcier(int joueur) {
         if (joueur == 1) 
-            return joueur1.getSorcier().getPositionSorcier();
+            return joueur1.sorcier.getPositionSorcier();
         else 
-            return joueur2.getSorcier().getPositionSorcier();
+            return joueur2.sorcier.getPositionSorcier();
         
     }
 
     public void setTempsSorcier(int joueur) {
         if (joueur == 1) {
-            joueur1.getSorcier().setSensDuTemps(true);
+            joueur1.sorcier.setSensDuTemps(true);
         } else {
-            joueur2.getSorcier().setSensDuTemps(false);
+            joueur2.sorcier.setSensDuTemps(false);
         }
     }
 
-    public void setPositionSorcier(int pos, int joueur) {
+    //TODO supprimer ou remplacer cette methode
+    /*public void setPositionSorcier(int pos, int joueur) {
         if (joueur == 1) {
-            joueur1.getSorcier().setPositionSorcier(pos);
+            joueur1.sorcier.setPositionSorcier(pos);
         } else {
-            joueur2.getSorcier().setPositionSorcier(pos);
+            joueur2.sorcier.setPositionSorcier(pos);
         }
-    }
+    }*/
 
 
     //Fonction qui me donne les cartes portant la couleur interdite sur le continuum

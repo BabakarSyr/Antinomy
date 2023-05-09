@@ -14,9 +14,10 @@ public class TestPlateauRandom1{
         String in;
 
         Random rand = new Random();
+        Jeu jeu = new Jeu();
 
 
-        Plateau plateau = new Plateau();
+        Plateau plateau = jeu.plateau();
         System.out.println("Bienvenue dans le jeu de l'antinomy !");
         System.out.println();
 
@@ -95,14 +96,14 @@ public class TestPlateauRandom1{
             
           
            
-           // Lecture de la carte à jouer
-          System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
-           for (int i =0 ;i < 3; i++) {
+            // Lecture de la carte à jouer
+            System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
+            for (int i =0 ;i < 3; i++) {
                int j=i+1;
                System.out.print("Carte " + j  +"="+ plateau.joueurActif.getMain().getCartes().get(i).toString() + " ");
                System.out.println();
-           }
-           System.out.print("\nTu dois choisir de le placer au niveau d'une carte sur le continuum portant la couleur interdite : ");
+            }
+            System.out.print("\nTu dois choisir de le placer au niveau d'une carte sur le continuum portant la couleur interdite : ");
     
           
             in= sc.next();
@@ -116,7 +117,7 @@ public class TestPlateauRandom1{
                 
 
             }
-            plateau.setPositionSorcier(pos,1);
+            jeu.deplacerSorcier(pos,1);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
             
             
@@ -140,7 +141,7 @@ public class TestPlateauRandom1{
             int pos2 = possible.get(rand.nextInt(possible.size()));
             
           
-            plateau.setPositionSorcier(pos2,2);
+            jeu.deplacerSorcier(pos2,2);
             
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_inactif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_inactif));
                 
@@ -151,7 +152,7 @@ public class TestPlateauRandom1{
     
     
             System.out.println("Que la partie commence:");
-            Jeu jeu = new Jeu(plateau);
+
     
                 
             System.out.println("\nTest jouer");
@@ -183,6 +184,8 @@ public class TestPlateauRandom1{
                 
             
                     boolean actionReussie = false;
+                    //TODO modofier ce qui est commente
+                    /* 
                     do {
                         System.out.print("Choisissez le temps (futur ou passe) : ");
                         String temps = sc.next().toLowerCase();
@@ -249,7 +252,7 @@ public class TestPlateauRandom1{
                     }
 
 
-                }
+                }*/
                     
                 
                 //Si le nom du joeuur actif est le meme que celui du joueur 1
@@ -295,4 +298,6 @@ public class TestPlateauRandom1{
         }
     }
     
+}
+//TODO parenthese en trop
 }

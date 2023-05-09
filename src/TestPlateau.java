@@ -11,8 +11,8 @@ public class TestPlateau {
     public static void main(String[] args) {
         int num_joueur_actif = 0;
         String in;
-        Plateau plateau = new Plateau();
-        Jeu jeu = new Jeu(plateau);
+        Jeu jeu = new Jeu();
+        Plateau plateau = jeu.plateau();
         System.out.println("Bienvenue dans le jeu de l'antinomy !");
         System.out.println();
 
@@ -95,7 +95,7 @@ public class TestPlateau {
                 in= sc.next();
                 pos=Integer.parseInt(in);
             }
-            plateau.setPositionSorcier(pos,1);
+            jeu.deplacerSorcier(pos,1);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
             
             plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
@@ -112,7 +112,7 @@ public class TestPlateau {
             int pos2 = Integer.parseInt(in);
             
           
-            plateau.setPositionSorcier(pos2,2);
+            jeu.deplacerSorcier(pos2,2);
             
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_inactif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_inactif));
             //?   
@@ -152,9 +152,15 @@ public class TestPlateau {
                  
         
                 boolean actionReussie = false;
+                //TODO completer deplacement
                 do {
-                    System.out.print("Choisissez le temps (futur ou passe) : ");
+                    //System.out.print("Choisissez le temps (futur ou passe) : ");
+                    plateau.calculerEmplacementsAccessibles(carteChoisie);
+                    List<Integer> positionsPossibles = plateau.calculerEmplacementsAccessibles(carteChoisie);
+                    System.out.print("Choisir une position sur le plateau parmi les choix possible qui s'offre a vous : ");
                     String temps = sc.next().toLowerCase();
+                    plateau.calculerEmplacementsAccessibles(carteChoisie);
+                    /* 
                     switch (temps) {
                         case "futur":
                             if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())) {
@@ -187,7 +193,7 @@ public class TestPlateau {
                             break;
                         default:
                             System.out.println("Saisie incorrecte. Veuillez saisir futur ou passe");
-                    }
+                    }*/
                 } while (!actionReussie);
                 
                 

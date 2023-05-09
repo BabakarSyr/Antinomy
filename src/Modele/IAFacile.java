@@ -35,25 +35,9 @@ public class IAFacile
         int numPositions = positions.size();
         int positionChoisie = r.nextInt(numPositions);
         this.positionIA = positions.get(positionChoisie);
-        this.plateau.setPositionSorcier(positionIA, this.ordreJoueur); 
+        this.jeu.deplacerSorcier(positionIA, this.ordreJoueur); 
     }
 
-    public void calculerEmplacementsAccessibles(Carte a)
-    {
-        if (this.joueurIA.sorcier.est_possible_aller_futur(a, plateau.getContinuum()))
-        {
-            emplacementsAccessibles.add(positionIA + a.getValeur());
-        }
-        if (this.joueurIA.sorcier.est_possible_aller_passe(a, plateau.getContinuum())) 
-        {                        
-            List<Integer> positionsPossibles = plateau.getJoueur(this.ordreJoueur).sorcier.Position_Possible_Passe(a, plateau.getContinuum());
-
-            for (Integer e : positionsPossibles)
-            {
-                emplacementsAccessibles.add(e);
-            }
-        }
-    }
 
 	public void joue() 
     {
@@ -67,13 +51,13 @@ public class IAFacile
             {
                 indexCarteChoisie = r.nextInt(3);
                 carteChoisie = this.joueurIA.getMain().getCartes().get(indexCarteChoisie);
-                calculerEmplacementsAccessibles(carteChoisie);
+                plateau.calculerEmplacementsAccessibles(carteChoisie);
             }
         
             int emplacementChoisi = emplacementsAccessibles.get(r.nextInt(emplacementsAccessibles.size()));
-            this.plateau.setPositionSorcier(emplacementChoisi, this.ordreJoueur);
+            //TODO verifier que ca fonctionne
+            this.jeu.deplacerSorcier(emplacementChoisi, this.ordreJoueur);
             this.positionIA = emplacementChoisi;
-            //Carte f = plateau.getJoueur(this.ordreJoueur).jouerCarte(indexCarteChoisie, this.plateau.getContinuum());
         }
     }
 

@@ -160,7 +160,8 @@ public class Jeu {
             System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
             direction = scanner.next().toLowerCase();
           }
-          plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
+          //TODO faire jouer 3 cartes
+          //plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
           plateau.codex.changerCouleurInterdite();
           System.out.println("La nouvelle couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
           
@@ -177,6 +178,38 @@ public class Jeu {
         }
       }
     }
+
+    //TODO corriger cette methode
+    /* 
+    public void jouer3Cartes(ArrayList<Carte> continuum,String Direction) {
+        //Main du joueur
+        
+        
+        //int positionSorcier = sorcier.getPositionSorcier();
+        Sorcier sorcier = this.joueurActif().sorcier;
+        int indexSorcier = sorcier.getPositionSorcier();
+        int j = 0;
+        switch(Direction){
+            case "gauche":
+                    for (int i = indexSorcier - 3; i < indexSorcier; i++) {
+                        sorcier.deplacerSorcier(i);
+                        jouerCarte(j, continuum);
+                        j++;
+                    }
+                    sorcier.setPositionSorcier(indexSorcier);
+                
+                break;
+            case "droite":
+            
+                for (int i = indexSorcier + 1; i < indexSorcier + 4; i++) {
+                    sorcier.setPositionSorcier(i);
+                    jouerCarte(j, continuum);
+                    j++;
+                }
+                sorcier.setPositionSorcier(indexSorcier);
+                break;
+        }
+    }*/
     
 
     
@@ -195,12 +228,20 @@ public class Jeu {
     public void jouerCarte(int indiceCarteMain, int indiceContinuum){
         Joueur joueur = joueurActif();
         if(deplacementPossible(indiceCarteMain, indiceContinuum)){
-            deplacerSorcier(indiceContinuum);
+            //???
+            //(indiceContinuum);
             echangerCarte(indiceCarteMain, indiceContinuum);
         }
     }
-    public boolean deplacementPossible(){
-        return plateau.deplacementPossible();
+
+    public boolean deplacementPossible(int indiceCarteMain, int indiceContinuum){
+        Joueur joueur = joueurActif();
+        ArrayList<Integer> indiceList = plateau.calculerEmplacementsAccessibles(joueur.getMain().getCarte(indiceCarteMain));
+        return indiceList.contains(indiceContinuum);
+    }
+
+    public void deplacerSorcier(int positionSorcier, int indicejoueur) {
+        plateau.getJoueur(indicejoueur).sorcier.positionSorcier = positionSorcier;
     }
 
     //Equivalent echanger carte
@@ -217,26 +258,36 @@ public class Jeu {
             joueur.getMain().ajouterCarte(carteContinuum,indiceCarteMain);
     }
 
+    public int indiceJoueur(Joueur j)
+    {
+        if (j==this.plateau.joueur1)
+        {
+            return 1;
+        }
+        return 2;
+    }
+
     // echange les 3 cartes en main avec 3 cartes du plateau suite à un paradoxe
     public void echangerParadoxe(boolean futur) {
         Joueur joueur = joueurActif();
+        int indiceJoueur = indiceJoueur(joueur);
         int indexSorcier = joueur.sorcier.getPositionSorcier();
         int j = 0;
         if(futur){
             for (int i = indexSorcier - 3; i < indexSorcier; i++) {
-                joueur.sorcier.setPositionSorcier(i);
+                deplacerSorcier(i, indiceJoueur);
                 echangerCarte(j, i);
                 j++;
             }
-            joueur.sorcier.setPositionSorcier(indexSorcier);
+            deplacerSorcier(indexSorcier, indiceJoueur);
         }
         else{
             for (int i = indexSorcier + 1; i < indexSorcier + 4; i++) {
-                joueur.sorcier.setPositionSorcier(i);
+                deplacerSorcier(i, indiceJoueur);
                 echangerCarte(j, i);
                 j++;
             }
-            joueur.sorcier.setPositionSorcier(indexSorcier);
+            deplacerSorcier(indexSorcier, indiceJoueur);
         }
     }
 
