@@ -134,7 +134,7 @@ public class Joueur {
         }
         return total;
     }
-
+ 
 
     //Trie les acrte dans la main du joeur selon leur valeur
     public void trierCartes(MainDeCartes main) {
