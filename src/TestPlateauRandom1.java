@@ -190,7 +190,7 @@ public class TestPlateauRandom1{
                             case "futur":
                                 if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())) {
                                     plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.getContinuum());
-                                    plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
+                                    plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
                                     actionReussie = true; // L'action a réussi, on peut sortir de la boucle
                                 } else {
                                     System.out.println("Vous ne pouvez pas aller dans le futur .Vous ne pouvez aller que dans le passe avec cette carte");
@@ -210,7 +210,7 @@ public class TestPlateauRandom1{
                                     //mettre à jour la position du sorcier
                                     plateau.joueurActif.sorcier.setPositionSorcier(position);
                                     //jouer la carte
-                                    plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
+                                    plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
                                     actionReussie = true; // L'action a réussi, on peut sortir de la boucle
                                 } else {
                                     System.out.println("Vous ne pouvez pas aller dans le passe .Vous ne pouvez aller que dans le futur avec cette carte");
@@ -229,7 +229,7 @@ public class TestPlateauRandom1{
                         case "futur":
                             if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())) {
                                 plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.getContinuum());
-                                plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
+                                plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
                             }
                             break;
                         case "passe":
@@ -239,7 +239,7 @@ public class TestPlateauRandom1{
                                 //mettre à jour la position du sorcier
                                 plateau.joueurActif.sorcier.setPositionSorcier(position);
                                 //jouer la carte
-                                plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
+                                plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
                             }
                             break;
                     }
@@ -264,67 +264,7 @@ public class TestPlateauRandom1{
                 
                 jeu.duel();
 
-                     // Vérifier si le joueur actif a un paradoxe apres qu'il ait joué
-                if(jeu.isParadoxe(plateau.joueurActif.getMain())){
-                    System.out.println("Vous avez un paradoxe");
-
-                    //Afficher les cartes du joueur actif
-                    for(int j=0; j<3; j++){
-                        System.out.println("Carte "+(j+1)+" : "+plateau.joueurActif.getMain().getCartes().get(j).toString());
-                    }
-
-                    //Le joueur actif gagne 1 cristal
-                    plateau.joueurActif.ajouterCristaux(1);
-            
-                    System.out.println("Récapitulatif :");
-                    System.out.println("Le joueur "+plateau.joueur1.getNom()+" a en sa possession "+plateau.joueur1.getNombreCristaux()+" cristaux");
-                    System.out.println("Le joueur "+plateau.joueur2.getNom()+" a en sa possession "+plateau.joueur2.getNombreCristaux()+" cristaux");
-                
-                    //Le joueur melange les cartes entre ses mains
-                    plateau.joueurActif.getMain().melangerCartes();
-
-                    System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
-                    String direction;
-                    if (plateau.getJoueurActif().getNom().equals(nomJoueur1)){
-                        direction = sc.next().toLowerCase();
-                        while(!jeu.est_Possible_Placer_3cartes(direction)){
-                            System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
-            
-                            direction = sc.next().toLowerCase();
-                        }
-                    }
-                    else{
-                         direction = rand.nextBoolean() ? "gauche" : "droite";
-                        while(!jeu.est_Possible_Placer_3cartes(direction)){
-                            direction = rand.nextBoolean() ? "gauche" : "droite";
-                        }
-                    }
-
-                    
-                    switch(direction){
-                        case "gauche":
-                            plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-                            break;
-                        case "droite":
-                            plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-                            break;
-                    }
-                    System.out.println("Voici le plateau apres votre coup :");
-                    if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
-                        plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_actif),plateau.getPositionSorcier(num_joueur_inactif));
-                    else
-                        plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_inactif),plateau.getPositionSorcier(num_joueur_actif));
-                        
-                    plateau.codex.changerCouleurInterdite();
-                    System.out.println("La couleur interdite est maintenant :"+ (String)plateau.codex.getCouleurInterdite().getCode());
-                }
-                     
-               
-
-
-                System.out.println();
-                System.out.println("Ton sorcier "+plateau.getJoueurActif().getNom() +" est maintenant situé à la position :"+plateau.getPositionSorcier(num_joueur_actif));
-
+                jeu.paradoxe();
                
                 
                  // Une fois que le joueur a terminé son tour, on change de joueur actif au niveau du plateau
