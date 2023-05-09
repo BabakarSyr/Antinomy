@@ -144,7 +144,7 @@ public class PlateauGraphique extends JComponent {
 		finContinuumX = debutContinuumX + largeurContinuum;
 		finContinuumY = debutContinuumY + hauteurContinuum;
 		
-		ArrayList<Carte> continuum = jeu.getPlateau().getContinuum();
+		ArrayList<Carte> continuum = jeu.plateau().getContinuum();
 		for(int i =0; i< continuum.size(); i++){
 			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
@@ -159,7 +159,7 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueurActifX = 6*largeurCarte;
 		finMainJoueurActifY = height;
 
-		ArrayList<Carte> main = jeu.getPlateau().getJoueurActif().getMain().getCartes();
+		ArrayList<Carte> main = jeu.plateau().getJoueurActif().getMain().getCartes();
 		for(int i =0; i< main.size(); i++){
 			if (i == carteSelectionne){
 				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY-hauteurCarte/4, largeurCarte, hauteurCarte, null);
@@ -181,7 +181,7 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueurSecondaireX = 6*largeurCarte;
 		finMainJoueurSecondaireY = hauteurCarte;
 		if(mainOuverte){
-			ArrayList<Carte> main = jeu.getPlateau().getJoueur(2).getMain().getCartes();
+			ArrayList<Carte> main = jeu.plateau().getJoueur(2).getMain().getCartes();
 			for(int i =0; i< main.size(); i++){
 				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
 			}
