@@ -26,6 +26,7 @@ public class AdaptateurSouris extends MouseAdapter {
 				indiceCarte = aire.getCarte(ZoneClic.CONTINUUM);
 				System.out.println("carte " + indiceCarte);
 				c.clicCarteContinuum(indiceCarte);
+				aire.setCarteSelectionne(-1);
 				aire.repaint();
 				break;
 			case MAIN_JOUEUR_COURANT:
@@ -34,6 +35,7 @@ public class AdaptateurSouris extends MouseAdapter {
 				indiceCarte = aire.getCarte(ZoneClic.MAIN_JOUEUR_COURANT);
 				System.out.println("carte " + indiceCarte);
 				c.clicCarteMain(indiceCarte);
+				aire.setCarteSelectionne(indiceCarte);
 				aire.repaint();
 				break;
 			default:

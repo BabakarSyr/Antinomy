@@ -27,6 +27,8 @@ public class AireDeDessin extends JComponent {
 		codex;
 	Graphics2D drawable;
 
+	int carteSelectionne;
+
 	public AireDeDessin(Jeu j) {
 		
 		jeu = j;
@@ -57,6 +59,8 @@ public class AireDeDessin extends JComponent {
 		debutMainJoueurSecondaireY = 0;
 		finMainJoueurSecondaireX = 0;
 		finMainJoueurSecondaireY = 0;
+
+		carteSelectionne=-1;
 	}
 
 	public void chargerImages(){
@@ -157,7 +161,12 @@ public class AireDeDessin extends JComponent {
 
 		ArrayList<Carte> main = jeu.getPlateau().getJoueurActif().getMain().getCartes();
 		for(int i =0; i< main.size(); i++){
-			drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY, largeurCarte, hauteurCarte, null);
+			if (i == carteSelectionne){
+				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY-hauteurCarte/4, largeurCarte, hauteurCarte, null);
+			}
+			else {
+				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY, largeurCarte, hauteurCarte, null);
+			}
 		}
 		
 	}
@@ -222,6 +231,16 @@ public class AireDeDessin extends JComponent {
 			default:
 				return null;
 		}
+	}
+
+	public void setCarteSelectionne(int carteSelectionne) {
+		if (carteSelectionne!=this.carteSelectionne){
+			this.carteSelectionne = carteSelectionne;
+		}
+		else{
+			this.carteSelectionne=-1;
+		}
+		
 	}
 
 	void tracerImage(Carte carte, int position){
