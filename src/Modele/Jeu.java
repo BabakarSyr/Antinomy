@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-import Modele.Carte.Couleur;
 
 
 public class Jeu {
