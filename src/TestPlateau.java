@@ -94,20 +94,16 @@ public class TestPlateau {
                 System.out.print("Tu dois choisir de le placer au niveau d'une carte sur le continuum portant la couleur interdite : ");
                 in= sc.next();
                 pos=Integer.parseInt(in);
-               
-                
-
             }
             plateau.setPositionSorcier(pos,1);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
             
-            
-           plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
+            plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
 
-
+            plateau.changerJoueurActif();
             System.out.println();
             
-            System.out.println(plateau.getJoueur(num_joueur_inactif).getNom());
+            System.out.println(plateau.joueurActif.getNom());
             // Lecture de la carte à jouer
             System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
             jeu.afficher_cartes_main();
@@ -125,6 +121,7 @@ public class TestPlateau {
     
             //Afficher le plateau et colorer position sorcier
             plateau.afficher_colorSorcier_continuum(pos,pos2);
+            plateau.changerJoueurActif();
     
     
             System.out.println("Que la partie commence:");

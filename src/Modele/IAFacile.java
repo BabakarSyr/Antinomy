@@ -15,7 +15,7 @@ public class IAFacile
     {
 		r = new Random();
         this.jeu = j;
-        this.plateau = this.jeu.getPlateau();
+        this.plateau = this.jeu.plateau();
         this.emplacementsAccessibles = new ArrayList<>();
         this.joueurIA = plateau.getJoueurParNom(new String("IA Facile"));
         this.positionIA = 0;

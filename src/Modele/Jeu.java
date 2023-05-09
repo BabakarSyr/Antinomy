@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-import Modele.Carte.Couleur;
-
 
 public class Jeu {
      Plateau plateau;
@@ -17,7 +15,7 @@ public class Jeu {
     }
 
     ////////
-    public Plateau getPlateau()
+    public Plateau plateau()
     {
         return this.plateau;
     }
@@ -65,7 +63,7 @@ public class Jeu {
             System.out.println();
         }
     }
-    
+
     ////////
     
 
@@ -193,6 +191,51 @@ public class Jeu {
         int positionSorcierJoueur1 = plateau.joueur1.sorcier.getPositionSorcier();
         int positionSorcierJoueur2 = plateau.joueur2.sorcier.getPositionSorcier();
         return positionSorcierJoueur1 == positionSorcierJoueur2;
+    }
+
+    //Equivalent echanger carte
+    public Carte echangerCarte(int indiceCarteMain, int indiceContinuum) {//indiceCarteMain=[0-2]
+            Joueur joueur = joueurActif();
+            Carte carte = joueur.getMain().getCarte(indiceCarteMain);
+            joueur.getMain().retirerCarte(indiceCarteMain);
+        
+            // Échange de la carte avec la carte à la position du sorcier dans le continuum
+            Carte carteContinuum = continuum().get(indiceContinuum);
+            continuum().set(indiceContinuum, carte);
+        
+            // Ajouter la carte du continuum à la main du joueur
+            joueur.getMain().ajouterCarte(carteContinuum,indiceCarteMain);
+            return carte;
+    }
+    // echange les 3 cartes en main avec 3 cartes du plateau suite à un paradoxe
+    public void echangerParadoxe(boolean futur) {
+        Joueur joueur = joueurActif();
+        int indexSorcier = joueur.sorcier.getPositionSorcier();
+        int j = 0;
+        if(futur){
+            for (int i = indexSorcier - 3; i < indexSorcier; i++) {
+                joueur.sorcier.setPositionSorcier(i);
+                echangerCarte(j, i);
+                j++;
+            }
+            joueur.sorcier.setPositionSorcier(indexSorcier);
+        }
+        else{
+            for (int i = indexSorcier + 1; i < indexSorcier + 4; i++) {
+                joueur.sorcier.setPositionSorcier(i);
+                echangerCarte(j, i);
+                j++;
+            }
+            joueur.sorcier.setPositionSorcier(indexSorcier);
+        }
+    }
+
+    public Joueur joueurActif(){
+        return plateau.getJoueurActif();
+    }
+
+    public ArrayList<Carte> continuum(){
+        return plateau.getContinuum();
     }
 
 
