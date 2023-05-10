@@ -37,11 +37,6 @@ public class Carte {
         return forme;
     }
 
-
-    public String getCarte() {
-        return forme + "_" + couleur.getCouleur();
-    }
-    
     public String toString() {
         return "{" +
         "forme=" + forme +
