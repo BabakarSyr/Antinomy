@@ -127,17 +127,17 @@ public class PlateauGraphique extends JComponent {
 			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
 		tracerCodex(continuum);
-		tracerSorcierActif(continuum);
-		tracerSorcierPassif(continuum);
+		tracerSorcier1(continuum);
+		tracerSorcier2(continuum);
 	}
 
-	void tracerSorcierActif(ArrayList<Carte> continuum){
+	void tracerSorcier1(ArrayList<Carte> continuum){
 		int posSorcier=jeu.plateau().getPositionSorcier(1);
 		drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
 
 	}
 
-	void tracerSorcierPassif(ArrayList<Carte> continuum){
+	void tracerSorcier2(ArrayList<Carte> continuum){
 		int posSorcier=jeu.plateau().getPositionSorcier(2);
 		drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
 	}
