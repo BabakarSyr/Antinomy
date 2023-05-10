@@ -13,6 +13,7 @@ public class IADifficile {
     Map<Carte, Boolean> Potentiel_Main_Adversaire ;
     MainDeCartes Vrai_Main_Adversaire;
     List<List<Carte>> mainPossible;
+    int nbTours;
 
     Partie clone;
 
@@ -278,17 +279,16 @@ public class IADifficile {
     }*/
 
 
-    public int[] minimax(Partie etatJeu, int profondeur, boolean tourIA) {
+    public int[] minimax(Partie etatJeu, int profondeur, Joueur joueurActif) {
         int meilleurScore;
         int[] meilleurCoup = new int[2];
     
         if (profondeur == 0 || etatJeu.partieTerminee()) {
             //Joueur actif
-            Joueur joueurActif = etatJeu.getJoueurActif();
             meilleurScore = evaluer(etatJeu,joueurActif);
             meilleurCoup = null;
         } 
-        else if (tourIA) {
+        else if (joueurActif==etatJeu.joueur2) {
             // Tour de l'IA=Max(minimax(etatcourantdujeu,profondeur-1,tourIA).Donc l'IA cherche a maximiser son score
             meilleurScore = Integer.MIN_VALUE;
             for (int i = 0; i < 3; i++) {
@@ -296,7 +296,9 @@ public class IADifficile {
                     Partie nouvelEtat = etatJeu.copie();
                     nouvelEtat.joueur2.sorcier.setPositionSorcier(j);
                     nouvelEtat.joueur2.jouerCarte(i, nouvelEtat.continuum);
-                    int score = minimax(nouvelEtat, profondeur - 1, false)[0];
+                    nbTours--;
+                    //le joueur actif sera l'adversaire
+                    int score = minimax(nouvelEtat, profondeur - 1, etatJeu.joueur1)[0];
                     if (score > meilleurScore) {
                         meilleurScore = score;
                         meilleurCoup[0] = i;
@@ -314,7 +316,8 @@ public class IADifficile {
                     nouvelEtat.joueur1.sorcier.setPositionSorcier(j);
                     nouvelEtat.joueur1.jouerCarte(i, nouvelEtat.continuum);
                     Coup_jouer_Par_Adversaire(nouvelEtat);
-                    int score = minimax(nouvelEtat, profondeur - 1, true)[0];
+                    nbTours=nbTours+2;
+                    int score = minimax(nouvelEtat, profondeur - 1,   etatJeu.joueur2)[0];
                     if (score < meilleurScore) {
                         meilleurScore = score;
                         meilleurCoup[0] = i;
@@ -340,17 +343,36 @@ public class IADifficile {
        if(joueurActif==etatJeu.joueur2)
             if (etatJeu.isParadoxe(etatJeu.joueur2.main))
                 score += 100;
-        else{
-            /*
-             * Pour le joueur min, nous pouvons simuler toutes les combinaisons possibles de cartes qu'il 
-             * pourrait avoir en main, en prenant en compte les cartes qu'il a déjà jouées et celles que 
-             * nous avons en notre possession. Ensuite, pour chaque combinaison possible, nous pouvons 
-             * vérifier s'il existe une combinaison de trois cartes qui forme un Paradoxe possible, et 
-             * ajouter une valeur positive à score si c'est le cas.
-             */
 
+                //Si le mouvement expose l'IA à un risque élevé de perdre un duel
+            if (etatJeu.isDuel()) {
+                double probabilite = Probabilite_Gagner_Duel();
+                if (probabilite > 50)
+                    score += probabilite;
+                else
+                    score -= 50;
+            }
+
+        else{
+        
+            //if(profondeur<6){
+                List <List<Carte>> combinaisons = All_Main_Possible();
+                int count=0;
+                for (List<Carte> combinaison : combinaisons) {
+                    if (etatJeu.isParadoxe((MainDeCartes)combinaison))
+                    count += 100;
+                }
+                int moyenne_score = count / combinaisons.size();//On a toujours 4 combinaisons possibles tat que on a pas atteint la profodeur 6
+                score += moyenne_score ;
+            /* }
+            else{
+                if (etatJeu.isParadoxe(Vrai_Main_Adversaire))
+                    score += 100;
+            }*/
 
         }
+       
+
            
 
 
