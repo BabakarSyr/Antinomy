@@ -67,7 +67,7 @@ public class TestPlateauRandom2{
             System.out.println();
 
             System.out.println("Voici le plateau de jeu :");
-            plateau.afficher_continuum();
+            plateau.afficherContinuum();
             System.out.println();
     
             
@@ -79,7 +79,7 @@ public class TestPlateauRandom2{
             
             
     
-            List<Integer> possible =  plateau.pos_carte_couleur_interdite() ;
+            List<Integer> possible =  plateau.positionsDepartPossible() ;
             System.out.println("A quel emplacement sur le plateau veux tu placer ta baguette magique ?");
             System.out.println("Les indices des cartes portant la couleur interdite sont :");
             for(int i=0;i< possible.size();i++){
@@ -102,7 +102,7 @@ public class TestPlateauRandom2{
            
             //les positions possibles sont dans la liste possible.On choisit une position au hasard
             int pos = possible.get(rand.nextInt(possible.size()));
-            jeu.deplacerSorcier(pos,1);
+            jeu.deplacerSorcier(pos);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
            plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
 
@@ -124,7 +124,9 @@ public class TestPlateauRandom2{
             int pos2 = possible.get(rand.nextInt(possible.size()));
             
           
-            jeu.deplacerSorcier(pos2,2);
+            plateau.changerJoueurActif();
+            jeu.deplacerSorcier(pos2);
+            plateau.changerJoueurActif();
             
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_inactif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_inactif));
                 

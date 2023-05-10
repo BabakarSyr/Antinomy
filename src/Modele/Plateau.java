@@ -170,6 +170,15 @@ public class Plateau {
         return positions;
     }
 
+    public void afficherCartesAcceccibles(ArrayList<Integer> listeIndiceCartes)
+    {
+        System.out.println("emplacements possibles :");
+        for (int i=0; i<listeIndiceCartes.size(); i++)
+        {
+            System.out.println(listeIndiceCartes.get(i));
+        }
+    }
+
     public void changerJoueurActif() {
         if (joueurActif == joueur1) {
             joueurActif = joueur2;

@@ -5,6 +5,7 @@ import Modele.Carte;
 import Modele.Jeu;
 import Modele.Plateau;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestPlateau {
@@ -58,7 +59,7 @@ public class TestPlateau {
             System.out.println();
 
             System.out.println("Voici le plateau de jeu :");
-            plateau.afficher_continuum();
+            plateau.afficherContinuum();
             System.out.println();
     
             
@@ -70,7 +71,7 @@ public class TestPlateau {
             
             
     
-            List<Integer> possible =  plateau.pos_carte_couleur_interdite() ;
+            List<Integer> possible =  plateau.positionsDepartPossible() ;
             System.out.println("A quel emplacement sur le plateau veux tu placer ta baguette magique ?");
             System.out.println("Les indices des cartes portant la couleur interdite sont :");
             for(int i=0;i< possible.size();i++){
@@ -95,7 +96,7 @@ public class TestPlateau {
                 in= sc.next();
                 pos=Integer.parseInt(in);
             }
-            jeu.deplacerSorcier(pos,1);
+            jeu.deplacerSorcier(pos);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
             
             plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
@@ -111,13 +112,11 @@ public class TestPlateau {
             in= sc.next();
             int pos2 = Integer.parseInt(in);
             
-          
-            jeu.deplacerSorcier(pos2,2);
+            plateau.changerJoueurActif();
+            jeu.deplacerSorcier(pos2);
+            plateau.changerJoueurActif();
             
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_inactif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_inactif));
-            //?   
-            //plateau.setTempsSorcier(num_joueur_inactif);
-            //
     
             //Afficher le plateau et colorer position sorcier
             plateau.afficher_colorSorcier_continuum(pos,pos2);
@@ -149,53 +148,29 @@ public class TestPlateau {
                 int indexCarteChoisie = Integer.parseInt(in)-1;
 
                 Carte carteChoisie = plateau.joueurActif.getMain().getCartes().get(indexCarteChoisie);
-                 
-        
-                boolean actionReussie = false;
-                //TODO completer deplacement
-                do {
-                    //System.out.print("Choisissez le temps (futur ou passe) : ");
-                    plateau.calculerEmplacementsAccessibles(carteChoisie);
-                    List<Integer> positionsPossibles = plateau.calculerEmplacementsAccessibles(carteChoisie);
+                boolean pasDeDeplacements = true;
+                plateau.cartesAccessibles(carteChoisie);
+                ArrayList<Integer> positionsPossibles = plateau.cartesAccessibles(carteChoisie);
+                if (positionsPossibles.size()>0)
+                {
+                    do
+                    {
+                    plateau.afficherCartesAcceccibles(positionsPossibles);
                     System.out.print("Choisir une position sur le plateau parmi les choix possible qui s'offre a vous : ");
-                    String temps = sc.next().toLowerCase();
-                    plateau.calculerEmplacementsAccessibles(carteChoisie);
-                    /* 
-                    switch (temps) {
-                        case "futur":
-                            if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())) {
-                                plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.getContinuum());
-                                plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
-                                actionReussie = true; // L'action a réussi, on peut sortir de la boucle
-                            } else {
-                                System.out.println("Vous ne pouvez pas aller dans le futur .Vous ne pouvez aller que dans le passe avec cette carte");
-                            }
-                            break;
-                        case "passe":
-                            if (plateau.joueurActif.sorcier.est_possible_aller_passe(carteChoisie, plateau.getContinuum())) {
-                                List<Integer> positionsPossibles = plateau.joueurActif.sorcier.Position_Possible_Passe(carteChoisie, plateau.getContinuum());
-                                System.out.print("Choisir une position sur le plateau parmi les choix possible qui s'offre a vous : ");
-                                in = sc.next();
-                                int position = Integer.parseInt(in);
-                                while (!positionsPossibles.contains(position)) {
-                                    System.out.print("La position que vous avez choisi n'est pas valide, veuillez choisir une autre position : ");
-                                    in = sc.next();
-                                    position = Integer.parseInt(in);
-                                }
-                                //mettre à jour la position du sorcier
-                                plateau.joueurActif.sorcier.setPositionSorcier(position);
-                                //jouer la carte
-                                plateau.joueurActif.jouerCarte(indexCarteChoisie, plateau.getContinuum());
-                                actionReussie = true; // L'action a réussi, on peut sortir de la boucle
-                            } else {
-                                System.out.println("Vous ne pouvez pas aller dans le passe .Vous ne pouvez aller que dans le futur avec cette carte");
-                            }
-                            break;
-                        default:
-                            System.out.println("Saisie incorrecte. Veuillez saisir futur ou passe");
-                    }*/
-                } while (!actionReussie);
-                
+                    in = sc.next();
+                    int position = Integer.parseInt(in);
+                    while (!positionsPossibles.contains(position)) 
+                    {
+                        System.out.print("La position que vous avez choisi n'est pas valide, veuillez choisir une autre position : ");
+                        in = sc.next();
+                        position = Integer.parseInt(in);
+                    }
+                    jeu.echangerCarte(indexCarteChoisie, position);
+                    jeu.deplacerSorcier(position);
+                    }
+                    while(pasDeDeplacements);
+                    pasDeDeplacements = false;
+                }
                 
                 //Si le nom du joeur actif est le meme que celui du joueur 1
                 System.out.println("Voici le plateau apres votre coup :");

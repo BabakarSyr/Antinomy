@@ -5,11 +5,14 @@ import Modele.Carte;
 import Modele.Jeu;
 import Modele.Plateau;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class TestPlateauRandom1{
-    public static void main(String[] args) {
+public class TestPlateauRandom1
+{
+    public static void main(String[] args) 
+    {
         int num_joueur_actif ;
         String in;
 
@@ -24,7 +27,8 @@ public class TestPlateauRandom1{
 
 
        
-        try (Scanner sc = new Scanner(System.in)) {
+        try (Scanner sc = new Scanner(System.in)) 
+        {
             System.out.print("Entrez le nom du joueur 1 : ");
             //le joueur1 est en rose
             String nomJoueur1 = "\033[95m\033[7m"+sc.next()+"\033[0m";
@@ -74,7 +78,7 @@ public class TestPlateauRandom1{
             System.out.println();
 
             System.out.println("Voici le plateau de jeu :");
-            plateau.afficher_continuum();
+            plateau.afficherContinuum();
             System.out.println();
     
             
@@ -86,7 +90,7 @@ public class TestPlateauRandom1{
             
             
     
-            List<Integer> possible =  plateau.pos_carte_couleur_interdite() ;
+            List<Integer> possible =  plateau.positionsDepartPossible() ;
             System.out.println("A quel emplacement sur le plateau veux tu placer ta baguette magique ?");
             System.out.println("Les indices des cartes portant la couleur interdite sont :");
             for(int i=0;i< possible.size();i++){
@@ -117,7 +121,7 @@ public class TestPlateauRandom1{
                 
 
             }
-            jeu.deplacerSorcier(pos,1);
+            jeu.deplacerSorcier(pos);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
             
             
@@ -141,7 +145,9 @@ public class TestPlateauRandom1{
             int pos2 = possible.get(rand.nextInt(possible.size()));
             
           
-            jeu.deplacerSorcier(pos2,2);
+            plateau.changerJoueurActif();
+            jeu.deplacerSorcier(pos2);
+            plateau.changerJoueurActif();
             
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_inactif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_inactif));
                 
@@ -175,7 +181,8 @@ public class TestPlateauRandom1{
                
                
       
-                if (plateau.getJoueurActif().getNom().equals(nomJoueur1)) {
+                if (plateau.getJoueurActif().getNom().equals(nomJoueur1)) 
+                {
                     System.out.print("Choisissez la carte à jouer dans votre main(1, 2 ou 3) : "+"\n");
                     in= sc.next();
                     int indexCarteChoisie = Integer.parseInt(in)-1;
@@ -183,54 +190,38 @@ public class TestPlateauRandom1{
                     Carte carteChoisie = plateau.joueurActif.getMain().getCartes().get(indexCarteChoisie);
                 
             
-                    boolean actionReussie = false;
-                    //TODO modofier ce qui est commente
-                    /* 
-                    do {
-                        System.out.print("Choisissez le temps (futur ou passe) : ");
-                        String temps = sc.next().toLowerCase();
-                        switch (temps) {
-                            case "futur":
-                                if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())) {
-                                    plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.getContinuum());
-                                    //TODO corriger la ligne commentee
-                                    //plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
-                                    actionReussie = true; // L'action a réussi, on peut sortir de la boucle
-                                } else {
-                                    System.out.println("Vous ne pouvez pas aller dans le futur .Vous ne pouvez aller que dans le passe avec cette carte");
-                                }
-                                break;
-                            case "passe":
-                                if (plateau.joueurActif.sorcier.est_possible_aller_passe(carteChoisie, plateau.getContinuum())) {
-                                    List<Integer> positionsPossibles = plateau.joueurActif.sorcier.Position_Possible_Passe(carteChoisie, plateau.getContinuum());
-                                    System.out.print("Choisir une position sur le plateau parmi les choix possible qui s'offre a vous : ");
-                                    in = sc.next();
-                                    int position = Integer.parseInt(in);
-                                    while (!positionsPossibles.contains(position)) {
-                                        System.out.print("La position que vous avez choisi n'est pas valide, veuillez choisir une autre position : ");
-                                        in = sc.next();
-                                        position = Integer.parseInt(in);
-                                    }
-                                    //mettre à jour la position du sorcier
-                                    plateau.joueurActif.sorcier.setPositionSorcier(position);
-                                    //jouer la carte
-                                    //TODO corriger la ligne commentee
-                                    //plateau.joueurActif.echangerCarte(indexCarteChoisie, plateau.getContinuum());
-                                    actionReussie = true; // L'action a réussi, on peut sortir de la boucle
-                                } else {
-                                    System.out.println("Vous ne pouvez pas aller dans le passe .Vous ne pouvez aller que dans le futur avec cette carte");
-                                }
-                                break;
-                            default:
-                                System.out.println("Saisie incorrecte. Veuillez saisir futur ou passe");
+                    boolean pasDeDeplacements = true;
+                    plateau.cartesAccessibles(carteChoisie);
+                    ArrayList<Integer> positionsPossibles = plateau.cartesAccessibles(carteChoisie);
+                    if (positionsPossibles.size()>0)
+                    {
+                        do
+                        {
+                        plateau.afficherCartesAcceccibles(positionsPossibles);
+                        System.out.print("Choisir une position sur le plateau parmi les choix possible qui s'offre a vous : ");
+                        in = sc.next();
+                        int position = Integer.parseInt(in);
+                        while (!positionsPossibles.contains(position)) 
+                        {
+                            System.out.print("La position que vous avez choisi n'est pas valide, veuillez choisir une autre position : ");
+                            in = sc.next();
+                            position = Integer.parseInt(in);
                         }
-                    } while (!actionReussie);
-                } 
-                else {
+                        jeu.echangerCarte(indexCarteChoisie, position);
+                        jeu.deplacerSorcier(position);
+                        }
+                        while(pasDeDeplacements);
+                        pasDeDeplacements = false;
+                    }
+                }
+                /* 
+                else
+                {
                     int indexCarteChoisie = rand.nextInt(3); // Choisir une carte au hasard
                     Carte carteChoisie = plateau.joueurActif.getMain().getCartes().get(indexCarteChoisie);
                     String temps = rand.nextBoolean() ? "futur" : "passe"; // Choisir un temps au hasar
-                    switch (temps) {
+                    switch (temps) 
+                    {
                         case "futur":
                             if (plateau.joueurActif.sorcier.est_possible_aller_futur(carteChoisie, plateau.getContinuum())) {
                                 plateau.joueurActif.sorcier.deplacerFutur(carteChoisie, plateau.getContinuum());
@@ -250,9 +241,7 @@ public class TestPlateauRandom1{
                             }
                             break;
                     }
-
-
-                }*/
+                }
                     
                 
                 //Si le nom du joeuur actif est le meme que celui du joueur 1
@@ -287,7 +276,7 @@ public class TestPlateauRandom1{
          
                 
                 i++;
-            }
+            }*/
             int score1 = plateau.getJoueur(1).getNombreCristaux();
             int score2 = plateau.getJoueur(2).getNombreCristaux();
             if(score1 > score2)
@@ -296,8 +285,7 @@ public class TestPlateauRandom1{
                 System.out.println("Le joueur "+plateau.getJoueur(2).getNom()+" a gagné avec un score de "+score2+" contre "+score1+" pour le joueur "+plateau.getJoueur(1).getNom());
             
         }
+        }
     }
-    
-}
 //TODO parenthese en trop
 }

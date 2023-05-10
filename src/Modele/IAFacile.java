@@ -31,11 +31,11 @@ public class IAFacile
 
     public void setPosInitiale()
     {
-        List<Integer> positions = this.plateau.pos_carte_couleur_interdite();
+        List<Integer> positions = this.plateau.positionsDepartPossible();
         int numPositions = positions.size();
         int positionChoisie = r.nextInt(numPositions);
         this.positionIA = positions.get(positionChoisie);
-        this.jeu.deplacerSorcier(positionIA, this.ordreJoueur); 
+        this.jeu.deplacerSorcier(positionIA); 
     }
 
 
@@ -51,12 +51,12 @@ public class IAFacile
             {
                 indexCarteChoisie = r.nextInt(3);
                 carteChoisie = this.joueurIA.getMain().getCartes().get(indexCarteChoisie);
-                plateau.calculerEmplacementsAccessibles(carteChoisie);
+                plateau.cartesAccessibles(carteChoisie);
             }
         
             int emplacementChoisi = emplacementsAccessibles.get(r.nextInt(emplacementsAccessibles.size()));
             //TODO verifier que ca fonctionne
-            this.jeu.deplacerSorcier(emplacementChoisi, this.ordreJoueur);
+            this.jeu.deplacerSorcier(emplacementChoisi);
             this.positionIA = emplacementChoisi;
         }
     }
