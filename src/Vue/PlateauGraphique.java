@@ -210,7 +210,7 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueurSecondaireX = 6*largeurCarte;
 		finMainJoueurSecondaireY = hauteurCarte;
 		if(mainOuverte){
-			ArrayList<Carte> main = jeu.plateau().getJoueur(2).getMain().getCartes();
+			ArrayList<Carte> main = jeu.plateau().getJoueur(2).getMain();
 			for(int i =0; i< main.size(); i++){
 				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
 			}

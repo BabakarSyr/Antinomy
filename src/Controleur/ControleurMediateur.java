@@ -57,15 +57,34 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
     
 
-    //TODO Compléter méthode clicCarteContinuum
+    // Actions à effectuer en cas de clic sur une des cartes du continuum
     @Override
     public void clicCarteContinuum(int indiceCarteContinuum) {
         System.out.println(etatJeu);
         switch(etatJeu){
             case CARTE_SELECTIONNEE:
                 //Jouer coup
-                jeu.jouerCarte(carteSelectionnee, indiceCarteContinuum);
-                etatJeu = EtatJeu.DEBUT_TOUR;
+                if(jeu.estDeplacementPossible(carteSelectionnee, indiceCarteContinuum)){
+                    jeu.jouerCarte(carteSelectionnee, indiceCarteContinuum);
+                    if(jeu.estParadoxe()){
+                        etatJeu = EtatJeu.PARADOXE;
+                    }
+                }
+            case PARADOXE:
+                if(jeu.estPossibleEchangerParadoxe(indiceCarteContinuum)){
+                    if(indiceCarteContinuum>jeu.joueurActif().sorcier.getPositionSorcier()){
+                        jeu.echangerParadoxe(true);
+                    }
+                    else{
+                        jeu.echangerParadoxe(false);
+                    }
+                    jeu.joueurActif().ajouterCristaux(1);
+                    etatJeu = EtatJeu.DUEL;
+                }
+                else{
+                    System.out.println("choisir position valide !");
+                }
+                break;
             default:
                 break;
         }

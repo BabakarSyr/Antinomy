@@ -47,7 +47,7 @@ public class TestPlateauRandom2{
             if ((dejaVuJoueur1.equals("non") && dejaVuJoueur2.equals("non")) || (dejaVuJoueur1.equals("oui") && dejaVuJoueur2.equals("oui"))) {
                
                 num_joueur_actif = rand.nextInt(2)+1 ;  // [1-2]
-                plateau.setJoueurActif(num_joueur_actif );  // [1-2]
+                plateau.setJoueurActif(num_joueur_actif);  // [1-2]
             }
             else if (dejaVuJoueur1.equals("oui")) {
                 num_joueur_actif = 1;

@@ -54,13 +54,13 @@ public class Plateau {
         // Mélanger les cartes Reliques
         Collections.shuffle(continuum);
 
-        MainDeCartes mainJoueur1=new MainDeCartes();
-        MainDeCartes mainJoueur2=new MainDeCartes();
+        ArrayList<Carte> mainJoueur1=new ArrayList<>();
+        ArrayList<Carte> mainJoueur2=new ArrayList<>();
         // Distribuer les cartes RElique aux joueurs
         for(int i = 0; i < 3; i++) {
-            mainJoueur1.ajouterCarte(continuum.remove(0));
+            mainJoueur1.add(continuum.remove(0));
         
-            mainJoueur2.ajouterCarte(continuum.remove(0));
+            mainJoueur2.add(continuum.remove(0));
             
         }
         joueur1.main=mainJoueur1;

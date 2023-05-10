@@ -58,39 +58,16 @@ public class Jeu {
         for (int i =0 ;i < 3; i++) 
         {
             int j=i+1;
-            System.out.print("Carte " + j  +"="+ plateau.joueurActif.getMain().getCartes().get(i).toString() + " ");
+            System.out.print("Carte " + j  +"="+ plateau.joueurActif.getMain().get(i).toString() + " ");
             System.out.println();
         }
     }
 
     ////////
-    
 
-    public boolean est_Possible_Placer_3cartes(String Direction) {
-        int posSorcier=plateau.joueurActif.sorcier.getPositionSorcier();
-        boolean possible=false;
-        int nbCarte=0;
-        switch(Direction) {
-            case "gauche":
-                for(int i=posSorcier-1;i>=0;i--){
-                    nbCarte++;
-                }
-                break;
-                
-            case "droite":
-                for(int i=posSorcier+1;i<plateau.continuum.size();i++){
-                    nbCarte++;
-                }
-                break;
-        }
-        if(nbCarte>=3)
-            possible= true;
-        return possible;
-    }
-    
-    public boolean estParadoxe(MainDeCartes mainJoueur) {
+    public boolean estParadoxe() {
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        ArrayList<Carte> cartes = mainJoueur.getCartes();
+        ArrayList<Carte> cartes = joueurActif().getMain();
     
         boolean memeCouleur = true;
         boolean memeForme = true;
@@ -116,7 +93,7 @@ public class Jeu {
     {
       try (Scanner scanner = new Scanner(System.in)) 
       {
-        if(estParadoxe(plateau.joueurActif.getMain()))
+        if(estParadoxe())
         {
           System.out.println("Vous avez un paradoxe");
         
@@ -131,11 +108,18 @@ public class Jeu {
           System.out.println("Le joueur "+plateau.joueur2.getNom()+" a en sa possession "+plateau.joueur2.getNombreCristaux()+" cristaux");
                         
           //Le joueur melange les cartes entre ses mains
-          plateau.joueurActif.getMain().melangerCartes();
+          plateau.joueurActif.melangerMain();
         
           System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
           String direction = scanner.next().toLowerCase();
-          while(!est_Possible_Placer_3cartes(direction))
+          boolean futur = true;
+          if(direction == "gauche"){
+            futur = false;
+          }
+          if(direction == "droite"){
+            futur = true;
+          }
+          while(!estPossibleEchangerParadoxe(futur))
           {
             System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
             direction = scanner.next().toLowerCase();
@@ -159,40 +143,6 @@ public class Jeu {
       }
     }
 
-    //TODO corriger cette methode
-    /* 
-    public void jouer3Cartes(ArrayList<Carte> continuum,String Direction) {
-        //Main du joueur
-        
-        
-        //int positionSorcier = sorcier.getPositionSorcier();
-        Sorcier sorcier = this.joueurActif().sorcier;
-        int indexSorcier = sorcier.getPositionSorcier();
-        int j = 0;
-        switch(Direction){
-            case "gauche":
-                    for (int i = indexSorcier - 3; i < indexSorcier; i++) {
-                        sorcier.deplacerSorcier(i);
-                        jouerCarte(j, continuum);
-                        j++;
-                    }
-                    sorcier.setPositionSorcier(indexSorcier);
-                
-                break;
-            case "droite":
-            
-                for (int i = indexSorcier + 1; i < indexSorcier + 4; i++) {
-                    sorcier.setPositionSorcier(i);
-                    jouerCarte(j, continuum);
-                    j++;
-                }
-                sorcier.setPositionSorcier(indexSorcier);
-                break;
-        }
-    }*/
-    
-
-    
     public boolean partieTerminee() {
         return plateau.joueur1.getNombreCristaux() == 3 || plateau.joueur2.getNombreCristaux() == 3;
     }
@@ -203,14 +153,32 @@ public class Jeu {
     }
 
     public void jouerCarte(int indiceCarteMain, int indiceContinuum){
-        if(estDeplacementPossible(indiceCarteMain, indiceContinuum)){
-            deplacerSorcier(indiceContinuum);
-            echangerCarte(indiceCarteMain, indiceContinuum);
-        }
+        deplacerSorcier(indiceContinuum);
+        echangerCarte(indiceCarteMain, indiceContinuum);
     }
 
     public boolean estDeplacementPossible(int indiceCarteMain, int indiceContinuum){
-        return plateau.cartesAccessibles(joueurActif().getMain().getCarte(indiceCarteMain)).contains(indiceContinuum);
+        return plateau.cartesAccessibles(joueurActif().getMain().get(indiceCarteMain)).contains(indiceContinuum);
+    }
+
+    public boolean estPossibleEchangerParadoxe(int indiceContinuum){
+        int sorcier=joueurActif().sorcier.getPositionSorcier();
+            if(indiceContinuum<sorcier){
+                return sorcier<6;
+            }
+            if(indiceContinuum>sorcier){
+                return sorcier>2;
+            }
+        return false;
+    }
+    public boolean estPossibleEchangerParadoxe(boolean futur){
+        int sorcier=joueurActif().sorcier.getPositionSorcier();
+        if(futur){
+            return sorcier<6;
+        }
+        else{
+            return sorcier>2;
+        }   
     }
 
     public void deplacerSorcier(int positionSorcier) {
@@ -220,15 +188,15 @@ public class Jeu {
     //Equivalent echanger carte
     public void echangerCarte(int indiceCarteMain, int indiceContinuum) {//indiceCarteMain=[0-2]
             Joueur joueur = joueurActif();
-            Carte carte = joueur.getMain().getCarte(indiceCarteMain);
-            joueur.getMain().retirerCarte(indiceCarteMain);
+            Carte carte = joueur.getMain().get(indiceCarteMain);
+            joueur.getMain().remove(indiceCarteMain);
         
             // Échange de la carte avec la carte à la position du sorcier dans le continuum
             Carte carteContinuum = continuum().get(indiceContinuum);
             continuum().set(indiceContinuum, carte);
         
             // Ajouter la carte du continuum à la main du joueur
-            joueur.getMain().ajouterCarte(carteContinuum,indiceCarteMain);
+            joueur.getMain().add(indiceCarteMain, carteContinuum);
     }
 
     // echange les 3 cartes en main avec 3 cartes du plateau suite à un paradoxe
@@ -276,14 +244,14 @@ public class Jeu {
         System.out.println("La main du joueur 1 est : ");
         for(int i=0;i<3;i++){
            
-            System.out.println("Carte "+i+" : "+plateau.joueur1.getMain().getCartes().get(i).toString());
+            System.out.println("Carte "+i+" : "+plateau.joueur1.getMain().get(i).toString());
             
         }
        System.out.println();
         System.out.println("La main du joueur 2 est : ");
         for(int i=0;i<3;i++){
             
-            System.out.println("Carte "+i+" : "+plateau.joueur2.getMain().getCartes().get(i).toString());
+            System.out.println("Carte "+i+" : "+plateau.joueur2.getMain().get(i).toString());
         }
         System.out.println();
     
@@ -292,13 +260,13 @@ public class Jeu {
         
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
         System.out.println("couleur interdite :" + couleurInterdite);
-        for (Carte carte : plateau.joueur1.getMain().getCartes()) 
+        for (Carte carte : plateau.joueur1.getMain()) 
         {
             valeurMainJoueur1 += carte.getValeur(couleurInterdite);
             System.out.println("carte : " + carte.getForme() + carte.getCouleur() + carte.getValeur());
         }
     
-        for (Carte carte : plateau.joueur2.getMain().getCartes()) {
+        for (Carte carte : plateau.joueur2.getMain()) {
             valeurMainJoueur2 += carte.getValeur(couleurInterdite);
             System.out.println("carte : " + carte.getForme() + carte.getCouleur() + carte.getValeur());
         }
@@ -339,19 +307,18 @@ public class Jeu {
         } 
         // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
         Random random = new Random();
-        //boolean egalite = true;
             
             
-        plateau.joueur1.getMain().melangerCartes();
-        plateau.joueur2.getMain().melangerCartes();
+        plateau.joueur1.melangerMain();
+        plateau.joueur2.melangerMain();
             
        // Sélectionner une carte au hasard pour chaque joueur
         int indexCarteJoueur1 = random.nextInt(3);
         int indexCarteJoueur2 = random.nextInt(3);
 
-        Carte carteJoueur1 = plateau.joueur1.getMain().getCarte(indexCarteJoueur1);
+        Carte carteJoueur1 = plateau.joueur1.getMain().get(indexCarteJoueur1);
         System.out.println(plateau.joueur1.getNom() + " tire la carte " + carteJoueur1.toString());
-        Carte carteJoueur2 = plateau.joueur2.getMain().getCarte(indexCarteJoueur2);
+        Carte carteJoueur2 = plateau.joueur2.getMain().get(indexCarteJoueur2);
 
         System.out.println(plateau.joueur2.getNom() + " tire la carte " + carteJoueur2.toString());
         // On compare  les valeurs des cartes en tenant compte de la couleur interdite
