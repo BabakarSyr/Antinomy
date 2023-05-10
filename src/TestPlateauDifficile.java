@@ -16,7 +16,7 @@ public class TestPlateauDifficile{
 
         Random rand = new Random();
 
-
+ 
         Partie partie = new Partie();
       
         System.out.println("Bienvenue dans le jeu de l'antinomy !");
