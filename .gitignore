@@ -7,7 +7,6 @@ compile.sh
 color.java
 .history
 
-IADifficile.java
 compile*.sh
-TestPlateauDifficile.java
+
 *.class
