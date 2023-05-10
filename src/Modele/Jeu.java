@@ -1,22 +1,23 @@
 package Modele;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 
-public class Jeu implements Cloneable
+public class Jeu
 {
      Plateau plateau;
     
     
-    public Jeu() {
+    public Jeu()
+    {
 		this.plateau = new Plateau();
+    }
+
+    public Jeu(Plateau p)
+    {
+        this.plateau = p;
     }
 
     ////////
@@ -354,28 +355,4 @@ public class Jeu implements Cloneable
         }
     }
   }
-
-  public Jeu clone()
-    {
-        try
-        {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            ObjectOutputStream obj = new ObjectOutputStream(output);
-            obj.writeObject(this);
-            ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
-            ObjectInputStream inputObj = new ObjectInputStream(input);
-            Jeu clone = (Jeu) inputObj.readObject();
-            return clone;
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
