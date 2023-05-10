@@ -22,7 +22,7 @@ public class PlateauGraphique extends JComponent {
 		debutMainJoueurActifX, debutMainJoueurActifY, finMainJoueurActifX, finMainJoueurActifY,
 		debutMainJoueurSecondaireX, debutMainJoueurSecondaireY, finMainJoueurSecondaireX, finMainJoueurSecondaireY;
 	int width, height;
-	aspects aspects;
+	Aspects aspects;
 	Graphics2D drawable;
 	CollecteurEvenements c;
 
@@ -33,7 +33,7 @@ public class PlateauGraphique extends JComponent {
 		this.c = c;
 		compteur = 1;
 		//chargerImages2();
-		aspects = new aspects(2);
+		aspects = new Aspects(2);
 		initialisationCoordonnées();
 	}
 
@@ -129,6 +129,7 @@ public class PlateauGraphique extends JComponent {
 		tracerCodex(continuum);
 		tracerSorcier1(continuum);
 		tracerSorcier2(continuum);
+		tracerScore();
 	}
 
 	void tracerSorcier1(ArrayList<Carte> continuum){
@@ -160,6 +161,18 @@ public class PlateauGraphique extends JComponent {
 				break;
 		}
 	}
+
+	void tracerScore() {
+		int cristaux = jeu.plateau().joueur1.getNombreCristaux();
+		int cristaux2 = jeu.plateau().joueur2.getNombreCristaux();
+		int hauteur=getHeight()/10;
+		int longueur=getWidth()/8*5;
+		Font fonte = new Font("Serif", Font.BOLD, getHeight()/25);
+        drawable.setFont(fonte);
+		drawable.drawString("Joueur 2 : " + cristaux2, longueur, hauteur);
+		drawable.drawString("Joueur 1 : " + cristaux, longueur, hauteur*9);
+	}
+
 
 	// Trace les cartes du joueur actif (joueur du bas)
 	void tracerMainJoueurActif(){
