@@ -3,10 +3,10 @@ import java.util.Scanner;
 
 import Modele.Carte;
 import Modele.Partie;
-
-
 import java.util.List;
 import java.util.Random;
+
+
 import Modele.IADifficile;
 public class TestPlateauDifficile{
     public static void main(String[] args) {
