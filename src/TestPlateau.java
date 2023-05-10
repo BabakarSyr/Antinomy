@@ -147,7 +147,7 @@ public class TestPlateau {
                 in= sc.next();
                 int indexCarteChoisie = Integer.parseInt(in)-1;
 
-                Carte carteChoisie = plateau.joueurActif.getMain().getCartes().get(indexCarteChoisie);
+                Carte carteChoisie = plateau.joueurActif.getMain().get(indexCarteChoisie);
                 boolean pasDeDeplacements = true;
                 plateau.cartesAccessibles(carteChoisie);
                 ArrayList<Integer> positionsPossibles = plateau.cartesAccessibles(carteChoisie);
