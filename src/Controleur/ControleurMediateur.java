@@ -14,7 +14,8 @@ public class ControleurMediateur implements CollecteurEvenements {
     
     public ControleurMediateur(Jeu j) {
         this.jeu = j;
-        etatJeu = EtatJeu.DEBUT_PARTIE;
+        changerEtatJeu(EtatJeu.DEBUT_PARTIE);
+        carteSelectionnee = -1;
 	}
 
     // ============ Clic Souris ================
@@ -42,6 +43,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         switch(etatJeu){
             case DEBUT_TOUR:
                 carteSelectionnee = indiceCarte;
+                changerEtatJeu(EtatJeu.CARTE_SELECTIONNEE);
                 previsualisationDeplacement();
                 break;
             case CARTE_SELECTIONNEE:
@@ -49,6 +51,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     carteSelectionnee = indiceCarte;
                     previsualisationDeplacement();
                 }else{
+                    carteSelectionnee = -1;
                     annulerPrevisualisation();
                 }
                 break;
@@ -74,12 +77,15 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(jeu.estDeplacementPossible(carteSelectionnee, indiceCarteContinuum)){
                     jeu.jouerCarte(carteSelectionnee, indiceCarteContinuum);
                     if(jeu.estParadoxe()){
-                        etatJeu = EtatJeu.PARADOXE;
+                        changerEtatJeu(EtatJeu.PARADOXE);
+                        carteSelectionnee = -1;
                     }
                     else if(jeu.estDuel()){
-                        etatJeu = EtatJeu.DUEL;
+                        changerEtatJeu(EtatJeu.DUEL);
+                        carteSelectionnee = -1;
                     }else{
-                        etatJeu = EtatJeu.DEBUT_TOUR;
+                        changerEtatJeu(EtatJeu.DEBUT_TOUR);
+                        carteSelectionnee = -1;
                     }
                 }
                 break;
@@ -92,7 +98,8 @@ public class ControleurMediateur implements CollecteurEvenements {
                         jeu.echangerParadoxe(false);
                     }
                     jeu.joueurActif().ajouterCristaux(1);
-                    etatJeu = EtatJeu.DUEL;
+                    changerEtatJeu(EtatJeu.DUEL);
+                    carteSelectionnee = -1;
                 }
                 else{
                     System.out.println("choisir position valide !");
@@ -102,20 +109,27 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(jeu.positionsDepart().contains(indiceCarteContinuum)){
                     jeu.deplacerSorcier(indiceCarteContinuum);
                 }
-                etatJeu = EtatJeu.DEBUT_TOUR;
+                changerEtatJeu(EtatJeu.DEBUT_TOUR);
                 break;
             default:
                 break;
         }
     }
+    public int carteSelectionnee(){
+        return this.carteSelectionnee;
+    }
 
     //TODO Compléter méthode prévisualisationDeplacement
     public void previsualisationDeplacement(){
-        etatJeu = EtatJeu.CARTE_SELECTIONNEE;
+        //changerEtatJeu(EtatJeu.CARTE_SELECTIONNEE);
     }
 
     private void annulerPrevisualisation() {
-        etatJeu = EtatJeu.DEBUT_TOUR;
+        //changerEtatJeu(EtatJeu.DEBUT_TOUR);
+    }
+
+    private void changerEtatJeu(EtatJeu etat) {
+        etatJeu = etat;
     }
     
 }

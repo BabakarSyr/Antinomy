@@ -168,7 +168,8 @@ public class PlateauGraphique extends JComponent {
 		debutMainJoueurActifY = height-hauteurCarte;
 		finMainJoueurActifX = 6*largeurCarte;
 		finMainJoueurActifY = height;
-
+		
+		int carteSelectionne = c.carteSelectionnee();
 		ArrayList<Carte> main = jeu.plateau().getJoueurActif().getMain();
 		for(int i =0; i< main.size(); i++){
 			if (i == carteSelectionne){

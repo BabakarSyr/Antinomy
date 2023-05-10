@@ -7,4 +7,5 @@ public interface CollecteurEvenements {
 	boolean commande(String com);
     void clicCarteMain(int indiceCarte);
     void clicCarteContinuum(int indiceCarte);
+    int carteSelectionnee();
 }
