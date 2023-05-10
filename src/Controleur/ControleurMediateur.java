@@ -14,7 +14,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     
     public ControleurMediateur(Jeu j) {
         this.jeu = j;
-        etatJeu = EtatJeu.DEBUT_TOUR;
+        etatJeu = EtatJeu.DEBUT_PARTIE;
 	}
 
     // ============ Clic Souris ================
@@ -51,6 +51,12 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }else{
                     annulerPrevisualisation();
                 }
+                break;
+            case PARADOXE:
+                break;
+            case DUEL:
+                break;
+            case DEBUT_PARTIE:
                 break;
             default:
                 break;
@@ -91,6 +97,12 @@ public class ControleurMediateur implements CollecteurEvenements {
                 else{
                     System.out.println("choisir position valide !");
                 }
+                break;
+            case DEBUT_PARTIE:
+                if(jeu.positionsDepart().contains(indiceCarteContinuum)){
+                    jeu.deplacerSorcier(indiceCarteContinuum);
+                }
+                etatJeu = EtatJeu.DEBUT_TOUR;
                 break;
             default:
                 break;

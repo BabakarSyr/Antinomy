@@ -53,6 +53,10 @@ public class Jeu {
       }
     }
 
+    public ArrayList<Integer>positionsDepart(){
+        return plateau.positionsDepart();
+    }
+
     public void afficher_cartes_main()
     {
         for (int i =0 ;i < 3; i++) 

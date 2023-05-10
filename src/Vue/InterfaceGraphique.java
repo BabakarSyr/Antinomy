@@ -28,8 +28,8 @@ public class InterfaceGraphique implements Runnable {
 		frame.setSize(500, 300);
 
 		// Ajout de notre composant de dessin dans la fenetre
-		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu);
-		frame.add(plateauGraphique);
+		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu, controleur);
+		frame.add(plateauGraphique, controleur);
 
 		// Ecoute des évènements liés à la souris dans l'AireDeDessin
 		plateauGraphique.addMouseListener(new AdaptateurSouris(plateauGraphique, controleur));

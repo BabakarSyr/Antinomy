@@ -6,10 +6,12 @@ import java.util.Collections;
 
 
 public class Plateau {
-     public Joueur joueurActif;
+    public Joueur joueurActif;
 
-     public Joueur joueur1;
-     public Joueur joueur2;
+    public Joueur joueur1;
+    public Joueur joueur2;
+    ArrayList<Integer> positionsDepart;
+
     ArrayList<Carte> continuum=new ArrayList<>();
 
      
@@ -67,12 +69,14 @@ public class Plateau {
         joueur2.main=mainJoueur2;
         
         codex.setCarte(continuum.remove(continuum.size()-1));
-         /*Couleur interdite au debut du jeu
-         On place un cristal sur la couleur du Codex correspondant à la couleur de la carte la plus à gauche du continuum. 
-          Ce sera la couleur interdite.*/
-          Couleur couleurInterdite = continuum.get(0).getCouleur();
+        /*Couleur interdite au debut du jeu
+        On place un cristal sur la couleur du Codex correspondant à la couleur de la carte la plus à gauche du continuum. 
+        Ce sera la couleur interdite.*/
+        Couleur couleurInterdite = continuum.get(0).getCouleur();
           
-          codex.setCouleur(couleurInterdite);
+        codex.setCouleur(couleurInterdite);
+
+        positionsDepart = positionsDepartPossible();
     }
 
     public void setJoueurActif(int i) {
@@ -90,6 +94,11 @@ public class Plateau {
             return joueur2;
         }
     }
+
+    public ArrayList<Integer> positionsDepart(){
+        return positionsDepart;
+    }
+
     public Couleur couleurInterdite(){
         return codex.couleurInterdite;
     }

@@ -35,7 +35,6 @@ public class AdaptateurSouris extends MouseAdapter {
 				indiceCarte = plateauGraphique.getCarte(ZoneClic.MAIN_JOUEUR_COURANT);
 				System.out.println("carte " + indiceCarte);
 				c.clicCarteMain(indiceCarte);
-				plateauGraphique.setCarteSelectionne(indiceCarte);
 				plateauGraphique.repaint();
 				break;
 			default:

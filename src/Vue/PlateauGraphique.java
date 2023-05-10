@@ -24,11 +24,13 @@ public class PlateauGraphique extends JComponent {
 	int width, height;
 	aspects aspects;
 	Graphics2D drawable;
+	CollecteurEvenements c;
 
 	int carteSelectionne;
 
-	public PlateauGraphique(Jeu j) {
+	public PlateauGraphique(Jeu j, CollecteurEvenements c) {
 		jeu = j;
+		this.c = c;
 		compteur = 1;
 		//chargerImages2();
 		aspects = new aspects(2);
