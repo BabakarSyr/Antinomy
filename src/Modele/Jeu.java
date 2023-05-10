@@ -69,9 +69,9 @@ public class Jeu {
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
         ArrayList<Carte> cartes = joueurActif().getMain();
     
-        boolean memeCouleur = true;
-        boolean memeForme = true;
-        boolean memeValeur = true;
+        boolean memeCouleur = false;
+        boolean memeForme = false;
+        boolean memeValeur = false;
 
         Carte carte = cartes.get(0);
         if (carte.getCouleur() == couleurInterdite) {
@@ -81,9 +81,9 @@ public class Jeu {
             if (cartes.get(i).getCouleur() == couleurInterdite) {
                 return false;
             }
-            memeCouleur = (cartes.get(i).getCouleur() != carte.getCouleur());
-            memeForme = (cartes.get(i).getForme() != carte.getForme());
-            memeValeur = (cartes.get(i).getValeur() != carte.getValeur());
+            memeCouleur = (cartes.get(i).getCouleur() == carte.getCouleur());
+            memeForme = (cartes.get(i).getForme() == carte.getForme());
+            memeValeur = (cartes.get(i).getValeur() == carte.getValeur());
         }
         return memeCouleur || memeForme || memeValeur;
     }
@@ -204,7 +204,7 @@ public class Jeu {
         Joueur joueur = joueurActif();
         int indexSorcier = joueur.sorcier.getPositionSorcier();
         int j = 0;
-        if(futur){
+        if(!futur){
             for (int i = indexSorcier - 3; i < indexSorcier; i++) {
                 echangerCarte(j, i);
                 j++;
