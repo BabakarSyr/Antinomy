@@ -258,6 +258,10 @@ public class Jeu {
         return plateau.getContinuum();
     }
 
+    public Couleur couleurInterdite(){
+        return plateau.couleurInterdite();
+    }
+
     public void duel() 
     {
       if (isDuel())

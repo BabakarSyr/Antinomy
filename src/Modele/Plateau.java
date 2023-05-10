@@ -90,6 +90,9 @@ public class Plateau {
             return joueur2;
         }
     }
+    public Couleur couleurInterdite(){
+        return codex.couleurInterdite;
+    }
 
     public Joueur getJoueurParNom(String nom)
     {

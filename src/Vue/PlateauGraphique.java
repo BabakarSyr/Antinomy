@@ -24,7 +24,8 @@ public class PlateauGraphique extends JComponent {
 		cle_bleu, cle_rouge, cle_vert, cle_violet,
 		crane_bleu, crane_rouge, crane_vert, crane_violet,
 		plume_bleu, plume_rouge, plume_vert, plume_violet,
-		codex;
+		codex_bleu, codex_rouge, codex_vert, codex_violet, 
+		carte_dos, carte_dos2;
 	Graphics2D drawable;
 
 	int carteSelectionne;
@@ -66,23 +67,28 @@ public class PlateauGraphique extends JComponent {
 	public void chargerImages(){
 		
 		// Chargement de l'image de la même manière que le fichier de niveaux
-		anneau_bleu = new ImageJeu("anneau_bleu");
-		anneau_rouge = new ImageJeu("anneau_rouge");
-		anneau_vert = new ImageJeu("anneau_vert");
-		anneau_violet = new ImageJeu("anneau_violet");
-		cle_bleu = new ImageJeu("cle_bleu");
-		cle_rouge = new ImageJeu("cle_rouge");
-		cle_vert = new ImageJeu("cle_vert");
-		cle_violet = new ImageJeu("cle_violet");
-		crane_bleu = new ImageJeu("crane_bleu");
-		crane_rouge = new ImageJeu("crane_rouge");
-		crane_vert = new ImageJeu("crane_vert");
-		crane_violet = new ImageJeu("crane_violet");
-		plume_bleu = new ImageJeu("plume_bleu");
-		plume_rouge = new ImageJeu("plume_rouge");
-		plume_vert = new ImageJeu("plume_vert");
-		plume_violet = new ImageJeu("plume_violet");
-		codex = new ImageJeu("codex");
+		anneau_bleu = new ImageJeu("anneau_bleu2");
+		anneau_rouge = new ImageJeu("anneau_rouge2");
+		anneau_vert = new ImageJeu("anneau_vert2");
+		anneau_violet = new ImageJeu("anneau_violet2");
+		cle_bleu = new ImageJeu("cle_bleu2");
+		cle_rouge = new ImageJeu("cle_rouge2");
+		cle_vert = new ImageJeu("cle_vert2");
+		cle_violet = new ImageJeu("cle_violet2");
+		crane_bleu = new ImageJeu("crane_bleu2");
+		crane_rouge = new ImageJeu("crane_rouge2");
+		crane_vert = new ImageJeu("crane_vert2");
+		crane_violet = new ImageJeu("crane_violet2");
+		plume_bleu = new ImageJeu("plume_bleu2");
+		plume_rouge = new ImageJeu("plume_rouge2");
+		plume_vert = new ImageJeu("plume_vert2");
+		plume_violet = new ImageJeu("plume_violet2");
+		codex_bleu = new ImageJeu("codex_bleu");
+		codex_rouge = new ImageJeu("codex_rouge");
+		codex_violet = new ImageJeu("codex_violet");
+		codex_vert= new ImageJeu("codex_vert");
+		carte_dos= new ImageJeu("carte_dos2");
+		
 	}
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
@@ -148,7 +154,27 @@ public class PlateauGraphique extends JComponent {
 		for(int i =0; i< continuum.size(); i++){
 			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
-		drawable.drawImage(codex.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+		tracerCodex(continuum);
+		//drawable.drawImage(codex.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+	}
+
+	void tracerCodex(ArrayList<Carte> continuum){
+		switch (jeu.couleurInterdite()){
+			case ROUGE :
+				drawable.drawImage(codex_rouge.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				break;
+			case VERT :
+				drawable.drawImage(codex_vert.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				break;
+			case VIOLET:
+				drawable.drawImage(codex_violet.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				break;
+			case BLEU :
+				drawable.drawImage(codex_bleu.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				break;
+			default:
+				break;
+		}
 	}
 
 	// Trace les cartes du joueur actif (joueur du bas)
@@ -187,7 +213,7 @@ public class PlateauGraphique extends JComponent {
 			}
 		}else{
 			for(int i =0; i< 3; i++){
-				drawable.drawImage(codex.image(), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(carte_dos.image(), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
 			}
 		}
 	}
