@@ -22,24 +22,16 @@ public class PlateauGraphique extends JComponent {
 		debutMainJoueurActifX, debutMainJoueurActifY, finMainJoueurActifX, finMainJoueurActifY,
 		debutMainJoueurSecondaireX, debutMainJoueurSecondaireY, finMainJoueurSecondaireX, finMainJoueurSecondaireY;
 	int width, height;
-	//aspects aspects;
-	ImageJeu anneau_bleu, anneau_rouge, anneau_vert, anneau_violet,
-		cle_bleu, cle_rouge, cle_vert, cle_violet,
-		crane_bleu, crane_rouge, crane_vert, crane_violet,
-		plume_bleu, plume_rouge, plume_vert, plume_violet,
-		codex_bleu, codex_rouge, codex_vert, codex_violet, 
-		carte_dos, carte_dos2,
-		sorcier1, sorcier2;
+	aspects aspects;
 	Graphics2D drawable;
 
 	int carteSelectionne;
 
 	public PlateauGraphique(Jeu j) {
-		
 		jeu = j;
 		compteur = 1;
-		chargerImages2();
-		//aspects.chargerAspect2();
+		//chargerImages2();
+		aspects = new aspects(2);
 		initialisationCoordonnées();
 	}
 
@@ -67,64 +59,6 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueurSecondaireY = 0;
 
 		carteSelectionne=-1;
-	}
-
-	public void chargerImages1(){
-		
-		// Chargement de l'image de la même manière que le fichier de niveaux
-		anneau_bleu = new ImageJeu("anneau_bleu");
-		anneau_rouge = new ImageJeu("anneau_rouge");
-		anneau_vert = new ImageJeu("anneau_vert");
-		anneau_violet = new ImageJeu("anneau_violet");
-		cle_bleu = new ImageJeu("cle_bleu");
-		cle_rouge = new ImageJeu("cle_rouge");
-		cle_vert = new ImageJeu("cle_vert");
-		cle_violet = new ImageJeu("cle_violet");
-		crane_bleu = new ImageJeu("crane_bleu");
-		crane_rouge = new ImageJeu("crane_rouge");
-		crane_vert = new ImageJeu("crane_vert");
-		crane_violet = new ImageJeu("crane_violet");
-		plume_bleu = new ImageJeu("plume_bleu");
-		plume_rouge = new ImageJeu("plume_rouge");
-		plume_vert = new ImageJeu("plume_vert");
-		plume_violet = new ImageJeu("plume_violet");
-		codex_bleu = new ImageJeu("codex");
-		codex_rouge = new ImageJeu("codex");
-		codex_violet = new ImageJeu("codex");
-		codex_vert= new ImageJeu("codex");
-		carte_dos= new ImageJeu("codex");
-		sorcier1= new ImageJeu("sorcier_1");
-		sorcier2= new ImageJeu("sorcier_2");
-		
-	}
-
-	public void chargerImages2(){
-		
-		// Chargement de l'image de la même manière que le fichier de niveaux
-		anneau_bleu = new ImageJeu("anneau_bleu2");
-		anneau_rouge = new ImageJeu("anneau_rouge2");
-		anneau_vert = new ImageJeu("anneau_vert2");
-		anneau_violet = new ImageJeu("anneau_violet2");
-		cle_bleu = new ImageJeu("cle_bleu2");
-		cle_rouge = new ImageJeu("cle_rouge2");
-		cle_vert = new ImageJeu("cle_vert2");
-		cle_violet = new ImageJeu("cle_violet2");
-		crane_bleu = new ImageJeu("crane_bleu2");
-		crane_rouge = new ImageJeu("crane_rouge2");
-		crane_vert = new ImageJeu("crane_vert2");
-		crane_violet = new ImageJeu("crane_violet2");
-		plume_bleu = new ImageJeu("plume_bleu2");
-		plume_rouge = new ImageJeu("plume_rouge2");
-		plume_vert = new ImageJeu("plume_vert2");
-		plume_violet = new ImageJeu("plume_violet2");
-		codex_bleu = new ImageJeu("codex_bleu");
-		codex_rouge = new ImageJeu("codex_rouge");
-		codex_violet = new ImageJeu("codex_violet");
-		codex_vert= new ImageJeu("codex_vert");
-		carte_dos= new ImageJeu("carte_dos2");
-		sorcier1= new ImageJeu("sorcier1");
-		sorcier2= new ImageJeu("sorcier2");
-		
 	}
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
@@ -197,28 +131,28 @@ public class PlateauGraphique extends JComponent {
 
 	void tracerSorcierActif(ArrayList<Carte> continuum){
 		int posSorcier=jeu.plateau().getPositionSorcier(1);
-		drawable.drawImage(sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
+		drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
 
 	}
 
 	void tracerSorcierPassif(ArrayList<Carte> continuum){
 		int posSorcier=jeu.plateau().getPositionSorcier(2);
-		drawable.drawImage(sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
+		drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
 	}
 
 	void tracerCodex(ArrayList<Carte> continuum){
 		switch (jeu.couleurInterdite()){
 			case ROUGE :
-				drawable.drawImage(codex_rouge.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_rouge.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			case VERT :
-				drawable.drawImage(codex_vert.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_vert.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			case VIOLET:
-				drawable.drawImage(codex_violet.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_violet.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			case BLEU :
-				drawable.drawImage(codex_bleu.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_bleu.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			default:
 				break;
@@ -263,7 +197,7 @@ public class PlateauGraphique extends JComponent {
 			}
 		}else{
 			for(int i =0; i< 3; i++){
-				drawable.drawImage(carte_dos.image(), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.carte_dos.image(), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
 			}
 		}
 	}
@@ -273,37 +207,37 @@ public class PlateauGraphique extends JComponent {
 	private Image imageCarte(Carte carte) {
 		switch (carte.getCarte()){
 			case "CRANE_BLEU":
-				return crane_bleu.image();
+				return aspects.crane_bleu.image();
 			case "CRANE_ROUGE":
-				return crane_rouge.image();
+				return aspects.crane_rouge.image();
 			case "CRANE_VERT":
-				return crane_vert.image();
+				return aspects.crane_vert.image();
 			case "CRANE_VIOLET":
-				return crane_violet.image();
+				return aspects.crane_violet.image();
 			case "ANNEAU_BLEU":
-				return anneau_bleu.image();
+				return aspects.anneau_bleu.image();
 			case "ANNEAU_ROUGE":
-				return anneau_rouge.image();
+				return aspects.anneau_rouge.image();
 			case "ANNEAU_VERT":
-				return anneau_vert.image();
+				return aspects.anneau_vert.image();
 			case "ANNEAU_VIOLET":
-				return anneau_violet.image();
+				return aspects.anneau_violet.image();
 			case "CLE_BLEU":
-				return cle_bleu.image();
+				return aspects.cle_bleu.image();
 			case "CLE_ROUGE":
-				return cle_rouge.image();
+				return aspects.cle_rouge.image();
 			case "CLE_VERT":
-				return cle_vert.image();
+				return aspects.cle_vert.image();
 			case "CLE_VIOLET":
-				return cle_violet.image();
+				return aspects.cle_violet.image();
 			case "PLUME_BLEU":
-				return plume_bleu.image();
+				return aspects.plume_bleu.image();
 			case "PLUME_ROUGE":
-				return plume_rouge.image();
+				return aspects.plume_rouge.image();
 			case "PLUME_VERT":
-				return plume_vert.image();
+				return aspects.plume_vert.image();
 			case "PLUME_VIOLET":
-				return plume_violet.image();
+				return aspects.plume_violet.image();
 			default:
 				return null;
 		}

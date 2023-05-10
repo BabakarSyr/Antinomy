@@ -14,6 +14,25 @@ public class aspects
     ///////////////////////
     ///// ASPECT 1 ////////
     ///////////////////////
+	public aspects()
+	{
+		chargerAspect2();
+	}
+
+	public aspects(int i)
+	{
+		switch(i)
+		{
+			case 1:
+				chargerAspect1();
+				break;
+			case 2:
+				chargerAspect2();
+				break;
+			default:
+				break;
+		}
+	}
 
 
 
@@ -142,11 +161,6 @@ public class aspects
     {
         sorcier1= new ImageJeu("sorcier1");
 		sorcier2= new ImageJeu("sorcier2");
-    }
-
-    public ImageJeu anneau_bleu()
-    {
-        return anneau_bleu;
     }
 
 }
