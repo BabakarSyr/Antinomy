@@ -5,6 +5,8 @@ import javax.swing.*;
 
 import Modele.Carte;
 import Modele.Jeu;
+import Modele.Joueur;
+import Modele.Plateau;
 import Modele.ZoneClic;
 
 import java.awt.*;
@@ -155,7 +157,6 @@ public class PlateauGraphique extends JComponent {
 			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
 		tracerCodex(continuum);
-		//drawable.drawImage(codex.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
 	}
 
 	void tracerCodex(ArrayList<Carte> continuum){
@@ -196,6 +197,8 @@ public class PlateauGraphique extends JComponent {
 		}
 		
 	}
+
+
 
 	// Trace les cartes du joueur secondaire (joueur du haut)
 	// mainOuverte : True si on veut voir le jeu du joueur secondaire
