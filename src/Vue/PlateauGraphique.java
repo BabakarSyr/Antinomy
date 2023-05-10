@@ -22,6 +22,7 @@ public class PlateauGraphique extends JComponent {
 		debutMainJoueurActifX, debutMainJoueurActifY, finMainJoueurActifX, finMainJoueurActifY,
 		debutMainJoueurSecondaireX, debutMainJoueurSecondaireY, finMainJoueurSecondaireX, finMainJoueurSecondaireY;
 	int width, height;
+	//aspects aspects;
 	ImageJeu anneau_bleu, anneau_rouge, anneau_vert, anneau_violet,
 		cle_bleu, cle_rouge, cle_vert, cle_violet,
 		crane_bleu, crane_rouge, crane_vert, crane_violet,
@@ -37,7 +38,8 @@ public class PlateauGraphique extends JComponent {
 		
 		jeu = j;
 		compteur = 1;
-		chargerImages();
+		chargerImages2();
+		//aspects.chargerAspect2();
 		initialisationCoordonnées();
 	}
 
@@ -67,7 +69,36 @@ public class PlateauGraphique extends JComponent {
 		carteSelectionne=-1;
 	}
 
-	public void chargerImages(){
+	public void chargerImages1(){
+		
+		// Chargement de l'image de la même manière que le fichier de niveaux
+		anneau_bleu = new ImageJeu("anneau_bleu");
+		anneau_rouge = new ImageJeu("anneau_rouge");
+		anneau_vert = new ImageJeu("anneau_vert");
+		anneau_violet = new ImageJeu("anneau_violet");
+		cle_bleu = new ImageJeu("cle_bleu");
+		cle_rouge = new ImageJeu("cle_rouge");
+		cle_vert = new ImageJeu("cle_vert");
+		cle_violet = new ImageJeu("cle_violet");
+		crane_bleu = new ImageJeu("crane_bleu");
+		crane_rouge = new ImageJeu("crane_rouge");
+		crane_vert = new ImageJeu("crane_vert");
+		crane_violet = new ImageJeu("crane_violet");
+		plume_bleu = new ImageJeu("plume_bleu");
+		plume_rouge = new ImageJeu("plume_rouge");
+		plume_vert = new ImageJeu("plume_vert");
+		plume_violet = new ImageJeu("plume_violet");
+		codex_bleu = new ImageJeu("codex");
+		codex_rouge = new ImageJeu("codex");
+		codex_violet = new ImageJeu("codex");
+		codex_vert= new ImageJeu("codex");
+		carte_dos= new ImageJeu("codex");
+		sorcier1= new ImageJeu("sorcier_1");
+		sorcier2= new ImageJeu("sorcier_2");
+		
+	}
+
+	public void chargerImages2(){
 		
 		// Chargement de l'image de la même manière que le fichier de niveaux
 		anneau_bleu = new ImageJeu("anneau_bleu2");
