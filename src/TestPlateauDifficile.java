@@ -196,7 +196,7 @@ public class TestPlateauDifficile{
                                     partie.joueurActif.sorcier.deplacerFutur(carteChoisie, partie.getContinuum());
                                     partie.joueurActif.jouerCarte(indexCarteChoisie, partie.getContinuum());
                                     actionReussie = true; // L'action a réussi, on peut sortir de la boucle
-                                    ia.Coup_jouer_Par_Adversaire(partie);
+                                    //ia.Coup_jouer_Par_Adversaire(partie);
                                 } else {
                                     System.out.println("Vous ne pouvez pas aller dans le futur .Vous ne pouvez aller que dans le passe avec cette carte");
                                 }
@@ -217,7 +217,7 @@ public class TestPlateauDifficile{
                                     //jouer la carte
                                     partie.joueurActif.jouerCarte(indexCarteChoisie, partie.getContinuum());
                                     actionReussie = true; // L'action a réussi, on peut sortir de la boucle
-                                    ia.Coup_jouer_Par_Adversaire(partie);
+                                    //ia.Coup_jouer_Par_Adversaire(partie);
                                 } else {
                                     System.out.println("Vous ne pouvez pas aller dans le passe .Vous ne pouvez aller que dans le futur avec cette carte");
                                 }
@@ -231,7 +231,6 @@ public class TestPlateauDifficile{
                 } 
                 else {
                     //L'IA joue
-
                     ia.jouer(partie);
                    
                 }

@@ -271,11 +271,7 @@ public class IADifficile {
     
 
     
-    public void jouer(Partie plateau) {
-        int meilleurCarte=Meilleur_Coup()[0];
-        int meilleurePosition=Meilleur_Coup()[1];
-        plateau.setPositionSorcier(meilleurePosition, 2);
-        clone.joueur2.jouerCarte(meilleurCarte, plateau.continuum);
+    
     }*/
 
 
@@ -292,7 +288,8 @@ public class IADifficile {
             // Tour de l'IA=Max(minimax(etatcourantdujeu,profondeur-1,tourIA).Donc l'IA cherche a maximiser son score
             meilleurScore = Integer.MIN_VALUE;
             for (int i = 0; i < 3; i++) {
-                for (int j : etatJeu.joueur2.sorcier.calculerEmplacementsAccessibles(etatJeu.joueur2.main.getCarte(i), etatJeu.continuum)) {
+                List<Integer> Mouvement_Possible=etatJeu.joueur2.sorcier.calculerEmplacementsAccessibles(etatJeu.joueur2.main.getCarte(i), etatJeu.continuum);
+                for (int j : Mouvement_Possible) {
                     Partie nouvelEtat = etatJeu.copie();
                     nouvelEtat.joueur2.sorcier.setPositionSorcier(j);
                     nouvelEtat.joueur2.jouerCarte(i, nouvelEtat.continuum);
@@ -352,10 +349,13 @@ public class IADifficile {
                 else
                     score -= 50;
             }
+            //Si l'IA a 2 cartes de la meme valeur,couleur ou forme alors on ajoute 50 au score
+            if(etatJeu.joueur2.DeuxCarteMemeProp())
 
+                score += 50;
         else{
         
-            //if(profondeur<6){
+            if(nbTours<3){
                 List <List<Carte>> combinaisons = All_Main_Possible();
                 int count=0;
                 for (List<Carte> combinaison : combinaisons) {
@@ -364,24 +364,25 @@ public class IADifficile {
                 }
                 int moyenne_score = count / combinaisons.size();//On a toujours 4 combinaisons possibles tat que on a pas atteint la profodeur 6
                 score += moyenne_score ;
-            /* }
+            }
             else{
                 if (etatJeu.isParadoxe(Vrai_Main_Adversaire))
                     score += 100;
-            }*/
+            }
+            if(etatJeu.joueur1.DeuxCarteMemeProp())
+                score += 50;
 
         }
-       
-
-           
-
-
-
-
-
-
 
         return score;
+    }
+
+    public void jouer(Partie plateau) {
+
+        int meilleurCarte=minimax(plateau, 6, plateau.joueur2)[0];
+        int meilleurePosition=minimax(plateau, 6, plateau.joueur2)[1];
+        plateau.setPositionSorcier(meilleurePosition, 2);
+        clone.joueur2.jouerCarte(meilleurCarte, plateau.continuum);
     }
     
 

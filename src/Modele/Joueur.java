@@ -147,6 +147,19 @@ public class Joueur {
             });
     }
 
+    //Fon qui verifie si un joueur a  2 cartes de la meme valeur,couleur ou forme dans sa main
+    public boolean DeuxCarteMemeProp() {
+        boolean mainValide = false;
+        int val_carte1 = main.getCarte(0).getValeur();
+        Forme forme_carte1 = main.getCarte(0).getForme();
+        Couleur couleur_carte1 = main.getCarte(0).getCouleur();
+        for(int i=1;i<3;i++){
+            if(main.getCarte(i).getValeur()==val_carte1 || main.getCarte(i).getForme()==forme_carte1 || main.getCarte(i).getCouleur()==couleur_carte1){
+                mainValide=true;
+            }
+        }
+        return mainValide;
+    }
 
    /* 
     public Carte getCarteNonValeurMin() {
