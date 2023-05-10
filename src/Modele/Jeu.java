@@ -214,6 +214,7 @@ public class Jeu
     // echange les 3 cartes en main avec 3 cartes du plateau suite à un paradoxe
     public void echangerParadoxe(boolean futur) {
         Joueur joueur = joueurActif();
+        joueur.melangerMain();
         int indexSorcier = joueur.sorcier.getPositionSorcier();
         int j = 0;
         if(!futur){
