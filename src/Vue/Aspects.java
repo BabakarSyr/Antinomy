@@ -1,6 +1,6 @@
 package Vue;
 
-public class aspects 
+public class Aspects 
 {
     ImageJeu anneau_bleu, anneau_rouge, anneau_vert, anneau_violet,
     cle_bleu, cle_rouge, cle_vert, cle_violet,
@@ -14,12 +14,12 @@ public class aspects
     ///////////////////////
     ///// ASPECT 1 ////////
     ///////////////////////
-	public aspects()
+	public Aspects()
 	{
 		chargerAspect2();
 	}
 
-	public aspects(int i)
+	public Aspects(int i)
 	{
 		switch(i)
 		{
@@ -149,10 +149,7 @@ public class aspects
 		plume_rouge = new ImageJeu("plume_rouge2");
 		plume_vert = new ImageJeu("plume_vert2");
 		plume_violet = new ImageJeu("plume_violet2");
-		codex_bleu = new ImageJeu("codex_bleu");
-		codex_rouge = new ImageJeu("codex_rouge");
-		codex_violet = new ImageJeu("codex_violet");
-		codex_vert= new ImageJeu("codex_vert");
+
 		carte_dos= new ImageJeu("carte_dos2");
     }
 
@@ -163,4 +160,11 @@ public class aspects
 		sorcier2= new ImageJeu("sorcier2");
     }
 
+    public void chargerAspectcodex2()
+    {
+		codex_bleu = new ImageJeu("codex_bleu");
+		codex_rouge = new ImageJeu("codex_rouge");
+		codex_violet = new ImageJeu("codex_violet");
+		codex_vert= new ImageJeu("codex_vert");
+    }
 }
