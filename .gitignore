@@ -9,5 +9,5 @@ color.java
 
 IADifficile.java
 compile*.sh
-TestPlateauDifficile.sh
+TestPlateauDifficile.java
 *.class
