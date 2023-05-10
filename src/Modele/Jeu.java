@@ -148,7 +148,7 @@ public class Jeu {
     }
 
     //On a duel si positionSorcierJoueur1 == positionSorcierJoueur2
-    public boolean isDuel(){
+    public boolean estDuel(){
         return plateau.joueur1.sorcier.getPositionSorcier() == plateau.joueur2.sorcier.getPositionSorcier();
     }
 
@@ -232,7 +232,7 @@ public class Jeu {
 
     public void duel() 
     {
-      if (isDuel())
+      if (estDuel())
       {
         System.out.println("C'est l'heure du Duel!");
         System.out.println("Rappel,la couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());

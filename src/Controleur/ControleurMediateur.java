@@ -69,6 +69,11 @@ public class ControleurMediateur implements CollecteurEvenements {
                     if(jeu.estParadoxe()){
                         etatJeu = EtatJeu.PARADOXE;
                     }
+                    else if(jeu.estDuel()){
+                        etatJeu = EtatJeu.DUEL;
+                    }else{
+                        etatJeu = EtatJeu.DEBUT_TOUR;
+                    }
                 }
             case PARADOXE:
                 if(jeu.estPossibleEchangerParadoxe(indiceCarteContinuum)){
