@@ -69,9 +69,9 @@ public class Jeu {
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
         ArrayList<Carte> cartes = joueurActif().getMain();
     
-        boolean memeCouleur = false;
-        boolean memeForme = false;
-        boolean memeValeur = false;
+        boolean memeCouleur = true;
+        boolean memeForme = true;
+        boolean memeValeur = true;
 
         Carte carte = cartes.get(0);
         if (carte.getCouleur() == couleurInterdite) {
@@ -81,9 +81,10 @@ public class Jeu {
             if (cartes.get(i).getCouleur() == couleurInterdite) {
                 return false;
             }
-            memeCouleur = (cartes.get(i).getCouleur() == carte.getCouleur());
-            memeForme = (cartes.get(i).getForme() == carte.getForme());
-            memeValeur = (cartes.get(i).getValeur() == carte.getValeur());
+            memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == carte.getCouleur());
+            memeForme = memeForme&(cartes.get(i).getForme() == carte.getForme());
+            memeValeur = memeValeur&(cartes.get(i).getValeur() == carte.getValeur());
+            
         }
         return memeCouleur || memeForme || memeValeur;
     }
@@ -163,10 +164,10 @@ public class Jeu {
 
     public boolean estPossibleEchangerParadoxe(int indiceContinuum){
         int sorcier=joueurActif().sorcier.getPositionSorcier();
-            if(indiceContinuum<sorcier){
+            if(indiceContinuum>sorcier){
                 return sorcier<6;
             }
-            if(indiceContinuum>sorcier){
+            if(indiceContinuum<sorcier){
                 return sorcier>2;
             }
         return false;
