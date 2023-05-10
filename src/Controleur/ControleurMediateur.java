@@ -51,6 +51,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }else{
                     annulerPrevisualisation();
                 }
+                break;
             default:
                 break;
         }
@@ -75,6 +76,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         etatJeu = EtatJeu.DEBUT_TOUR;
                     }
                 }
+                break;
             case PARADOXE:
                 if(jeu.estPossibleEchangerParadoxe(indiceCarteContinuum)){
                     if(indiceCarteContinuum>jeu.joueurActif().sorcier.getPositionSorcier()){
