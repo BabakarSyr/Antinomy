@@ -27,7 +27,8 @@ public class PlateauGraphique extends JComponent {
 		crane_bleu, crane_rouge, crane_vert, crane_violet,
 		plume_bleu, plume_rouge, plume_vert, plume_violet,
 		codex_bleu, codex_rouge, codex_vert, codex_violet, 
-		carte_dos, carte_dos2;
+		carte_dos, carte_dos2,
+		sorcier1, sorcier2;
 	Graphics2D drawable;
 
 	int carteSelectionne;
@@ -90,6 +91,8 @@ public class PlateauGraphique extends JComponent {
 		codex_violet = new ImageJeu("codex_violet");
 		codex_vert= new ImageJeu("codex_vert");
 		carte_dos= new ImageJeu("carte_dos2");
+		sorcier1= new ImageJeu("sorcier1");
+		sorcier2= new ImageJeu("sorcier2");
 		
 	}
 	void fixePosition(int x, int y) {
@@ -157,6 +160,19 @@ public class PlateauGraphique extends JComponent {
 			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
 		tracerCodex(continuum);
+		tracerSorcierActif(continuum);
+		tracerSorcierPassif(continuum);
+	}
+
+	void tracerSorcierActif(ArrayList<Carte> continuum){
+		int posSorcier=jeu.plateau().getPositionSorcier(1);
+		drawable.drawImage(sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
+
+	}
+
+	void tracerSorcierPassif(ArrayList<Carte> continuum){
+		int posSorcier=jeu.plateau().getPositionSorcier(2);
+		drawable.drawImage(sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
 	}
 
 	void tracerCodex(ArrayList<Carte> continuum){
