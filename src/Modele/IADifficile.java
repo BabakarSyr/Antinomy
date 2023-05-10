@@ -150,7 +150,7 @@ public class IADifficile {
         return null; 
     }
 
-    public  int[]  Meilleur_Coup( ){
+    public  int[]  Meilleur_Coup(int profondeur, boolean joueurMax ){
         int score=0;
         int meilleurScore=-1;
         int meilleurePosition = -1;
@@ -237,6 +237,19 @@ public class IADifficile {
                     score-=50;
 
 
+
+
+                    if (joueurMax) {
+                        // Appel récursif pour trouver le meilleur coup pour l'adversaire
+                        int[] resultat = Meilleur_Coup(profondeur - 1, false);
+                        score += resultat[0];
+                    } else {
+                        // Appel récursif pour trouver le meilleur coup pour l'IA
+                        int[] resultat = Meilleur_Coup(profondeur - 1, true);
+                        score -= resultat[0];
+                    }
+
+                    
                 if (score > meilleurScore) {
                     meilleurScore = score;
                     meilleurePosition = position;
