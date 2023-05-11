@@ -1,18 +1,22 @@
 package Controleur;
 
 
+import java.util.Random;
+
 import Modele.EtatJeu;
 import Modele.Jeu;
+import Modele.Joueur;
 import Vue.CollecteurEvenements;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
     String infoPlateau;
+    Random random;
     boolean IAActive;
     Jeu jeu;
     EtatJeu etatJeu;
     int carteSelectionnee;
-    boolean voirMainAdversaire;
+    boolean voirMainAdversaire, voirMainJoueurActif;
     
     public ControleurMediateur(Jeu j) {
         this.jeu = j;
@@ -20,6 +24,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         carteSelectionnee = -1;
         infoPlateau = "Placez votre sorcier !";
         voirMainAdversaire = false;
+        voirMainJoueurActif = true;
 	}
 
     // ============ Clic Souris ================
@@ -64,6 +69,17 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case DUEL:
                 break;
+            case DUEL_EGALITE:
+                int indiceAdversaire = random.nextInt(3);
+                Joueur joueur = jeu.duelEgalite(indiceCarte, indiceAdversaire);
+                if(joueur!= null){
+                    infoPlateau = joueur.getNom() + " à remporté le duel !";
+                }
+                else{
+                    infoPlateau = "Egalité le jeu continue !";
+                }
+                changerTour();
+                break;
             case DEBUT_PARTIE:
                 break;
             default:
@@ -71,10 +87,25 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    //TODO implémenter methode changerTour
+    private void changerTour() {
+    }
+
     public void clicCarteMainAdverse() {
         switch(etatJeu){
             case DUEL:
                 voirMainAdversaire = true;
+                Joueur joueur = jeu.duel();
+                if(joueur != null){
+                    infoPlateau = joueur.getNom() + " à remporté le duel !";
+                    changerTour();
+                }
+                else{
+                    infoPlateau = "Egalité selectionnez une carte pour départager !";
+                    changerEtatJeu(EtatJeu.DUEL_EGALITE);
+                }
+                break;
+            case DUEL_EGALITE:
                 break;
             default:
                 voirMainAdversaire = !voirMainAdversaire;
