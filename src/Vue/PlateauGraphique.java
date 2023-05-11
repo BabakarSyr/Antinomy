@@ -175,8 +175,7 @@ public class PlateauGraphique extends JComponent {
 	}
 
 	void tracerMessage(){
-		//String msg = c.infoPlateau();
-		String msg="la la la";
+		String msg = c.infoPlateau();
 		int hauteur=getHeight()/10*8;
 		int longueur=3*largeurCarte;
 		Font fonte = new Font("Serif", Font.BOLD, getHeight()/25);

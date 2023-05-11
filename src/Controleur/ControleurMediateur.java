@@ -7,6 +7,7 @@ import Vue.CollecteurEvenements;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
+    String infoPlateau;
     boolean IAActive;
     Jeu jeu;
     EtatJeu etatJeu;
@@ -16,6 +17,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         this.jeu = j;
         changerEtatJeu(EtatJeu.DEBUT_PARTIE);
         carteSelectionnee = -1;
+        infoPlateau = "Placez votre sorcier !";
 	}
 
     // ============ Clic Souris ================
@@ -78,13 +80,16 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jeu.jouerCarte(carteSelectionnee, indiceCarteContinuum);
                     if(jeu.estParadoxe()){
                         changerEtatJeu(EtatJeu.PARADOXE);
+                        infoPlateau = "Placez votre paradoxe sur le plateau !";
                         carteSelectionnee = -1;
                     }
                     else if(jeu.estDuel()){
                         changerEtatJeu(EtatJeu.DUEL);
+                        infoPlateau = "";
                         carteSelectionnee = -1;
                     }else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
+                        infoPlateau = "";
                         carteSelectionnee = -1;
                     }
                 }
@@ -100,6 +105,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jeu.joueurActif().ajouterCristaux(1);
                     changerEtatJeu(EtatJeu.DUEL);
                     carteSelectionnee = -1;
+                    infoPlateau = "";
                 }
                 else{
                     System.out.println("choisir position valide !");
@@ -110,6 +116,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jeu.deplacerSorcier(indiceCarteContinuum);
                 }
                 changerEtatJeu(EtatJeu.DEBUT_TOUR);
+                infoPlateau = "";
                 break;
             default:
                 break;
@@ -130,6 +137,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     private void changerEtatJeu(EtatJeu etat) {
         etatJeu = etat;
+    }
+
+    @Override
+    public String infoPlateau() {
+        return infoPlateau;
     }
     
 }

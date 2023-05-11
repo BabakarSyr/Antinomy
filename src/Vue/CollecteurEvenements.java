@@ -8,4 +8,5 @@ public interface CollecteurEvenements {
     void clicCarteMain(int indiceCarte);
     void clicCarteContinuum(int indiceCarte);
     int carteSelectionnee();
+    String infoPlateau();
 }
