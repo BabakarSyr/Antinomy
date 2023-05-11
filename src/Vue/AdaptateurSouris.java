@@ -3,6 +3,7 @@ package Vue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import Modele.EtatJeu;
 import Modele.ZoneClic;
 
 public class AdaptateurSouris extends MouseAdapter {
@@ -29,26 +30,32 @@ public class AdaptateurSouris extends MouseAdapter {
 				plateauGraphique.setCarteSelectionne(-1);
 				plateauGraphique.repaint();
 				break;
-			case MAIN_JOUEUR_COURANT:
+			case MAIN_JOUEUR_1:
 				//Jouer une carte
-				System.out.println("clic MAIN_JOUEUR_COURANT");
-				indiceCarte = plateauGraphique.getCarte(ZoneClic.MAIN_JOUEUR_COURANT);
-				System.out.println("carte " + indiceCarte);
-				c.clicCarteMain(indiceCarte);
+				System.out.println("clic MAIN_JOUEUR_1");
+				clicMain(c.joueurActif(1), ZoneClic.MAIN_JOUEUR_2);
 				plateauGraphique.repaint();
 				break;
-			case MAIN_ADVERSAIRE:
+			case MAIN_JOUEUR_2:
 				//Jouer une carte
-				System.out.println("clic MAIN_ADVERSAIRE");
-				//indiceCarte = plateauGraphique.getCarte(ZoneClic.MAIN_ADVERSAIRE);
-				//System.out.println("carte " + indiceCarte);
-				c.clicCarteMainAdverse();
-				plateauGraphique.voirMainAdversaire(c.voirMainAdversaire());
+				System.out.println("clic MAIN_JOUEUR_2");
+				clicMain(c.joueurActif(2), ZoneClic.MAIN_JOUEUR_2);
 				plateauGraphique.repaint();
 				break;
 			default:
 				System.out.println("clic plateau");
 				break;
 		};
+	}
+
+	void clicMain(boolean actif, ZoneClic zone){
+		int indiceCarte;
+		if(actif){
+			indiceCarte = plateauGraphique.getCarte(zone);
+			System.out.println("carte " + indiceCarte);
+			c.clicCarteMain(indiceCarte);
+		}else{
+			c.clicCarteMainAdverse();
+		}
 	}
 }

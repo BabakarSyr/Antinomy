@@ -6,6 +6,7 @@ import java.util.Random;
 import Modele.EtatJeu;
 import Modele.Jeu;
 import Modele.Joueur;
+import Modele.ZoneClic;
 import Vue.CollecteurEvenements;
 
 public class ControleurMediateur implements CollecteurEvenements {
@@ -46,8 +47,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         throw new UnsupportedOperationException("Unimplemented method 'commande'");
     }
 
-    //TODO Gerer Duel correctement
-    //TODO ajouter rotation tour
     @Override
     public void clicCarteMain(int indiceCarte) {
         switch(etatJeu){
@@ -200,8 +199,21 @@ public class ControleurMediateur implements CollecteurEvenements {
     public boolean voirMainAdversaire() {
         return voirMainAdversaire;
     }
+    @Override
     public boolean voirMainJoueurActif() {
-        return voirMainAdversaire;
+        return voirMainJoueurActif;
+    }
+
+    @Override
+    public boolean joueurActif(int numJoueur){
+        if(numJoueur==1){
+            return(jeu.joueurActif()==jeu.plateau().joueur1);
+        }
+        if(numJoueur==2){
+            return(jeu.joueurActif()==jeu.plateau().joueur2);
+        }
+        return false;
+        
     }
     
 }

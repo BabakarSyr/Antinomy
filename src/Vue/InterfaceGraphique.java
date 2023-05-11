@@ -1,13 +1,13 @@
 package Vue;
 
 import javax.swing.* ;
-//import java.awt.* ;
+import java.awt.* ;
 
 import Modele.*;
 
 
 // L'interface runnable déclare une méthode run
-public class InterfaceGraphique implements Runnable {
+public class InterfaceGraphique extends JFrame implements Runnable {
 	Jeu jeu;
 	CollecteurEvenements controleur;
 
@@ -19,14 +19,14 @@ public class InterfaceGraphique implements Runnable {
 	public static void demarrer(Jeu j, CollecteurEvenements c) {
 		InterfaceGraphique vue = new InterfaceGraphique(j, c);
 		SwingUtilities.invokeLater(vue);
-	}
-
+	}	
 
 	public void run() {
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("Ma fenetre a moi");
+		JButton bouton = new JButton("Menu");
 		frame.setSize(500, 300);
-
+	
 		// Ajout de notre composant de dessin dans la fenetre
 		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu, controleur);
 		frame.add(plateauGraphique);
@@ -38,7 +38,7 @@ public class InterfaceGraphique implements Runnable {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// On fixe la taille et on demarre
-		
 		frame.setVisible(true);
+
 	}
 }

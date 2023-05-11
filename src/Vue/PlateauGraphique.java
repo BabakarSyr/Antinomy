@@ -75,19 +75,19 @@ public class PlateauGraphique extends JComponent {
             return ZoneClic.CONTINUUM;
         }
         if(((x >= debutMainJoueurActifX) && (x <= finMainJoueurActifX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
-            return ZoneClic.MAIN_JOUEUR_COURANT;
+            return ZoneClic.MAIN_JOUEUR_1;
         }
         if(((x >= debutMainJoueurSecondaireX) && (x <= finMainJoueurSecondaireX) && (y >= debutMainJoueurSecondaireY) && (y <= finMainJoueurSecondaireY))){
-            return ZoneClic.MAIN_ADVERSAIRE;
+            return ZoneClic.MAIN_JOUEUR_2;
         }
         return ZoneClic.HORS_ZONE;
     }
     //TODO à améliorer pour récuperer l'indice de la carte d'une meilleure maniere
     public int getCarte(ZoneClic zoneCarte){
         switch(zoneCarte){
-            case MAIN_JOUEUR_COURANT:
+            case MAIN_JOUEUR_1:
                 return (int)(position.getX()-debutMainJoueurActifX)/(largeurCarte);
-            case MAIN_ADVERSAIRE:
+            case MAIN_JOUEUR_2:
                 return (int)(position.getX()-debutMainJoueurSecondaireX)/(largeurCarte);
             case CONTINUUM:
                 return (int)position.getX()/largeurCarte;
@@ -119,8 +119,13 @@ public class PlateauGraphique extends JComponent {
 
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
-		tracerMainJoueurActif();
-		tracerMainJoueurSecondaire(voirMainAdversaire);
+		if(jeu.joueurActif() == jeu.plateau().joueur1){
+			tracerMainJoueur1(c.voirMainJoueurActif());
+			tracerMainJoueur2(c.voirMainAdversaire());
+		}else{
+			tracerMainJoueur1(c.voirMainAdversaire());
+			tracerMainJoueur2(c.voirMainJoueurActif());
+		}
 	}
 
 	void tracerContinuum(){
@@ -195,8 +200,8 @@ public class PlateauGraphique extends JComponent {
 		drawable.drawString(msg, longueur, hauteur);
 	}
 
-	// Trace les cartes du joueur actif (joueur du bas)
-	void tracerMainJoueurActif(){
+	// Trace les cartes du joueur 1 (joueur du bas)
+	void tracerMainJoueur1(boolean mainOuverte){
 
 		debutMainJoueurActifX = 3*largeurCarte;
 		debutMainJoueurActifY = height-hauteurCarte;
@@ -204,13 +209,20 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueurActifY = height;
 		
 		int carteSelectionne = c.carteSelectionnee();
-		ArrayList<Carte> main = jeu.plateau().joueurActif().getMain();
-		for(int i =0; i< main.size(); i++){
-			if (i == carteSelectionne){
-				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY-hauteurCarte/4, largeurCarte, hauteurCarte, null);
+		ArrayList<Carte> main = jeu.plateau().getJoueur(1).getMain();
+		if(mainOuverte){
+			for(int i =0; i< main.size(); i++){
+				if (i == carteSelectionne){
+					drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY-hauteurCarte/4, largeurCarte, hauteurCarte, null);
+				}
+				else {
+					drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY, largeurCarte, hauteurCarte, null);
+				}
 			}
-			else {
-				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY, largeurCarte, hauteurCarte, null);
+		}
+		else{
+			for(int i =0; i< main.size(); i++){
+				drawable.drawImage(aspects.carte_dos.image(), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY, largeurCarte, hauteurCarte, null);
 			}
 		}
 		
@@ -219,10 +231,10 @@ public class PlateauGraphique extends JComponent {
 
 	
 
-	// Trace les cartes du joueur secondaire (joueur du haut)
+	// Trace les cartes du joueur2 (joueur du haut)
 	// mainOuverte : True si on veut voir le jeu du joueur secondaire
 	//				 False sinon, trace le dos des cartes
-	void tracerMainJoueurSecondaire(boolean mainOuverte){
+	void tracerMainJoueur2(boolean mainOuverte){
 		
 		debutMainJoueurSecondaireX = 3*largeurCarte;
 		debutMainJoueurSecondaireY = 0;

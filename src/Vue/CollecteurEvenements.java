@@ -9,6 +9,8 @@ public interface CollecteurEvenements {
     void clicCarteContinuum(int indiceCarte);
     int carteSelectionnee();
     boolean voirMainAdversaire();
+    boolean voirMainJoueurActif();
     String infoPlateau();
     void clicCarteMainAdverse();
+    boolean joueurActif(int numJoueur);
 }
