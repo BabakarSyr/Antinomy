@@ -70,6 +70,18 @@ public class Joueur {
         Collections.shuffle(main);
     }
 
+    public int getIndiceCarte(Carte c)
+    {
+        for (int i = 0; i < this.main.size(); i++)
+        {
+            if (this.main.get(i) == c)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     //Equivalent echanger carte
     public Carte jouerCarte(int index, List<Carte> continuum) {//index=[0-2]
