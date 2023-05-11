@@ -1,64 +1,75 @@
 package Modele;
 import java.util.*;
 
-public class IAFacile 
+public class IAFacile extends IA
 {
-    Random r;
-    Jeu jeu;
-    Plateau plateau;
-    ArrayList<Integer> emplacementsAccessibles;
-    Joueur joueurIA;
-    int ordreJoueur;
-    int positionIA;
-
     public IAFacile(Jeu j) 
     {
-		r = new Random();
-        this.jeu = j;
-        this.plateau = this.jeu.plateau();
-        this.emplacementsAccessibles = new ArrayList<>();
-        this.joueurIA = plateau.getJoueurParNom(new String("IA Facile"));
-        this.positionIA = 0;
-        if (plateau.getJoueur(1).getNom() == this.joueurIA.getNom())
-        {
-            this.ordreJoueur = 1;
-        }
-        else
-        {
-            this.ordreJoueur = 2;
-        }
+        super(j);
 	}
 
+    @Override
     public void setPosInitiale()
     {
-        List<Integer> positions = this.plateau.positionsDepartPossible();
-        int numPositions = positions.size();
-        int positionChoisie = r.nextInt(numPositions);
-        this.positionIA = positions.get(positionChoisie);
-        this.jeu.deplacerSorcier(positionIA); 
+        ArrayList<Integer> positions =  this.plateau.positionsDepart();
+        int positionChoisie = r.nextInt(positions.size());
+        positionIA = positions.get(positionChoisie);
+        jeu.deplacerSorcier(positionIA); 
     }
 
-
-	public void joue() 
+    @Override
+	public int joue() 
     {
-        int indexCarteChoisie = 0; 
-        Carte carteChoisie;
-        
-        if (plateau.getJoueurActif() == this.joueurIA)
+        int mouvementChoisi;
+        int carteChoisie;
+        ArrayList<Integer> positions;
+        this.setPosInitiale();
+        for (Carte c : joueurIA.getMain())
         {
-            this.emplacementsAccessibles.clear();
-            while (this.emplacementsAccessibles.isEmpty())
+            positions =  plateau.cartesAccessibles(c);
+            ArrayList<Integer> positionsCopy = new ArrayList<>(positions);
+            if (positions.size() != 0)
             {
-                indexCarteChoisie = r.nextInt(3);
-                carteChoisie = this.joueurIA.getMain().getCartes().get(indexCarteChoisie);
-                plateau.cartesAccessibles(carteChoisie);
+                ArrayList<Integer> paradoxPositions = peutFormerParadoxe(c, positions);
+                while (paradoxPositions.size() != 0)
+                {
+                    mouvementChoisi = r.nextInt(paradoxPositions.size());
+                    mouvementChoisi = paradoxPositions.get(mouvementChoisi);
+                    int resultatDuel = simulerMouvement(joueurIA.getIndiceCarte(c), mouvementChoisi);
+                    if (resultatDuel == 1)
+                    {
+                        jeu.jouerCarte(joueurIA.getIndiceCarte(c), mouvementChoisi);
+                        return 1;
+                    }
+                    else
+                    {
+                        positions.remove(paradoxPositions.get(mouvementChoisi));
+                        paradoxPositions.remove(mouvementChoisi);
+                    }
+                }
+                //paradoxPositions est vidée
+                while (positionsCopy.size() != 0)
+                {
+                    mouvementChoisi = r.nextInt(positions.size());
+                    mouvementChoisi = positions.get(mouvementChoisi);
+                    int resultatDuel = simulerMouvement(joueurIA.getIndiceCarte(c), mouvementChoisi);
+                    if (resultatDuel == 1)
+                    {
+                        jeu.jouerCarte(joueurIA.getIndiceCarte(c), mouvementChoisi);
+                        return 1;
+                    }
+                    else
+                    {
+                        positions.remove(mouvementChoisi);
+                    }
+                }
             }
-        
-            int emplacementChoisi = emplacementsAccessibles.get(r.nextInt(emplacementsAccessibles.size()));
-            //TODO verifier que ca fonctionne
-            this.jeu.deplacerSorcier(emplacementChoisi);
-            this.positionIA = emplacementChoisi;
         }
+        carteChoisie = r.nextInt(3);
+        positions =  plateau.cartesAccessibles(joueurIA.getMain().get(carteChoisie));
+        mouvementChoisi = r.nextInt(positions.size());
+        mouvementChoisi = positions.get(mouvementChoisi);
+        jeu.jouerCarte(carteChoisie, mouvementChoisi);
+        return 1;
     }
-
 }

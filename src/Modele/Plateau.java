@@ -7,7 +7,8 @@ import java.util.List;
 
 
 public class Plateau {
-    public Joueur joueurActif;
+    //TODO remplacer joueur actif par un indice et creer une methode qui retourne le joueur actif: j1 ou j2
+    public int joueurActif;
 
     public Joueur joueur1;
     public Joueur joueur2;
@@ -16,7 +17,7 @@ public class Plateau {
 
     ArrayList<Carte> continuum=new ArrayList<>();
 
-     
+   
     public Codex codex;
   
     
@@ -24,31 +25,18 @@ public class Plateau {
     public Plateau() {
         
         
-        joueur1=new Joueur("",0);
-        joueur2=new Joueur("",0);
+        joueur1=new Joueur();
+        joueur2=new Joueur();
       
-        joueurActif = joueur1;
+        joueurActif = 1;
         codex=new Codex(new Carte(null, null,0));
     
         initialiser();
     }
    
-    public Plateau copie() {
-        Plateau copie = new Plateau();
-        copie.joueurActif = joueurActif.copie();
-        copie.joueur1 =joueur1.copie();
-        copie.joueur2 = joueur2.copie();
-        copie.All_Cartes = new ArrayList<>(this.All_Cartes);
-        copie.continuum = new ArrayList<>(this.continuum);
-        copie.codex = codex;
-        return copie;
-    }
-    
-    
-    
-    
 
-    public void initialiser(){
+    public List<Carte> getAll_Cartes() {
+        List<Carte> All_Cartes=new ArrayList<>();
         All_Cartes.add(new Carte(Forme.PLUME, Couleur.VERT,1));
         All_Cartes.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
         All_Cartes.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
@@ -68,10 +56,14 @@ public class Plateau {
         All_Cartes.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
         All_Cartes.add(new Carte(Forme.CRANE, Couleur.VERT,3));
         All_Cartes.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
-
+        return All_Cartes;
+    }
+    public void initialiser(){
+        List <Carte> All_Cartes=getAll_Cartes();
        //Copier le contenu de All_Cartes dans continuum
         continuum.addAll(All_Cartes);
 
+        
         
         // Mélanger les cartes Reliques
         Collections.shuffle(continuum);
@@ -100,10 +92,7 @@ public class Plateau {
     }
 
     public void setJoueurActif(int i) {
-        if(i==1)
-            joueurActif = joueur1;
-        else
-            joueurActif = joueur2;
+        this.joueurActif = i;
     }
 
 
@@ -114,6 +103,7 @@ public class Plateau {
             return joueur2;
         }
     }
+
 
     public ArrayList<Integer> positionsDepart(){
         return positionsDepart;
@@ -139,9 +129,9 @@ public class Plateau {
     public int deplacementFuturPossible(Carte carteChoisie) {
         int valeurCarte = carteChoisie.getValeur();
         int res=-1;
-        int positionSorcier = joueurActif.sorcier().positionSorcier;
+        int positionSorcier = joueurActif().positionSorcier;
         //Si le futur du sorcier est a droite
-        if(joueurActif == joueur1)
+        if(joueurActif == 1)
             if(positionSorcier+ valeurCarte < continuum.size())
                 res= positionSorcier+valeurCarte;
         
@@ -158,8 +148,8 @@ public class Plateau {
         Couleur couleurCarte = carteChoisie.getCouleur();
         ArrayList<Integer> positions=new ArrayList<>();
         //Si le passé du sorcier est à gauche
-        if(joueurActif == joueur1){
-            for (int i = joueurActif.sorcier().positionSorcier - 1; i >= 0; i--) {
+        if(joueurActif == 1){
+            for (int i = joueurActif().positionSorcier - 1; i >= 0; i--) {
                 if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
                     positions.add (i);
                 }        
@@ -167,7 +157,7 @@ public class Plateau {
         } 
         //Le passé du sorcier est à droite
         else {
-            for (int i = joueurActif.sorcier().positionSorcier + 1; i < continuum.size(); i++) {
+            for (int i = joueurActif().positionSorcier + 1; i < continuum.size(); i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
                     positions.add (i);
                 }
@@ -198,24 +188,27 @@ public class Plateau {
     }
 
     public void changerJoueurActif() {
-        if (joueurActif == joueur1) {
-            joueurActif = joueur2;
-        } else {
-            joueurActif = joueur1;
-        }
+        joueurActif = (joueurActif % 2);
+        joueurActif++;
     }
 
-    public Joueur getJoueurActif() {
-        if(joueurActif.getNom().equals(joueur1.getNom())){
-            joueurActif=joueur1;
-            return joueur1;
-        }
-         
-        else{
-            joueurActif=joueur2;
-            return joueur2;
-        }
 
+    public Joueur joueurInactif()
+    {
+        if(this.joueurActif==1)
+        {
+            return this.joueur2;
+        }
+        return this.joueur1;
+    }
+
+    public Joueur joueurActif()
+    {
+        if(this.joueurActif==1)
+        {
+            return this.joueur1;
+        }
+        return this.joueur2;
     }
 
     public ArrayList<Carte> getContinuum() {
@@ -253,16 +246,16 @@ public class Plateau {
 
     public int getPositionSorcier(int joueur) {
         if (joueur == 1) 
-            return joueur1.sorcier.getPositionSorcier();
+            return joueur1.getPositionSorcier();
         else 
-            return joueur2.sorcier.getPositionSorcier();
+            return joueur2.getPositionSorcier();
     }
 
     public void setTempsSorcier(int joueur) {
         if (joueur == 1) {
-            joueur1.sorcier.setSensDuTemps(true);
+            joueur1.setSensDuTemps(true);
         } else {
-            joueur2.sorcier.setSensDuTemps(false);
+            joueur2.setSensDuTemps(false);
         }
     }
 

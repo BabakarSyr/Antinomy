@@ -11,9 +11,6 @@ public class Aspects
     sorcier1, sorcier2;
 
 
-    ///////////////////////
-    ///// ASPECT 1 ////////
-    ///////////////////////
 	public Aspects()
 	{
 		chargerAspect2();
@@ -29,11 +26,21 @@ public class Aspects
 			case 2:
 				chargerAspect2();
 				break;
+
+            case 3:
+                chargerCarte1();
+                chargercodex2();
+                chargerSorciers2();
+				break;
 			default:
 				break;
 		}
     }
 
+
+    ///////////////////////
+    ///// ASPECT 1 ////////
+    ///////////////////////
 
 
     public void chargerAspect1()
@@ -63,7 +70,7 @@ public class Aspects
 		sorcier2= new ImageJeu("sorcier_2");
     }
 
-    public void chargerAspectCarte1()
+    public void chargerCarte1()
     {
         anneau_bleu = new ImageJeu("anneau_bleu");
 		anneau_rouge = new ImageJeu("anneau_rouge");
@@ -88,7 +95,7 @@ public class Aspects
 		carte_dos= new ImageJeu("codex");
     }
 
-    public void chargerAspectSorciers1()
+    public void chargerSorciers1()
     {
         sorcier1= new ImageJeu("sorcier_1");
 		sorcier2= new ImageJeu("sorcier_2");
@@ -131,7 +138,7 @@ public class Aspects
 		sorcier2= new ImageJeu("sorcier2");
     }
 
-    public void chargerAspectCarte2()
+    public void chargerCarte2()
     {
         anneau_bleu = new ImageJeu("anneau_bleu2");
 		anneau_rouge = new ImageJeu("anneau_rouge2");
@@ -154,13 +161,13 @@ public class Aspects
     }
 
     
-    public void chargerAspectSorciers2()
+    public void chargerSorciers2()
     {
         sorcier1= new ImageJeu("sorcier1");
 		sorcier2= new ImageJeu("sorcier2");
     }
 
-    public void chargerAspectcodex2()
+    public void chargercodex2()
     {
 		codex_bleu = new ImageJeu("codex_bleu");
 		codex_rouge = new ImageJeu("codex_rouge");

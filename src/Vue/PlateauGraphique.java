@@ -22,7 +22,8 @@ public class PlateauGraphique extends JComponent {
 		debutMainJoueurActifX, debutMainJoueurActifY, finMainJoueurActifX, finMainJoueurActifY,
 		debutMainJoueurSecondaireX, debutMainJoueurSecondaireY, finMainJoueurSecondaireX, finMainJoueurSecondaireY;
 	int width, height;
-	aspects aspects;
+	boolean voirMainAdversaire;
+	Aspects aspects;
 	Graphics2D drawable;
 	CollecteurEvenements c;
 
@@ -33,7 +34,7 @@ public class PlateauGraphique extends JComponent {
 		this.c = c;
 		compteur = 1;
 		//chargerImages2();
-		aspects = new aspects(2);
+		aspects = new Aspects(2);
 		initialisationCoordonnées();
 	}
 
@@ -61,32 +62,39 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueurSecondaireY = 0;
 
 		carteSelectionne=-1;
+
+		voirMainAdversaire = false;
 	}
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
 	}
 	public ZoneClic getZoneClic(){
-		int x = (int)position.getX();
-		int y = (int)position.getY();
-		if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
-			return ZoneClic.CONTINUUM;
-		}
-		if(((x >= debutMainJoueurActifX) && (x <= finMainJoueurActifX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
-			return ZoneClic.MAIN_JOUEUR_COURANT;
-		}
-		return ZoneClic.HORS_ZONE;
-	}
-	//TODO à améliorer pour récuperer l'indice de la carte d'une meilleure maniere
-	public int getCarte(ZoneClic zoneCarte){
-		switch(zoneCarte){
-			case MAIN_JOUEUR_COURANT:
-				return (int)(position.getX()-debutMainJoueurActifX)/(largeurCarte);
-			case CONTINUUM:
-				return (int)position.getX()/largeurCarte;
-			default:
-				return -1;
-		}
-	}
+        int x = (int)position.getX();
+        int y = (int)position.getY();
+        if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
+            return ZoneClic.CONTINUUM;
+        }
+        if(((x >= debutMainJoueurActifX) && (x <= finMainJoueurActifX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
+            return ZoneClic.MAIN_JOUEUR_COURANT;
+        }
+        if(((x >= debutMainJoueurSecondaireX) && (x <= finMainJoueurSecondaireX) && (y >= debutMainJoueurSecondaireY) && (y <= finMainJoueurSecondaireY))){
+            return ZoneClic.MAIN_ADVERSAIRE;
+        }
+        return ZoneClic.HORS_ZONE;
+    }
+    //TODO à améliorer pour récuperer l'indice de la carte d'une meilleure maniere
+    public int getCarte(ZoneClic zoneCarte){
+        switch(zoneCarte){
+            case MAIN_JOUEUR_COURANT:
+                return (int)(position.getX()-debutMainJoueurActifX)/(largeurCarte);
+            case MAIN_ADVERSAIRE:
+                return (int)(position.getX()-debutMainJoueurSecondaireX)/(largeurCarte);
+            case CONTINUUM:
+                return (int)position.getX()/largeurCarte;
+            default:
+                return -1;
+        }
+    }
 
 	public void paintComponent(Graphics g) {
 		System.out.println("Entree dans paintComponent : " + compteur++);
@@ -112,7 +120,7 @@ public class PlateauGraphique extends JComponent {
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
 		tracerMainJoueurActif();
-		tracerMainJoueurSecondaire(false);
+		tracerMainJoueurSecondaire(voirMainAdversaire);
 	}
 
 	void tracerContinuum(){
@@ -129,17 +137,23 @@ public class PlateauGraphique extends JComponent {
 		tracerCodex(continuum);
 		tracerSorcier1(continuum);
 		tracerSorcier2(continuum);
+		tracerScore();
+		tracerMessage();
+		//boutonMenu();
 	}
 
 	void tracerSorcier1(ArrayList<Carte> continuum){
 		int posSorcier=jeu.plateau().getPositionSorcier(1);
-		drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
-
+		if (posSorcier!=-1){
+			drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
+		}
 	}
 
 	void tracerSorcier2(ArrayList<Carte> continuum){
 		int posSorcier=jeu.plateau().getPositionSorcier(2);
-		drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
+		if (posSorcier!=-1){
+			drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
+		}
 	}
 
 	void tracerCodex(ArrayList<Carte> continuum){
@@ -161,6 +175,26 @@ public class PlateauGraphique extends JComponent {
 		}
 	}
 
+	void tracerScore() {
+		int cristaux = jeu.plateau().joueur1.getNombreCristaux();
+		int cristaux2 = jeu.plateau().joueur2.getNombreCristaux();
+		int hauteur=getHeight()/10;
+		int longueur=getWidth()/8*5;
+		Font fonte = new Font("Serif", Font.BOLD, getHeight()/25);
+        drawable.setFont(fonte);
+		drawable.drawString("Joueur 2 : " + cristaux2, longueur, hauteur);
+		drawable.drawString("Joueur 1 : " + cristaux, longueur, hauteur*9);
+	}
+
+	void tracerMessage(){
+		String msg = c.infoPlateau();
+		int hauteur=getHeight()/10*8;
+		int longueur=3*largeurCarte;
+		Font fonte = new Font("Serif", Font.BOLD, getHeight()/25);
+        drawable.setFont(fonte);
+		drawable.drawString(msg, longueur, hauteur);
+	}
+
 	// Trace les cartes du joueur actif (joueur du bas)
 	void tracerMainJoueurActif(){
 
@@ -170,7 +204,7 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueurActifY = height;
 		
 		int carteSelectionne = c.carteSelectionnee();
-		ArrayList<Carte> main = jeu.plateau().getJoueurActif().getMain();
+		ArrayList<Carte> main = jeu.plateau().joueurActif().getMain();
 		for(int i =0; i< main.size(); i++){
 			if (i == carteSelectionne){
 				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY-hauteurCarte/4, largeurCarte, hauteurCarte, null);
@@ -183,6 +217,7 @@ public class PlateauGraphique extends JComponent {
 	}
 
 
+	
 
 	// Trace les cartes du joueur secondaire (joueur du haut)
 	// mainOuverte : True si on veut voir le jeu du joueur secondaire
@@ -258,4 +293,8 @@ public class PlateauGraphique extends JComponent {
 
 	void tracerImage(Carte carte, int position){
 	}
+
+	public void voirMainAdversaire(boolean bool){
+        voirMainAdversaire = bool;
+    }
 }

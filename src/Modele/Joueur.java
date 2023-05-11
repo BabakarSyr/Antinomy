@@ -1,7 +1,6 @@
 package Modele;
 
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -9,25 +8,65 @@ public class Joueur {
     String nom;
     ArrayList<Carte> main;
     int nombreCristaux;
-    public Sorcier sorcier;
+    boolean sensDuTemps; // si sensDuTemps=true, le futur est vers la droite du plateau
+    int positionSorcier;
 
+    //////////////////////
+    //// CONSTRUCTEUR ////
+    //////////////////////
+
+    public Joueur() {
+        this.nom = "";
+        this.nombreCristaux = 0;
+        this.main = new ArrayList<>();
+        this.sensDuTemps = true;
+        this.positionSorcier=-1;
+    }
+
+    public Joueur(String nom) {
+        this.nom = nom;
+        this.nombreCristaux = 0;
+        this.main = new ArrayList<>();
+        this.sensDuTemps = true;
+        this.positionSorcier=-1;
+    }
 
     public Joueur(String nom, int nombreCristaux) {
         this.nom = nom;
         this.nombreCristaux = nombreCristaux;
-        this.sorcier = new Sorcier(true);
         this.main = new ArrayList<>();
+        this.sensDuTemps = true;
+        this.positionSorcier=-1;
     }
 
+    public Joueur(String nom, int nombreCristaux, boolean sensDuTemps, int posSorcier) {
+        this.nom = nom;
+        this.nombreCristaux = nombreCristaux;
+        this.main = new ArrayList<>();
+        this.sensDuTemps = sensDuTemps;
+        this.positionSorcier=posSorcier;
+    }
 
+    ///////////////////////////
+    ////  methodes joueur  ////
+    ///////////////////////////
 
     public int getNombreCristaux() {
         return nombreCristaux;
+    }
+
+    public void ajouterCristaux() {
+        this.nombreCristaux ++;
     }
    
     public void ajouterCristaux(int nombreCristaux) {
         this.nombreCristaux += nombreCristaux;
     }
+
+    public void retirerCristaux() {
+        this.nombreCristaux --;
+    }
+
     public void retirerCristaux(int nombreCristaux) {
         this.nombreCristaux -= nombreCristaux;
     }
@@ -36,9 +75,9 @@ public class Joueur {
     public boolean volerCristal(Joueur autreJoueur) {
         if (autreJoueur.getNombreCristaux() > 0) {
             //On ajoute un cristal au joueur actuel 
-            this.ajouterCristaux(1);
+            this.ajouterCristaux();
             //on en retire un à l'autre joueur
-            autreJoueur.retirerCristaux(1);
+            autreJoueur.retirerCristaux();
             return true;
         }
         else {
@@ -46,8 +85,6 @@ public class Joueur {
         }
     }
 
-
-   
     public String getNom() {
         return nom;
     }
@@ -59,22 +96,26 @@ public class Joueur {
         return main;
     }
 
-
-    public Sorcier sorcier() {
-        return sorcier;
-    }
-    public void setSorcier(Sorcier sorcier) {
-        this.sorcier = sorcier;
-    }
-
     public void melangerMain(){
         Collections.shuffle(main);
+    }
+
+    public int getIndiceCarte(Carte c)
+    {
+        for (int i = 0; i < this.main.size(); i++)
+        {
+            if (this.main.get(i) == c)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
 
     //Equivalent echanger carte
     public Carte jouerCarte(int index, List<Carte> continuum) {//index=[0-2]
-        int positionSorcier = sorcier.getPositionSorcier();
+        int positionSorcier = getPositionSorcier();
         Carte carte = main.get(index);
         main.remove(index);
     
@@ -90,38 +131,24 @@ public class Joueur {
     }
 
 
-    public int totalValeurMain() {
-        int total = 0;
-        for (Carte carte : main) {
-            total += carte.getValeur();
-        }
-        return total;
+    ///////////////////////////
+    //// methodes sorcier  ////
+    ///////////////////////////
+
+    public int getPositionSorcier() 
+    {
+        return this.positionSorcier;
     }
-
-    public boolean DeuxCarteMemeProp() {
-        boolean mainValide = false;
-        int val_carte1 = main.get(0).getValeur();
-        Forme forme_carte1 = main.get(0).getForme();
-        Couleur couleur_carte1 = main.get(0).getCouleur();
-        for(int i=1;i<3;i++){
-            if(main.get(i).getValeur()==val_carte1 || main.get(i).getForme()==forme_carte1 || main.get(i).getCouleur()==couleur_carte1){
-                mainValide=true;
-            }
-        }
-        return mainValide;
-    }
-
-    public Joueur copie() {
-        Joueur clone = new Joueur(nom,nombreCristaux);
-        clone.sorcier =sorcier.copie();
-        clone.main = new ArrayList<>(main);
-        return clone;
-
-    }
-
-
  
-    
+    public boolean getSensDuTemps() 
+    {
+        return this.sensDuTemps;
+    }
+ 
+    public void setSensDuTemps(boolean sensDuTemps) 
+    {
+        this.sensDuTemps = sensDuTemps;
+    }
 
 }
 
