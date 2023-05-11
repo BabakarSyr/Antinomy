@@ -96,13 +96,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case PARADOXE:
                 if(jeu.estPossibleEchangerParadoxe(indiceCarteContinuum)){
-                    if(indiceCarteContinuum>jeu.joueurActif().sorcier.getPositionSorcier()){
-                        jeu.echangerParadoxe(true);
-                    }
-                    else{
-                        jeu.echangerParadoxe(false);
-                    }
-                    jeu.joueurActif().ajouterCristaux(1);
+                    jeu.paradoxe(indiceCarteContinuum);
                     changerEtatJeu(EtatJeu.DUEL);
                     carteSelectionnee = -1;
                     infoPlateau = "";

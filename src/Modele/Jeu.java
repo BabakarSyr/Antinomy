@@ -100,59 +100,16 @@ public class Jeu
         return memeCouleur || memeForme || memeValeur;
     }
     
-
-    public void paradoxe()
+    public void paradoxe(int indiceCarteContinuum)
     {
-      try (Scanner scanner = new Scanner(System.in)) 
-      {
-        if(estParadoxe())
-        {
-          System.out.println("Vous avez un paradoxe");
-        
-          //Afficher les cartes du joueur actif
-          afficher_cartes_main();
-        
-          //Le joueur actif gagne 1 cristal
-          plateau.joueurActif.ajouterCristaux(1);
-                    
-          System.out.println("Récapitulatif :");
-          System.out.println("Le joueur "+plateau.joueur1.getNom()+" a en sa possession "+plateau.joueur1.getNombreCristaux()+" cristaux");
-          System.out.println("Le joueur "+plateau.joueur2.getNom()+" a en sa possession "+plateau.joueur2.getNombreCristaux()+" cristaux");
-                        
-          //Le joueur melange les cartes entre ses mains
-          plateau.joueurActif.melangerMain();
-        
-          System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
-          String direction = scanner.next().toLowerCase();
-          boolean futur = true;
-          if(direction == "gauche"){
-            futur = false;
-          }
-          if(direction == "droite"){
-            futur = true;
-          }
-          while(!estPossibleEchangerParadoxe(futur))
-          {
-            System.out.println("Vous ne pouvez pas placer vos 3 cartes à "+direction+" car il n'y a pas assez de cartes. Choisir la direction opposée :");
-            direction = scanner.next().toLowerCase();
-          }
-          //TODO faire jouer 3 cartes
-          //plateau.joueurActif.jouer3Cartes(plateau.getContinuum(), direction);
-          plateau.codex.changerCouleurInterdite();
-          System.out.println("La nouvelle couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
-          
-          
-          System.out.println("Voici le plateau apres votre coup :");
-          if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
-          {
-            plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(1),plateau.getPositionSorcier(1));
-          }
-          else
-          {
-            plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(2),plateau.getPositionSorcier(2));
-          }
+        if(indiceCarteContinuum>joueurActif().sorcier.getPositionSorcier()){
+            echangerParadoxe(true);
         }
-      }
+        else{
+            echangerParadoxe(false);
+        }
+        joueurActif().ajouterCristaux(1);
+        plateau.codex.changerCouleurInterdite();
     }
 
     public boolean partieTerminee() {
