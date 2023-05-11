@@ -130,6 +130,7 @@ public class PlateauGraphique extends JComponent {
 		tracerSorcier1(continuum);
 		tracerSorcier2(continuum);
 		tracerScore();
+		tracerMessage();
 	}
 
 	void tracerSorcier1(ArrayList<Carte> continuum){
@@ -173,6 +174,15 @@ public class PlateauGraphique extends JComponent {
 		drawable.drawString("Joueur 1 : " + cristaux, longueur, hauteur*9);
 	}
 
+	void tracerMessage(){
+		//String msg = c.infoPlateau();
+		String msg="la la la";
+		int hauteur=getHeight()/10*8;
+		int longueur=3*largeurCarte;
+		Font fonte = new Font("Serif", Font.BOLD, getHeight()/25);
+        drawable.setFont(fonte);
+		drawable.drawString(msg, longueur, hauteur);
+	}
 
 	// Trace les cartes du joueur actif (joueur du bas)
 	void tracerMainJoueurActif(){
@@ -196,6 +206,7 @@ public class PlateauGraphique extends JComponent {
 	}
 
 
+	
 
 	// Trace les cartes du joueur secondaire (joueur du haut)
 	// mainOuverte : True si on veut voir le jeu du joueur secondaire
