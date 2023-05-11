@@ -39,7 +39,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         throw new UnsupportedOperationException("Unimplemented method 'commande'");
     }
 
-    //TODO Compléter méthode clicCarteMain
+    //TODO Gerer Duel correctement
+    //TODO ajouter rotation tour
     @Override
     public void clicCarteMain(int indiceCarte) {
         switch(etatJeu){
@@ -105,12 +106,14 @@ public class ControleurMediateur implements CollecteurEvenements {
                     System.out.println("choisir position valide !");
                 }
                 break;
+            //TODO laisser l'autre joueur placer son sorcier avant de commencer à jouer
             case DEBUT_PARTIE:
                 if(jeu.positionsDepart().contains(indiceCarteContinuum)){
                     jeu.deplacerSorcier(indiceCarteContinuum);
+                    changerEtatJeu(EtatJeu.DEBUT_TOUR);
+                    infoPlateau = "";
                 }
-                changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                infoPlateau = "";
+                
                 break;
             default:
                 break;
