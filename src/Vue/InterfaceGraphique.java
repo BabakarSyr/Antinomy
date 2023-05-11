@@ -21,14 +21,22 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		SwingUtilities.invokeLater(vue);
 	}	
 
+
+	//TO-DO améliorer la position et taille du bouton
 	public void run() {
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("Ma fenetre a moi");
 		JButton bouton = new JButton("Menu");
 		frame.setSize(500, 300);
-	
+		//bouton.setSize(100, 100);
+		int y = getHeight();
+		int x = getWidth();
+		bouton.setBounds(x/10, y/100,100,100);
+
 		// Ajout de notre composant de dessin dans la fenetre
 		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu, controleur);
+		
+		frame.add(bouton);
 		frame.add(plateauGraphique);
 
 		// Ecoute des évènements liés à la souris dans l'AireDeDessin
