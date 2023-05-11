@@ -103,6 +103,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 else{
                     infoPlateau = "Egalité selectionnez une carte pour départager !";
                     changerEtatJeu(EtatJeu.DUEL_EGALITE);
+                    voirMainAdversaire = voirMainJoueurActif = false;
                 }
                 break;
             case DUEL_EGALITE:
@@ -187,6 +188,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public boolean voirMainAdversaire() {
+        return voirMainAdversaire;
+    }
+    public boolean voirMainJoueurActif() {
         return voirMainAdversaire;
     }
     
