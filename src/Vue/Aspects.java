@@ -61,10 +61,10 @@ public class Aspects
 		plume_rouge = new ImageJeu("plume_rouge");
 		plume_vert = new ImageJeu("plume_vert");
 		plume_violet = new ImageJeu("plume_violet");
-		codex_bleu = new ImageJeu("codex");
-		codex_rouge = new ImageJeu("codex");
-		codex_violet = new ImageJeu("codex");
-		codex_vert= new ImageJeu("codex");
+		codex_bleu = new ImageJeu("codex_bleu");
+		codex_rouge = new ImageJeu("codex_rouge");
+		codex_violet = new ImageJeu("codex_violet");
+		codex_vert= new ImageJeu("codex_vert");
 		carte_dos= new ImageJeu("codex");
 		sorcier1= new ImageJeu("sorcier_1");
 		sorcier2= new ImageJeu("sorcier_2");
