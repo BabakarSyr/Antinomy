@@ -19,8 +19,8 @@ public class PlateauGraphique extends JComponent {
 	Jeu jeu;
 	int hauteurCarte, largeurCarte, 
 		debutContinuumX, debutContinuumY, finContinuumX, finContinuumY, hauteurContinuum, largeurContinuum,
-		debutMainJoueurActifX, debutMainJoueurActifY, finMainJoueurActifX, finMainJoueurActifY,
-		debutMainJoueurSecondaireX, debutMainJoueurSecondaireY, finMainJoueurSecondaireX, finMainJoueurSecondaireY;
+		debutMainJoueurActifY, finMainJoueurActifY,
+		debutMainJoueurX, debutMainJoueurSecondaireY, finMainJoueurX, finMainJoueurSecondaireY;
 	int width, height;
 	boolean voirMainAdversaire;
 	Aspects aspects;
@@ -50,15 +50,14 @@ public class PlateauGraphique extends JComponent {
 		largeurContinuum = 0;
 
 		//Coordonnées Main Joueur actif
-		debutMainJoueurActifX = 0;
+		debutMainJoueurX = 0;
+		finMainJoueurX = 0;
+
 		debutMainJoueurActifY = 0;
-		finMainJoueurActifX = 0;
 		finMainJoueurActifY = 0;
 
 		//Coordonnées Main Joueur secondaire
-		debutMainJoueurSecondaireX = 0;
 		debutMainJoueurSecondaireY = 0;
-		finMainJoueurSecondaireX = 0;
 		finMainJoueurSecondaireY = 0;
 
 		carteSelectionne=-1;
@@ -74,10 +73,10 @@ public class PlateauGraphique extends JComponent {
         if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
             return ZoneClic.CONTINUUM;
         }
-        if(((x >= debutMainJoueurActifX) && (x <= finMainJoueurActifX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
+        if(((x >= debutMainJoueurX) && (x <= finMainJoueurX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
             return ZoneClic.MAIN_JOUEUR_1;
         }
-        if(((x >= debutMainJoueurSecondaireX) && (x <= finMainJoueurSecondaireX) && (y >= debutMainJoueurSecondaireY) && (y <= finMainJoueurSecondaireY))){
+        if(((x >= debutMainJoueurX) && (x <= finMainJoueurX) && (y >= debutMainJoueurSecondaireY) && (y <= finMainJoueurSecondaireY))){
             return ZoneClic.MAIN_JOUEUR_2;
         }
         return ZoneClic.HORS_ZONE;
@@ -86,9 +85,9 @@ public class PlateauGraphique extends JComponent {
     public int getCarte(ZoneClic zoneCarte){
         switch(zoneCarte){
             case MAIN_JOUEUR_1:
-                return (int)(position.getX()-debutMainJoueurActifX)/(largeurCarte);
+                return (int)(position.getX()-debutMainJoueurX)/(largeurCarte);
             case MAIN_JOUEUR_2:
-                return (int)(position.getX()-debutMainJoueurSecondaireX)/(largeurCarte);
+                return (int)(position.getX()-debutMainJoueurX)/(largeurCarte);
             case CONTINUUM:
                 return (int)position.getX()/largeurCarte;
             default:
@@ -120,18 +119,18 @@ public class PlateauGraphique extends JComponent {
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
 		if(jeu.joueurActif() == jeu.plateau().joueur1){
-			tracerMainJoueur1(c.voirMainJoueurActif());
-			tracerMainJoueur2(c.voirMainAdversaire());
+			tracerMainJoueur(c.voirMainJoueurActif(), true);
+			tracerMainJoueur(c.voirMainAdversaire(), false);
 		}else{
-			tracerMainJoueur1(c.voirMainAdversaire());
-			tracerMainJoueur2(c.voirMainJoueurActif());
+			tracerMainJoueur(c.voirMainAdversaire(), true);
+			tracerMainJoueur(c.voirMainJoueurActif(), false);
 		}
 	}
 
 	void tracerContinuum(){
 		debutContinuumY = 2*hauteurCarte;
 		hauteurContinuum = hauteurCarte;
-		largeurContinuum = getWidth();
+		largeurContinuum = width;
 		finContinuumX = debutContinuumX + largeurContinuum;
 		finContinuumY = debutContinuumY + hauteurContinuum;
 		
@@ -140,24 +139,26 @@ public class PlateauGraphique extends JComponent {
 			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
 		tracerCodex(continuum);
-		tracerSorcier1(continuum);
-		tracerSorcier2(continuum);
+		tracerSorcier(continuum, true);
+		tracerSorcier(continuum, false);
 		tracerScore();
 		tracerMessage();
 		//boutonMenu();
 	}
-
-	void tracerSorcier1(ArrayList<Carte> continuum){
-		int posSorcier=jeu.plateau().getPositionSorcier(1);
-		if (posSorcier!=-1){
-			drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
-		}
-	}
-
-	void tracerSorcier2(ArrayList<Carte> continuum){
-		int posSorcier=jeu.plateau().getPositionSorcier(2);
-		if (posSorcier!=-1){
-			drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
+	// Trace le jeton du sorcier passé en paramètre:
+	// sorcier: true, trace le sorcier du joueur1
+	//			false, trace le sorcier du joueur2
+	void tracerSorcier(ArrayList<Carte> continuum, boolean sorcier){
+		if(sorcier){
+			int posSorcier=jeu.plateau().getPositionSorcier(1);
+			if (posSorcier!=-1){
+				drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
+			}
+		}else{
+			int posSorcier=jeu.plateau().getPositionSorcier(2);
+			if (posSorcier!=-1){
+				drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
+			}
 		}
 	}
 
@@ -200,60 +201,54 @@ public class PlateauGraphique extends JComponent {
 		drawable.drawString(msg, longueur, hauteur);
 	}
 
-	// Trace les cartes du joueur 1 (joueur du bas)
-	void tracerMainJoueur1(boolean mainOuverte){
+	// Trace les cartes d'un joueur
+	// mainOuverte : True si on veut voir le jeu du joueur
+	//				 False sinon, trace le dos des cartes
+	// joueur : joueur1 si true
+	//			joueur2 si false
+	void tracerMainJoueur(boolean mainOuverte, boolean joueur){
 
-		debutMainJoueurActifX = 3*largeurCarte;
-		debutMainJoueurActifY = height-hauteurCarte;
-		finMainJoueurActifX = 6*largeurCarte;
-		finMainJoueurActifY = height;
+		debutMainJoueurX = 3*largeurCarte;
+		finMainJoueurX = 6*largeurCarte;
+		int YDepart;
+		int hauteurPrevisualisation;
+		ArrayList<Carte> main;
+
+		if(joueur){
+			debutMainJoueurActifY = height-hauteurCarte;
+			finMainJoueurActifY = height;
+			YDepart = debutMainJoueurActifY;
+			hauteurPrevisualisation = hauteurCarte/4;
+			main = jeu.plateau().getJoueur(1).getMain();
+		}
+		else{
+			debutMainJoueurSecondaireY = 0;
+			finMainJoueurSecondaireY = hauteurCarte;
+			YDepart = debutMainJoueurSecondaireY;
+			hauteurPrevisualisation = -(hauteurCarte/4);
+			main = jeu.plateau().getJoueur(2).getMain();
+		}
 		
 		int carteSelectionne = c.carteSelectionnee();
-		ArrayList<Carte> main = jeu.plateau().getJoueur(1).getMain();
+		
 		if(mainOuverte){
 			for(int i =0; i< main.size(); i++){
 				if (i == carteSelectionne){
-					drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY-hauteurCarte/4, largeurCarte, hauteurCarte, null);
+					drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurX+largeurCarte*i, YDepart-hauteurPrevisualisation, largeurCarte, hauteurCarte, null);
 				}
 				else {
-					drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY, largeurCarte, hauteurCarte, null);
+					drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurX+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
 				}
 			}
 		}
 		else{
 			for(int i =0; i< main.size(); i++){
-				drawable.drawImage(aspects.carte_dos.image(), debutMainJoueurActifX+largeurCarte*i, debutMainJoueurActifY, largeurCarte, hauteurCarte, null);
-			}
-		}
-		
-	}
-
-
-	
-
-	// Trace les cartes du joueur2 (joueur du haut)
-	// mainOuverte : True si on veut voir le jeu du joueur secondaire
-	//				 False sinon, trace le dos des cartes
-	void tracerMainJoueur2(boolean mainOuverte){
-		
-		debutMainJoueurSecondaireX = 3*largeurCarte;
-		debutMainJoueurSecondaireY = 0;
-		finMainJoueurSecondaireX = 6*largeurCarte;
-		finMainJoueurSecondaireY = hauteurCarte;
-		if(mainOuverte){
-			ArrayList<Carte> main = jeu.plateau().getJoueur(2).getMain();
-			for(int i =0; i< main.size(); i++){
-				drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
-			}
-		}else{
-			for(int i =0; i< 3; i++){
-				drawable.drawImage(aspects.carte_dos.image(), debutMainJoueurSecondaireX+largeurCarte*i, debutMainJoueurSecondaireY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.carte_dos.image(), debutMainJoueurX+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
 			}
 		}
 	}
 
 	//TODO créer méthode mettant à jour le booleen mainOuverte
-
 	private Image imageCarte(Carte carte) {
 		switch (carte.getCarte()){
 			case "CRANE_BLEU":

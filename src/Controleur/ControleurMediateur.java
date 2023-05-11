@@ -148,14 +148,14 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jeu.paradoxe(indiceCarteContinuum);
                     if(jeu.estDuel()){
                         changerEtatJeu(EtatJeu.DUEL);
-                        voirMainAdversaire = false;
+                        infoPlateau = "Duel ! Cliquez pour voir la main de l'adversaire.";
                     }
                     else{
                         changerTour();
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                     }
-                    infoPlateau = "";
                     carteSelectionnee = -1;
+                    voirMainAdversaire = false;
                 }
                 else{
                     infoPlateau = "choisir position valide !";
