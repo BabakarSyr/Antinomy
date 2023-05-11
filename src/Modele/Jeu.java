@@ -26,8 +26,24 @@ public class Jeu
     {
         return this.plateau;
     }
+
+    public void definirJoueur1(Joueur j)
+    {
+        if (j==plateau.joueur1)
+        {
+            plateau.joueur1.setSensDuTemps(true);
+            plateau.joueur2.setSensDuTemps(false);
+            plateau.joueurActif=1;
+        }
+        else
+        {
+            plateau.joueur1.setSensDuTemps(false);
+            plateau.joueur2.setSensDuTemps(true);
+            plateau.joueurActif=2;
+        }
+    }
     
-    public void definir_ordres_joueurs(Plateau plateau, String dejaVuJoueur1, String dejaVuJoueur2)
+    public void definirOrdresJoueurs(String dejaVuJoueur1, String dejaVuJoueur2)
     {
       if ((dejaVuJoueur1.equals("non") && dejaVuJoueur2.equals("non")) || (dejaVuJoueur1.equals("oui") && dejaVuJoueur2.equals("oui"))) 
       {

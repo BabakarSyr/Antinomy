@@ -138,14 +138,24 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteSelectionnee = -1;
                     }
                 }
+                else
+                {
+                    System.out.println("mouvement impossible");
+                }
                 break;
             case PARADOXE:
                 if(jeu.estPossibleEchangerParadoxe(indiceCarteContinuum)){
                     jeu.paradoxe(indiceCarteContinuum);
-                    changerEtatJeu(EtatJeu.DUEL);
-                    carteSelectionnee = -1;
+                    if(jeu.estDuel()){
+                        changerEtatJeu(EtatJeu.DUEL);
+                        voirMainAdversaire = false;
+                    }
+                    else{
+                        changerTour();
+                        changerEtatJeu(EtatJeu.DEBUT_TOUR);
+                    }
                     infoPlateau = "";
-                    voirMainAdversaire = false;
+                    carteSelectionnee = -1;
                 }
                 else{
                     infoPlateau = "choisir position valide !";
