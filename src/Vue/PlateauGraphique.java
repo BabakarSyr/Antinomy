@@ -294,7 +294,7 @@ public class PlateauGraphique extends JComponent {
 	void tracerImage(Carte carte, int position){
 	}
 
-	public void voirMainAdversaire(){
-        voirMainAdversaire = !voirMainAdversaire;
+	public void voirMainAdversaire(boolean bool){
+        voirMainAdversaire = bool;
     }
 }

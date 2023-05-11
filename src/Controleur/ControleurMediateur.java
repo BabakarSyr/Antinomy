@@ -12,12 +12,14 @@ public class ControleurMediateur implements CollecteurEvenements {
     Jeu jeu;
     EtatJeu etatJeu;
     int carteSelectionnee;
+    boolean voirMainAdversaire;
     
     public ControleurMediateur(Jeu j) {
         this.jeu = j;
         changerEtatJeu(EtatJeu.DEBUT_PARTIE);
         carteSelectionnee = -1;
         infoPlateau = "Placez votre sorcier !";
+        voirMainAdversaire = false;
 	}
 
     // ============ Clic Souris ================
@@ -65,6 +67,17 @@ public class ControleurMediateur implements CollecteurEvenements {
             case DEBUT_PARTIE:
                 break;
             default:
+                break;
+        }
+    }
+
+    public void clicCarteMainAdverse() {
+        switch(etatJeu){
+            case DUEL:
+                voirMainAdversaire = true;
+                break;
+            default:
+                voirMainAdversaire = !voirMainAdversaire;
                 break;
         }
     }
@@ -139,6 +152,11 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public String infoPlateau() {
         return infoPlateau;
+    }
+
+    @Override
+    public boolean voirMainAdversaire() {
+        return voirMainAdversaire;
     }
     
 }

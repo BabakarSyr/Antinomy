@@ -42,8 +42,8 @@ public class AdaptateurSouris extends MouseAdapter {
 				System.out.println("clic MAIN_ADVERSAIRE");
 				//indiceCarte = plateauGraphique.getCarte(ZoneClic.MAIN_ADVERSAIRE);
 				//System.out.println("carte " + indiceCarte);
-				//c.clicCarteMain(indiceCarte);
-				plateauGraphique.voirMainAdversaire();
+				c.clicCarteMainAdverse();
+				plateauGraphique.voirMainAdversaire(c.voirMainAdversaire());
 				plateauGraphique.repaint();
 				break;
 			default:
