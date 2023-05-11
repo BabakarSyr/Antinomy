@@ -2,7 +2,8 @@ package Modele;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
+
+
 
 
 public class Jeu
@@ -69,7 +70,7 @@ public class Jeu
         for (int i =0 ;i < 3; i++) 
         {
             int j=i+1;
-            System.out.print("Carte " + j  +"="+ plateau.joueurActif.getMain().get(i).toString() + " ");
+            System.out.print("Carte " + j  +"="+ plateau.joueurActif().getMain().get(i).toString() + " ");
             System.out.println();
         }
     }
@@ -102,7 +103,7 @@ public class Jeu
     
     public void paradoxe(int indiceCarteContinuum)
     {
-        boolean tempsSorcier = plateau.joueurActif.sorcier.getSensDuTemps();
+        boolean tempsSorcier = plateau.joueurActif().sorcier.getSensDuTemps();
         if(indiceCarteContinuum>joueurActif().sorcier.getPositionSorcier()){
             echangerParadoxe(true==tempsSorcier);
         }
@@ -190,7 +191,7 @@ public class Jeu
     }
 
     public Joueur joueurActif(){
-        return plateau.getJoueurActif();
+        return plateau.joueurActif();
     }
 
     public ArrayList<Carte> continuum(){
@@ -205,7 +206,7 @@ public class Jeu
     {
         int valeurMain = 0;
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        for (Carte carte : plateau.joueur1.getMain()) 
+        for (Carte carte : j.getMain()) 
         {
             valeurMain += carte.getValeur(couleurInterdite);
         }
@@ -215,23 +216,23 @@ public class Jeu
 
     public Joueur meilleurMain()
     {
-        int valeurMainJoueur1 = valeurMain(plateau.joueur1);
-        int valeurMainJoueur2 = valeurMain(plateau.joueur2);
+        int valeurMainJoueur1 = valeurMain(plateau.joueurActif());
+        int valeurMainJoueur2 = valeurMain(plateau.joueurInactif());
         
         if (valeurMainJoueur1 > valeurMainJoueur2) 
         {
-            return plateau.joueur1;
+            return plateau.joueurActif();
         }
         else if (valeurMainJoueur1 < valeurMainJoueur2)
         {
-            return plateau.joueur2;
+            return plateau.joueurInactif();
         }
         return null;
     }
 
     public Joueur duel() 
     {
-        Joueur j1 = plateau.joueurActif;
+        Joueur j1 = plateau.joueurActif();
         Joueur j2 = plateau.joueurInactif();
 
         Joueur gagnantDuel = meilleurMain();
@@ -267,7 +268,7 @@ public class Jeu
 
     public Joueur duelEgalite()
     {
-        Joueur j1 = plateau.joueurActif;
+        Joueur j1 = plateau.joueurActif();
         Joueur j2 = plateau.joueurInactif();
         // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
                         
@@ -314,7 +315,7 @@ public class Jeu
 
     public Joueur duelEgalite(int indiceCarteJ1, int indicieCarteJ2)
     {
-        Joueur j1 = plateau.joueurActif;
+        Joueur j1 = plateau.joueurActif();
         Joueur j2 = plateau.joueurInactif();
         // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
                         
