@@ -120,7 +120,7 @@ public class PlateauGraphique extends JComponent {
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
 		tracerMainJoueurActif();
-		tracerMainJoueurSecondaire(false);
+		tracerMainJoueurSecondaire(voirMainAdversaire);
 	}
 
 	void tracerContinuum(){
