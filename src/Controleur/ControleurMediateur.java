@@ -155,7 +155,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             case DEBUT_PARTIE:
                 if(jeu.positionsDepart().contains(indiceCarteContinuum)){
                     jeu.deplacerSorcier(indiceCarteContinuum);
-                    if(jeu.plateau().joueurInactif().sorcier().getPositionSorcier() == -1){
+                    if(jeu.plateau().joueurInactif().getPositionSorcier() == -1){
                         changerTour();
                     }else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
