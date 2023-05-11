@@ -50,12 +50,12 @@ public class TestPlateau {
             
             jeu.definir_ordres_joueurs(plateau, dejaVuJoueur1, dejaVuJoueur2);
 
-            int num_joueur_inactif = plateau.getJoueurActif() == plateau.getJoueur(1) ? 2 : 1;
+            int num_joueur_inactif = plateau.joueurActif() == plateau.getJoueur(1) ? 2 : 1;
 
 
 
 
-            System.out.println("Le joueur " + plateau.getJoueurActif().getNom() + " commence la partie !");
+            System.out.println("Le joueur " + plateau.joueurActif().getNom() + " commence la partie !");
             System.out.println();
 
             System.out.println("Voici le plateau de jeu :");
@@ -99,12 +99,13 @@ public class TestPlateau {
             jeu.deplacerSorcier(pos);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
             
-            plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
+            plateau.getJoueur(num_joueur_actif).getSensDuTemps();
 
+            
             plateau.changerJoueurActif();
             System.out.println();
             
-            System.out.println(plateau.joueurActif.getNom());
+            System.out.println(plateau.joueurActif().getNom());
             // Lecture de la carte à jouer
             System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
             jeu.afficher_cartes_main();
@@ -112,7 +113,7 @@ public class TestPlateau {
             in= sc.next();
             int pos2 = Integer.parseInt(in);
             
-            plateau.changerJoueurActif();
+        
             jeu.deplacerSorcier(pos2);
             plateau.changerJoueurActif();
             
@@ -120,7 +121,7 @@ public class TestPlateau {
     
             //Afficher le plateau et colorer position sorcier
             plateau.afficher_colorSorcier_continuum(pos,pos2);
-            plateau.changerJoueurActif();
+       
     
     
             System.out.println("Que la partie commence:");
@@ -136,7 +137,7 @@ public class TestPlateau {
                     jeu.afficher_cartes_main();
                 }
                 System.out.println("Rappel : La  couleur interdite indiqué par le codex pour ce tour est:"+(String)plateau.codex.getCouleurInterdite().getCode() );
-                System.out.println("la position de ton sorcier joueur "+ plateau.getJoueurActif().getNom() + " est :"+plateau.getPositionSorcier(num_joueur_actif));
+                System.out.println("la position de ton sorcier joueur "+ plateau.joueurActif().getNom() + " est :"+plateau.getPositionSorcier(num_joueur_actif));
                 System.out.println();
 
                
@@ -147,7 +148,7 @@ public class TestPlateau {
                 in= sc.next();
                 int indexCarteChoisie = Integer.parseInt(in)-1;
 
-                Carte carteChoisie = plateau.joueurActif.getMain().get(indexCarteChoisie);
+                Carte carteChoisie = plateau.joueurActif().getMain().get(indexCarteChoisie);
                 boolean pasDeDeplacements = true;
                 plateau.cartesAccessibles(carteChoisie);
                 ArrayList<Integer> positionsPossibles = plateau.cartesAccessibles(carteChoisie);
@@ -174,7 +175,7 @@ public class TestPlateau {
                 
                 //Si le nom du joeur actif est le meme que celui du joueur 1
                 System.out.println("Voici le plateau apres votre coup :");
-                if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
+                if(plateau.joueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
                     plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_actif),plateau.getPositionSorcier(num_joueur_inactif));
                 else
                     plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_inactif),plateau.getPositionSorcier(num_joueur_actif));
@@ -188,14 +189,14 @@ public class TestPlateau {
                     jeu.afficher_cartes_main();
                     
                     //Le joueur actif gagne 1 cristal
-                    plateau.joueurActif.ajouterCristaux(1);
+                    plateau.joueurActif().ajouterCristaux(1);
                                 
                     System.out.println("Récapitulatif :");
                     System.out.println("Le joueur "+plateau.joueur1.getNom()+" a en sa possession "+plateau.joueur1.getNombreCristaux()+" cristaux");
                     System.out.println("Le joueur "+plateau.joueur2.getNom()+" a en sa possession "+plateau.joueur2.getNombreCristaux()+" cristaux");
                                     
                     //Le joueur melange les cartes entre ses mains
-                    plateau.joueurActif.melangerMain();
+                    plateau.joueurActif().melangerMain();
                     String direction;
                     if (jeu.estPossibleEchangerParadoxe(true) && !jeu.estPossibleEchangerParadoxe(false))
                     {
@@ -229,7 +230,7 @@ public class TestPlateau {
                     plateau.codex.changerCouleurInterdite();
                     System.out.println("La nouvelle couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
                     System.out.println("Voici le plateau apres votre coup :");
-                    if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
+                    if(plateau.joueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
                     {
                         plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(1),plateau.getPositionSorcier(1));
                     }
@@ -261,19 +262,19 @@ public class TestPlateau {
                 jeu.duel();
 
                 System.out.println();
-                System.out.println("Ton sorcier "+plateau.getJoueurActif().getNom() +" est maintenant situé à la position :"+plateau.getPositionSorcier(num_joueur_actif));
+                System.out.println("Ton sorcier "+plateau.joueurActif().getNom() +" est maintenant situé à la position :"+plateau.getPositionSorcier(num_joueur_actif));
 
                
                 
                  // Une fois que le joueur a terminé son tour, on change de joueur actif au niveau du plateau
                 plateau.changerJoueurActif();
                 System.out.println();
-                System.out.println("Le joueur actif est maintenant le joueur " + plateau.getJoueurActif().getNom() );
+                System.out.println("Le joueur actif est maintenant le joueur " + plateau.joueurActif().getNom() );
 
                
                 //le numero du joueur actif est changé dans le plateau et celui du joueur inactif est changé aussi
-                num_joueur_actif = plateau.getJoueurActif() == plateau.getJoueur(1) ? 1 : 2;
-                num_joueur_inactif = plateau.getJoueurActif() == plateau.getJoueur(1) ? 2 : 1;
+                num_joueur_actif = plateau.joueurActif() == plateau.getJoueur(1) ? 1 : 2;
+                num_joueur_inactif = plateau.joueurActif() == plateau.getJoueur(1) ? 2 : 1;
 
          
                 
