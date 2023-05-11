@@ -22,6 +22,7 @@ public class PlateauGraphique extends JComponent {
 		debutMainJoueurActifX, debutMainJoueurActifY, finMainJoueurActifX, finMainJoueurActifY,
 		debutMainJoueurSecondaireX, debutMainJoueurSecondaireY, finMainJoueurSecondaireX, finMainJoueurSecondaireY;
 	int width, height;
+	boolean voirMainAdversaire;
 	Aspects aspects;
 	Graphics2D drawable;
 	CollecteurEvenements c;
@@ -61,32 +62,39 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueurSecondaireY = 0;
 
 		carteSelectionne=-1;
+
+		voirMainAdversaire = false;
 	}
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
 	}
 	public ZoneClic getZoneClic(){
-		int x = (int)position.getX();
-		int y = (int)position.getY();
-		if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
-			return ZoneClic.CONTINUUM;
-		}
-		if(((x >= debutMainJoueurActifX) && (x <= finMainJoueurActifX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
-			return ZoneClic.MAIN_JOUEUR_COURANT;
-		}
-		return ZoneClic.HORS_ZONE;
-	}
-	//TODO à améliorer pour récuperer l'indice de la carte d'une meilleure maniere
-	public int getCarte(ZoneClic zoneCarte){
-		switch(zoneCarte){
-			case MAIN_JOUEUR_COURANT:
-				return (int)(position.getX()-debutMainJoueurActifX)/(largeurCarte);
-			case CONTINUUM:
-				return (int)position.getX()/largeurCarte;
-			default:
-				return -1;
-		}
-	}
+        int x = (int)position.getX();
+        int y = (int)position.getY();
+        if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
+            return ZoneClic.CONTINUUM;
+        }
+        if(((x >= debutMainJoueurActifX) && (x <= finMainJoueurActifX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
+            return ZoneClic.MAIN_JOUEUR_COURANT;
+        }
+        if(((x >= debutMainJoueurSecondaireX) && (x <= finMainJoueurSecondaireX) && (y >= debutMainJoueurSecondaireY) && (y <= finMainJoueurSecondaireY))){
+            return ZoneClic.MAIN_ADVERSAIRE;
+        }
+        return ZoneClic.HORS_ZONE;
+    }
+    //TODO à améliorer pour récuperer l'indice de la carte d'une meilleure maniere
+    public int getCarte(ZoneClic zoneCarte){
+        switch(zoneCarte){
+            case MAIN_JOUEUR_COURANT:
+                return (int)(position.getX()-debutMainJoueurActifX)/(largeurCarte);
+            case MAIN_ADVERSAIRE:
+                return (int)(position.getX()-debutMainJoueurSecondaireX)/(largeurCarte);
+            case CONTINUUM:
+                return (int)position.getX()/largeurCarte;
+            default:
+                return -1;
+        }
+    }
 
 	public void paintComponent(Graphics g) {
 		System.out.println("Entree dans paintComponent : " + compteur++);
@@ -131,17 +139,21 @@ public class PlateauGraphique extends JComponent {
 		tracerSorcier2(continuum);
 		tracerScore();
 		tracerMessage();
+		//boutonMenu();
 	}
 
 	void tracerSorcier1(ArrayList<Carte> continuum){
 		int posSorcier=jeu.plateau().getPositionSorcier(1);
-		drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
-
+		if (posSorcier!=-1){
+			drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
+		}
 	}
 
 	void tracerSorcier2(ArrayList<Carte> continuum){
 		int posSorcier=jeu.plateau().getPositionSorcier(2);
-		drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
+		if (posSorcier!=-1){
+			drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
+		}
 	}
 
 	void tracerCodex(ArrayList<Carte> continuum){
@@ -281,4 +293,8 @@ public class PlateauGraphique extends JComponent {
 
 	void tracerImage(Carte carte, int position){
 	}
+
+	public void voirMainAdversaire(){
+        voirMainAdversaire = !voirMainAdversaire;
+    }
 }
