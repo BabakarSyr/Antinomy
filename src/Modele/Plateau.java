@@ -34,7 +34,16 @@ public class Plateau {
         initialiser();
     }
    
-
+    public Plateau copie(){
+        Plateau p=new Plateau();
+        p.joueur1=joueur1.copie();
+        p.joueur2=joueur2.copie();
+        p.joueurActif=joueurActif;
+        p.codex=codex;
+        p.continuum=new ArrayList<>(continuum);
+        p.positionsDepart=this.positionsDepart;
+        return p;
+    }
     public List<Carte> getAll_Cartes() {
         List<Carte> All_Cartes=new ArrayList<>();
         All_Cartes.add(new Carte(Forme.PLUME, Couleur.VERT,1));

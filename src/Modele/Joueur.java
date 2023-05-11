@@ -150,5 +150,41 @@ public class Joueur {
         this.sensDuTemps = sensDuTemps;
     }
 
+
+
+
+    
+
+    public int totalValeurMain() {
+        int total = 0;
+        for (Carte carte : main) {
+            total += carte.getValeur();
+        }
+        return total;
+    }
+
+    public boolean DeuxCarteMemeProp() {
+        boolean mainValide = false;
+        int val_carte1 = main.get(0).getValeur();
+        Forme forme_carte1 = main.get(0).getForme();
+        Couleur couleur_carte1 = main.get(0).getCouleur();
+        for(int i=1;i<3;i++){
+            if(main.get(i).getValeur()==val_carte1 || main.get(i).getForme()==forme_carte1 || main.get(i).getCouleur()==couleur_carte1){
+                mainValide=true;
+            }
+        }
+        return mainValide;
+    }
+    public Joueur copie() {
+        Joueur clone = new Joueur(this.nom, this.nombreCristaux);
+       
+        clone.main =new ArrayList<>(main);
+        clone.sensDuTemps = sensDuTemps;
+        clone.positionSorcier = positionSorcier;
+        return clone;
+
+    }
+    
+
 }
 
