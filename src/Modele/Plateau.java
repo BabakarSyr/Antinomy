@@ -2,6 +2,7 @@ package Modele;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 
@@ -15,7 +16,7 @@ public class Plateau {
 
     ArrayList<Carte> continuum=new ArrayList<>();
 
-     
+   
     public Codex codex;
   
     
@@ -32,27 +33,36 @@ public class Plateau {
         initialiser();
     }
    
+
+    public List<Carte> getAll_Cartes() {
+        List<Carte> All_Cartes=new ArrayList<>();
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VERT,1));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
+
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3));
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VERT,4));
+
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.VERT,2));
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.BLEU,4));
+
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VERT,3));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
+        return All_Cartes;
+    }
     public void initialiser(){
-    
-        continuum.add(new Carte(Forme.PLUME, Couleur.VERT,1));
-        continuum.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
-        continuum.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
-        continuum.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
+        List <Carte> All_Cartes=getAll_Cartes();
+       //Copier le contenu de All_Cartes dans continuum
+        continuum.addAll(All_Cartes);
 
-        continuum.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
-        continuum.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
-        continuum.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3));
-        continuum.add(new Carte(Forme.ANNEAU, Couleur.VERT,4));
-
-        continuum.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
-        continuum.add(new Carte(Forme.CLE, Couleur.VERT,2));
-        continuum.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
-        continuum.add(new Carte(Forme.CLE, Couleur.BLEU,4));
-
-        continuum.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
-        continuum.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
-        continuum.add(new Carte(Forme.CRANE, Couleur.VERT,3));
-        continuum.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
+        
         
         // Mélanger les cartes Reliques
         Collections.shuffle(continuum);
