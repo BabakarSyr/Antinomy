@@ -1,9 +1,5 @@
 package Modele;
 
-import java.util.List;
-
-
-
 public class Sorcier {
     boolean sensDuTemps; // true si le futur est à droite et le passé à gauche, false sinon
     int positionSorcier;
@@ -12,8 +8,13 @@ public class Sorcier {
        this.sensDuTemps = sensDuTemps;
         
    }
+   public Sorcier copie(){
+         Sorcier sorcier = new Sorcier(this.sensDuTemps);
+         sorcier.positionSorcier = this.positionSorcier;
+         return sorcier;
+   }
     
-  
+
    public int getPositionSorcier() {
        return positionSorcier;
    }
@@ -29,18 +30,6 @@ public class Sorcier {
         this.sensDuTemps = sensDuTemps;
     }
 
-    public void deplacerFutur(Carte carteChoisie, List<Carte> continuum) {
-        
-            int valeurCarte = carteChoisie.getValeur(); 
-            if (sensDuTemps) {
-                // Si le futur du sorcier est à droite
-                positionSorcier += valeurCarte;
-            } else {
-                // Pour ce sorcier, le futur est à gauche
-                positionSorcier -= valeurCarte;
-            }
-      
-    }
     
     
 

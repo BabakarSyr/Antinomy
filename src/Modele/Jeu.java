@@ -15,12 +15,17 @@ public class Jeu
 		this.plateau = new Plateau();
     }
 
-    public Jeu(Plateau p)
-    {
+    public Jeu(Plateau p){
         this.plateau = p;
     }
-
-    ////////
+   
+    
+    public Jeu copie(){
+       Jeu jeu = new Jeu(plateau.copie());
+        
+        return jeu;
+    }
+    
     public Plateau plateau()
     {
         return this.plateau;
@@ -101,6 +106,34 @@ public class Jeu
     }
     
 
+    public boolean estParadoxe(ArrayList<Carte> cartes) {
+        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
+    
+        boolean memeCouleur = true;
+        boolean memeForme = true;
+        boolean memeValeur = true;
+
+        Carte carte = cartes.get(0);
+        if (carte.getCouleur() == couleurInterdite) {
+            return false;
+        }
+        for (int i = 1; i < cartes.size(); i++) {
+            if (cartes.get(i).getCouleur() == couleurInterdite) {
+                return false;
+            }
+            memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == carte.getCouleur());
+            memeForme = memeForme&(cartes.get(i).getForme() == carte.getForme());
+            memeValeur = memeValeur&(cartes.get(i).getValeur() == carte.getValeur());
+            
+        }
+        return memeCouleur || memeForme || memeValeur;
+    }
+    
+
+
+
+
+
     public void paradoxe()
     {
       try (Scanner scanner = new Scanner(System.in)) 
@@ -156,7 +189,7 @@ public class Jeu
     }
 
     public boolean partieTerminee() {
-        return plateau.joueur1.getNombreCristaux() == 3 || plateau.joueur2.getNombreCristaux() == 3;
+        return plateau.joueur1.getNombreCristaux() == 5 || plateau.joueur2.getNombreCristaux() == 5;
     }
 
     //On a duel si positionSorcierJoueur1 == positionSorcierJoueur2
@@ -194,7 +227,9 @@ public class Jeu
     }
 
     public void deplacerSorcier(int positionSorcier) {
-        joueurActif().sorcier.positionSorcier = positionSorcier;
+     
+            joueurActif().sorcier.positionSorcier = positionSorcier;
+    
     }
 
     //Equivalent echanger carte
@@ -355,4 +390,63 @@ public class Jeu
         }
     }
   }
+
+
+
+  public void jouer(int index_carte,int pos_deplacement) {
+    definir_ordres_joueurs(plateau, "non", "oui");
+    System.out.println("Le joueur " + plateau.getJoueurActif().getNom() + " commence la partie !");
+    System.out.println();
+
+  
+    while (!partieTerminee()) {
+      jouerCarte(index_carte, pos_deplacement);
+
+      if(estParadoxe()){
+        paradoxe();
+      }
+        if(estDuel()){
+            duel();
+        }
+        plateau.changerJoueurActif();
+
+    }
+  }
+
+  public void paradoxeIA_aleatoirechoix(){
+    if(estParadoxe()){
+        
+        plateau.joueurActif.ajouterCristaux(1);
+
+        plateau.joueurActif.melangerMain();
+
+        Boolean direction;
+        Random rand = new Random();
+   
+             direction = rand.nextBoolean() ?  true: false;
+            while(!estPossibleEchangerParadoxe(direction)){
+                direction = rand.nextBoolean() ?  true: false;
+         
+            }
+
+            if(direction)
+                echangerParadoxe(direction);
+            else    
+            echangerParadoxe(direction);
+
+            System.out.println("Voici le plateau apres votre coup :");
+            
+            plateau.codex.changerCouleurInterdite();
+              
+    }
+        
+       
+    
+
+  }
+
+
+
+
+
 }

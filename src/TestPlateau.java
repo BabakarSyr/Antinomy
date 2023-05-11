@@ -101,6 +101,7 @@ public class TestPlateau {
             
             plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
 
+            
             plateau.changerJoueurActif();
             System.out.println();
             
@@ -112,7 +113,7 @@ public class TestPlateau {
             in= sc.next();
             int pos2 = Integer.parseInt(in);
             
-            plateau.changerJoueurActif();
+        
             jeu.deplacerSorcier(pos2);
             plateau.changerJoueurActif();
             
@@ -120,7 +121,7 @@ public class TestPlateau {
     
             //Afficher le plateau et colorer position sorcier
             plateau.afficher_colorSorcier_continuum(pos,pos2);
-            plateau.changerJoueurActif();
+       
     
     
             System.out.println("Que la partie commence:");

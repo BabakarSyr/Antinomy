@@ -2,6 +2,7 @@ package Modele;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 
@@ -11,6 +12,7 @@ public class Plateau {
     public Joueur joueur1;
     public Joueur joueur2;
     ArrayList<Integer> positionsDepart;
+    List<Carte> All_Cartes=new ArrayList<>();
 
     ArrayList<Carte> continuum=new ArrayList<>();
 
@@ -31,27 +33,45 @@ public class Plateau {
         initialiser();
     }
    
-    public void initialiser(){
+    public Plateau copie() {
+        Plateau copie = new Plateau();
+        copie.joueurActif = joueurActif.copie();
+        copie.joueur1 =joueur1.copie();
+        copie.joueur2 = joueur2.copie();
+        copie.All_Cartes = new ArrayList<>(this.All_Cartes);
+        copie.continuum = new ArrayList<>(this.continuum);
+        copie.codex = codex;
+        return copie;
+    }
     
-        continuum.add(new Carte(Forme.PLUME, Couleur.VERT,1));
-        continuum.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
-        continuum.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
-        continuum.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
+    
+    
+    
 
-        continuum.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
-        continuum.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
-        continuum.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3));
-        continuum.add(new Carte(Forme.ANNEAU, Couleur.VERT,4));
+    public void initialiser(){
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VERT,1));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
 
-        continuum.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
-        continuum.add(new Carte(Forme.CLE, Couleur.VERT,2));
-        continuum.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
-        continuum.add(new Carte(Forme.CLE, Couleur.BLEU,4));
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3));
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VERT,4));
 
-        continuum.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
-        continuum.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
-        continuum.add(new Carte(Forme.CRANE, Couleur.VERT,3));
-        continuum.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.VERT,2));
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.BLEU,4));
+
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VERT,3));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
+
+       //Copier le contenu de All_Cartes dans continuum
+        continuum.addAll(All_Cartes);
+
         
         // Mélanger les cartes Reliques
         Collections.shuffle(continuum);
@@ -116,27 +136,32 @@ public class Plateau {
         return null;
     }
 
-    public boolean deplacementFuturPossible(Carte carteChoisie) {
+    public int deplacementFuturPossible(Carte carteChoisie) {
         int valeurCarte = carteChoisie.getValeur();
+        int res=-1;
+        int positionSorcier = joueurActif.sorcier().positionSorcier;
         //Si le futur du sorcier est a droite
-        if(joueurActif == joueur1){
-            return (joueurActif.sorcier().positionSorcier + valeurCarte < continuum.size());
-        }
+        if(joueurActif == joueur1)
+            if(positionSorcier+ valeurCarte < continuum.size())
+                res= positionSorcier+valeurCarte;
+        
         // le futur est a gauche
-        else{
-            return (joueurActif.sorcier().positionSorcier - valeurCarte >= 0);
-        }
+        else
+            if(positionSorcier - valeurCarte >= 0)
+                res= positionSorcier-valeurCarte;
+        return res;
+        
     }
 
-    public boolean deplacementPassePossible(Carte carteChoisie) {
+    public  ArrayList<Integer> deplacementPassePossible(Carte carteChoisie) {
         Forme formeCarte = carteChoisie.getForme();
         Couleur couleurCarte = carteChoisie.getCouleur();
-
+        ArrayList<Integer> positions=new ArrayList<>();
         //Si le passé du sorcier est à gauche
         if(joueurActif == joueur1){
             for (int i = joueurActif.sorcier().positionSorcier - 1; i >= 0; i--) {
                 if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
-                    return true;
+                    positions.add (i);
                 }        
             }
         } 
@@ -144,39 +169,23 @@ public class Plateau {
         else {
             for (int i = joueurActif.sorcier().positionSorcier + 1; i < continuum.size(); i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public ArrayList<Integer> cartesAccessibles(Carte carteChoisie) {
-        Forme formeCarte = carteChoisie.getForme();
-        Couleur couleurCarte = carteChoisie.getCouleur();
-        ArrayList <Integer> positions = new ArrayList<Integer>();
-        if(joueurActif == joueur1){
-            if (this.deplacementFuturPossible(carteChoisie)){
-                positions.add(joueurActif.sorcier().positionSorcier + carteChoisie.getValeur());
-            }
-            for (int i = 0; i < joueurActif.sorcier().positionSorcier; i++) {
-                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
-                    positions.add(i);
-                    System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
-                }
-            }
-        } else {
-            if (this.deplacementFuturPossible(carteChoisie)){
-                positions.add(joueurActif.sorcier().positionSorcier - carteChoisie.getValeur());
-            }
-            for (int i = joueurActif.sorcier().positionSorcier + 1; i < continuum.size(); i++) {
-                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
-                   positions.add(i);
-                   System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
+                    positions.add (i);
                 }
             }
         }
         return positions;
+    }
+
+    public ArrayList<Integer> cartesAccessibles(Carte carteChoisie) {
+        ArrayList <Integer> positions = new ArrayList<Integer>();
+        List <Integer> positionsPasse = deplacementPassePossible(carteChoisie);
+        int positionFutur = deplacementFuturPossible(carteChoisie);
+        if(positionFutur != -1)
+            positions.add(positionFutur);
+        if(!positionsPasse.isEmpty())
+            positions.addAll(positionsPasse);
+        return positions;
+     
     }
 
     public void afficherCartesAcceccibles(ArrayList<Integer> listeIndiceCartes)
@@ -197,7 +206,15 @@ public class Plateau {
     }
 
     public Joueur getJoueurActif() {
-        return joueurActif;
+        if(joueurActif.getNom().equals(joueur1.getNom())){
+            joueurActif=joueur1;
+            return joueur1;
+        }
+         
+        else{
+            joueurActif=joueur2;
+            return joueur2;
+        }
 
     }
 
