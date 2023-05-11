@@ -13,14 +13,16 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PlateauGraphique extends JComponent {
+	final boolean J1 = true;
+	final boolean J2 = false;
 	int compteur;
 	Point position;
 	ArrayList<Image> image;
 	Jeu jeu;
 	int hauteurCarte, largeurCarte, 
 		debutContinuumX, debutContinuumY, finContinuumX, finContinuumY, hauteurContinuum, largeurContinuum,
-		debutMainJoueurActifY, finMainJoueurActifY,
-		debutMainJoueurX, debutMainJoueurSecondaireY, finMainJoueurX, finMainJoueurSecondaireY;
+		debutMainJoueur1X, debutMainJoueur1Y, finMainJoueur1X, finMainJoueur1Y,
+		debutMainJoueur2X, debutMainJoueur2Y, finMainJoueur2X, finMainJoueur2Y;
 	int width, height;
 	boolean voirMainAdversaire;
 	Aspects aspects;
@@ -50,15 +52,16 @@ public class PlateauGraphique extends JComponent {
 		largeurContinuum = 0;
 
 		//Coordonnées Main Joueur actif
-		debutMainJoueurX = 0;
-		finMainJoueurX = 0;
-
-		debutMainJoueurActifY = 0;
-		finMainJoueurActifY = 0;
+		debutMainJoueur1X = 0;
+		finMainJoueur1X = 0;
+		debutMainJoueur1Y = 0;
+		finMainJoueur1Y = 0;
 
 		//Coordonnées Main Joueur secondaire
-		debutMainJoueurSecondaireY = 0;
-		finMainJoueurSecondaireY = 0;
+		debutMainJoueur2X = 0;
+		finMainJoueur2X = 0;
+		debutMainJoueur2Y = 0;
+		finMainJoueur2Y = 0;
 
 		carteSelectionne=-1;
 
@@ -67,33 +70,6 @@ public class PlateauGraphique extends JComponent {
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
 	}
-	public ZoneClic getZoneClic(){
-        int x = (int)position.getX();
-        int y = (int)position.getY();
-        if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
-            return ZoneClic.CONTINUUM;
-        }
-        if(((x >= debutMainJoueurX) && (x <= finMainJoueurX) && (y >= debutMainJoueurActifY) && (y <= finMainJoueurActifY))){
-            return ZoneClic.MAIN_JOUEUR_1;
-        }
-        if(((x >= debutMainJoueurX) && (x <= finMainJoueurX) && (y >= debutMainJoueurSecondaireY) && (y <= finMainJoueurSecondaireY))){
-            return ZoneClic.MAIN_JOUEUR_2;
-        }
-        return ZoneClic.HORS_ZONE;
-    }
-    //TODO à améliorer pour récuperer l'indice de la carte d'une meilleure maniere
-    public int getCarte(ZoneClic zoneCarte){
-        switch(zoneCarte){
-            case MAIN_JOUEUR_1:
-                return (int)(position.getX()-debutMainJoueurX)/(largeurCarte);
-            case MAIN_JOUEUR_2:
-                return (int)(position.getX()-debutMainJoueurX)/(largeurCarte);
-            case CONTINUUM:
-                return (int)position.getX()/largeurCarte;
-            default:
-                return -1;
-        }
-    }
 
 	public void paintComponent(Graphics g) {
 		System.out.println("Entree dans paintComponent : " + compteur++);
@@ -119,13 +95,41 @@ public class PlateauGraphique extends JComponent {
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
 		if(jeu.joueurActif() == jeu.plateau().joueur1){
-			tracerMainJoueur(c.voirMainJoueurActif(), true);
-			tracerMainJoueur(c.voirMainAdversaire(), false);
+			tracerMainJoueur(c.voirMainJoueurActif(), J1);
+			tracerMainJoueur(c.voirMainAdversaire(), J2);
 		}else{
-			tracerMainJoueur(c.voirMainAdversaire(), true);
-			tracerMainJoueur(c.voirMainJoueurActif(), false);
+			tracerMainJoueur(c.voirMainAdversaire(), J1);
+			tracerMainJoueur(c.voirMainJoueurActif(), J2);
 		}
 	}
+	
+	public ZoneClic getZoneClic(){
+        int x = (int)position.getX();
+        int y = (int)position.getY();
+        if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
+            return ZoneClic.CONTINUUM;
+        }
+        if(((x >= debutMainJoueur1X) && (x <= finMainJoueur1X) && (y >= debutMainJoueur1Y) && (y <= finMainJoueur1Y))){
+            return ZoneClic.MAIN_JOUEUR_1;
+        }
+        if(((x >= debutMainJoueur2X) && (x <= finMainJoueur2X) && (y >= debutMainJoueur2Y) && (y <= finMainJoueur2Y))){
+            return ZoneClic.MAIN_JOUEUR_2;
+        }
+        return ZoneClic.HORS_ZONE;
+    }
+    //TODO à améliorer pour récuperer l'indice de la carte d'une meilleure maniere
+    public int getCarte(ZoneClic zoneCarte){
+        switch(zoneCarte){
+            case MAIN_JOUEUR_1:
+                return (int)(position.getX()-debutMainJoueur1X)/(largeurCarte);
+            case MAIN_JOUEUR_2:
+                return (int)(position.getX()-debutMainJoueur2X)/(largeurCarte);
+            case CONTINUUM:
+                return (int)position.getX()/largeurCarte;
+            default:
+                return -1;
+        }
+    }
 
 	void tracerContinuum(){
 		debutContinuumY = 2*hauteurCarte;
@@ -208,42 +212,51 @@ public class PlateauGraphique extends JComponent {
 	//			joueur2 si false
 	void tracerMainJoueur(boolean mainOuverte, boolean joueur){
 
-		debutMainJoueurX = 3*largeurCarte;
-		finMainJoueurX = 6*largeurCarte;
-		int YDepart;
+
+		int XDepart, YDepart;
 		int hauteurPrevisualisation;
 		ArrayList<Carte> main;
 
 		if(joueur){
-			debutMainJoueurActifY = height-hauteurCarte;
-			finMainJoueurActifY = height;
-			YDepart = debutMainJoueurActifY;
+
+			debutMainJoueur1X = 3*largeurCarte;
+			finMainJoueur1X = 6*largeurCarte;
+			debutMainJoueur1Y = height-hauteurCarte;
+			finMainJoueur1Y = height;
+			XDepart = debutMainJoueur1X;
+			YDepart = debutMainJoueur1Y;
+
 			hauteurPrevisualisation = hauteurCarte/4;
 			main = jeu.plateau().getJoueur(1).getMain();
 		}
 		else{
-			debutMainJoueurSecondaireY = 0;
-			finMainJoueurSecondaireY = hauteurCarte;
-			YDepart = debutMainJoueurSecondaireY;
+			debutMainJoueur2X = 3*largeurCarte;
+			finMainJoueur2X = 6*largeurCarte;
+
+			debutMainJoueur2Y = 0;
+			finMainJoueur2Y = hauteurCarte;
+			XDepart = debutMainJoueur2X;
+			YDepart = debutMainJoueur2Y;
+
 			hauteurPrevisualisation = -(hauteurCarte/4);
 			main = jeu.plateau().getJoueur(2).getMain();
 		}
 		
-		int carteSelectionne = c.carteSelectionnee();
+		carteSelectionne = c.carteSelectionnee();
 		
 		if(mainOuverte){
 			for(int i =0; i< main.size(); i++){
-				if (i == carteSelectionne){
-					drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurX+largeurCarte*i, YDepart-hauteurPrevisualisation, largeurCarte, hauteurCarte, null);
+				if (i == carteSelectionne && joueur == joueurActif()){
+					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart-hauteurPrevisualisation, largeurCarte, hauteurCarte, null);
 				}
 				else {
-					drawable.drawImage(imageCarte(main.get(i)), debutMainJoueurX+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
+					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
 				}
 			}
 		}
 		else{
 			for(int i =0; i< main.size(); i++){
-				drawable.drawImage(aspects.carte_dos.image(), debutMainJoueurX+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.carte_dos.image(), XDepart+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
 			}
 		}
 	}
@@ -297,7 +310,9 @@ public class PlateauGraphique extends JComponent {
 		}
 		
 	}
-
+	boolean joueurActif(){
+		return jeu.joueurActif()==jeu.plateau().joueur1;
+	}
 	void tracerImage(Carte carte, int position){
 	}
 
