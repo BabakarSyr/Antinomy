@@ -87,10 +87,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
-    //TODO implémenter methode changerTour
-    private void changerTour() {
-    }
-
     public void clicCarteMainAdverse() {
         switch(etatJeu){
             case DUEL:
@@ -99,11 +95,13 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(joueur != null){
                     infoPlateau = joueur.getNom() + " à remporté le duel !";
                     changerTour();
+                    changerEtatJeu(EtatJeu.DEBUT_TOUR);
                 }
                 else{
                     infoPlateau = "Egalité selectionnez une carte pour départager !";
                     changerEtatJeu(EtatJeu.DUEL_EGALITE);
-                    voirMainAdversaire = voirMainJoueurActif = false;
+                    voirMainJoueurActif = false;
+                    voirMainAdversaire = false;
                 }
                 break;
             case DUEL_EGALITE:
@@ -133,7 +131,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                         changerEtatJeu(EtatJeu.DUEL);
                         infoPlateau = "";
                         carteSelectionnee = -1;
+                        voirMainAdversaire = false;
                     }else{
+                        changerTour();
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
                         carteSelectionnee = -1;
@@ -146,24 +146,34 @@ public class ControleurMediateur implements CollecteurEvenements {
                     changerEtatJeu(EtatJeu.DUEL);
                     carteSelectionnee = -1;
                     infoPlateau = "";
+                    voirMainAdversaire = false;
                 }
                 else{
-                    System.out.println("choisir position valide !");
+                    infoPlateau = "choisir position valide !";
                 }
                 break;
-            //TODO laisser l'autre joueur placer son sorcier avant de commencer à jouer
             case DEBUT_PARTIE:
                 if(jeu.positionsDepart().contains(indiceCarteContinuum)){
                     jeu.deplacerSorcier(indiceCarteContinuum);
-                    changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                    infoPlateau = "";
+                    if(jeu.plateau().joueurInactif().sorcier().getPositionSorcier() == -1){
+                        changerTour();
+                    }else{
+                        changerEtatJeu(EtatJeu.DEBUT_TOUR);
+                        infoPlateau = "";
+                        changerTour();
+                    }
                 }
-                
                 break;
             default:
                 break;
         }
     }
+
+    //TODO implémenter methode changerTour
+    private void changerTour() {
+        jeu.plateau().changerJoueurActif();
+    }
+
     public int carteSelectionnee(){
         return this.carteSelectionnee;
     }
