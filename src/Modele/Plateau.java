@@ -95,6 +95,15 @@ public class Plateau {
         }
     }
 
+    public Joueur joueurInactif()
+    {
+        if(this.joueurActif==this.joueur1)
+        {
+            return this.joueur2;
+        }
+        return this.joueur1;
+    }
+
     public ArrayList<Integer> positionsDepart(){
         return positionsDepart;
     }

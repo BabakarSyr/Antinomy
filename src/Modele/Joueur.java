@@ -20,13 +20,23 @@ public class Joueur {
 
 
 
+
     public int getNombreCristaux() {
         return nombreCristaux;
+    }
+
+    public void ajouterCristaux() {
+        this.nombreCristaux ++;
     }
    
     public void ajouterCristaux(int nombreCristaux) {
         this.nombreCristaux += nombreCristaux;
     }
+
+    public void retirerCristaux() {
+        this.nombreCristaux --;
+    }
+
     public void retirerCristaux(int nombreCristaux) {
         this.nombreCristaux -= nombreCristaux;
     }
@@ -65,6 +75,7 @@ public class Joueur {
     public void setSorcier(Sorcier sorcier) {
         this.sorcier = sorcier;
     }
+
 
     public void melangerMain(){
         Collections.shuffle(main);
