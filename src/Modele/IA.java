@@ -54,19 +54,23 @@ public abstract class IA
         Jeu jeuClone = new Jeu(this.plateau);
         Plateau plateauClone = jeuClone.plateau();
         Joueur joueurIAClone = plateauClone.getJoueur(this.ordreIA);
+        int indiceCarte = joueurIAClone.getIndiceCarte(carte);
 
         ArrayList<Integer> accessibles = plateauClone.cartesAccessibles(carte);
         ArrayList<Integer> paradoxes = new ArrayList<>();
         for (Integer i : accessibles)
         {
             jeuClone.deplacerSorcier(i);
-            if (jeuClone.isParadoxe(joueurIAClone.getMain()))
+            jeuClone.echangerCarte(indiceCarte, i);
+            if (jeuClone.estParadoxe())
             {
-                paradoxes.add(joueurIAClone.getSorcier().getPositionSorcier());
+                paradoxes.add(i);
             }
-            plateauClone.setPositionSorcier(positionIA, ordreJoueur);
+            jeuClone.echangerCarte(indiceCarte, i);
         }
-
         return paradoxes;
     }
+
+    public void joue()
+    {}
 }
