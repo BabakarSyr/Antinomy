@@ -8,18 +8,48 @@ public class Joueur {
     String nom;
     ArrayList<Carte> main;
     int nombreCristaux;
-    public Sorcier sorcier;
+    boolean sensDuTemps; // si sensDuTemps=true, le futur est vers la droite du plateau
+    int positionSorcier;
 
+    //////////////////////
+    //// CONSTRUCTEUR ////
+    //////////////////////
+
+    public Joueur() {
+        this.nom = "";
+        this.nombreCristaux = 0;
+        this.main = new ArrayList<>();
+        this.sensDuTemps = true;
+        this.positionSorcier=-1;
+    }
+
+    public Joueur(String nom) {
+        this.nom = nom;
+        this.nombreCristaux = 0;
+        this.main = new ArrayList<>();
+        this.sensDuTemps = true;
+        this.positionSorcier=-1;
+    }
 
     public Joueur(String nom, int nombreCristaux) {
         this.nom = nom;
         this.nombreCristaux = nombreCristaux;
-        this.sorcier = new Sorcier();
         this.main = new ArrayList<>();
+        this.sensDuTemps = true;
+        this.positionSorcier=-1;
     }
 
+    public Joueur(String nom, int nombreCristaux, boolean sensDuTemps, int posSorcier) {
+        this.nom = nom;
+        this.nombreCristaux = nombreCristaux;
+        this.main = new ArrayList<>();
+        this.sensDuTemps = sensDuTemps;
+        this.positionSorcier=posSorcier;
+    }
 
-
+    ///////////////////////////
+    ////  methodes joueur  ////
+    ///////////////////////////
 
     public int getNombreCristaux() {
         return nombreCristaux;
@@ -45,9 +75,9 @@ public class Joueur {
     public boolean volerCristal(Joueur autreJoueur) {
         if (autreJoueur.getNombreCristaux() > 0) {
             //On ajoute un cristal au joueur actuel 
-            this.ajouterCristaux(1);
+            this.ajouterCristaux();
             //on en retire un à l'autre joueur
-            autreJoueur.retirerCristaux(1);
+            autreJoueur.retirerCristaux();
             return true;
         }
         else {
@@ -55,8 +85,6 @@ public class Joueur {
         }
     }
 
-
-   
     public String getNom() {
         return nom;
     }
@@ -67,15 +95,6 @@ public class Joueur {
     public ArrayList<Carte> getMain() {
         return main;
     }
-
-
-    public Sorcier sorcier() {
-        return sorcier;
-    }
-    public void setSorcier(Sorcier sorcier) {
-        this.sorcier = sorcier;
-    }
-
 
     public void melangerMain(){
         Collections.shuffle(main);
@@ -96,7 +115,7 @@ public class Joueur {
 
     //Equivalent echanger carte
     public Carte jouerCarte(int index, List<Carte> continuum) {//index=[0-2]
-        int positionSorcier = sorcier.getPositionSorcier();
+        int positionSorcier = getPositionSorcier();
         Carte carte = main.get(index);
         main.remove(index);
     
@@ -112,10 +131,24 @@ public class Joueur {
     }
 
 
+    ///////////////////////////
+    //// methodes sorcier  ////
+    ///////////////////////////
 
-
+    public int getPositionSorcier() 
+    {
+        return this.positionSorcier;
+    }
  
-    
+    public boolean getSensDuTemps() 
+    {
+        return this.sensDuTemps;
+    }
+ 
+    public void setSensDuTemps(boolean sensDuTemps) 
+    {
+        this.sensDuTemps = sensDuTemps;
+    }
 
 }
 

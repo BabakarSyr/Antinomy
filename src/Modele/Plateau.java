@@ -23,8 +23,8 @@ public class Plateau {
     public Plateau() {
         
         
-        joueur1=new Joueur("",0);
-        joueur2=new Joueur("",0);
+        joueur1=new Joueur();
+        joueur2=new Joueur();
       
         joueurActif = 1;
         codex=new Codex(new Carte(null, null,0));
@@ -119,11 +119,11 @@ public class Plateau {
         int valeurCarte = carteChoisie.getValeur();
         //Si le futur du sorcier est a droite
         if(joueurActif == 1){
-            return (joueurActif().sorcier().positionSorcier + valeurCarte < continuum.size());
+            return (joueurActif().positionSorcier + valeurCarte < continuum.size());
         }
         // le futur est a gauche
         else{
-            return (joueurActif().sorcier().positionSorcier - valeurCarte >= 0);
+            return (joueurActif().positionSorcier - valeurCarte >= 0);
         }
     }
 
@@ -133,7 +133,7 @@ public class Plateau {
 
         //Si le passé du sorcier est à gauche
         if(joueurActif == 1){
-            for (int i = joueurActif().sorcier().positionSorcier - 1; i >= 0; i--) {
+            for (int i = joueurActif().positionSorcier - 1; i >= 0; i--) {
                 if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
                     return true;
                 }        
@@ -141,7 +141,7 @@ public class Plateau {
         } 
         //Le passé du sorcier est à droite
         else {
-            for (int i = joueurActif().sorcier().positionSorcier + 1; i < continuum.size(); i++) {
+            for (int i = joueurActif().positionSorcier + 1; i < continuum.size(); i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
                     return true;
                 }
@@ -156,9 +156,9 @@ public class Plateau {
         ArrayList <Integer> positions = new ArrayList<Integer>();
         if(joueurActif == 1){
             if (this.deplacementFuturPossible(carteChoisie)){
-                positions.add(joueurActif().sorcier().positionSorcier + carteChoisie.getValeur());
+                positions.add(joueurActif().positionSorcier + carteChoisie.getValeur());
             }
-            for (int i = 0; i < joueurActif().sorcier().positionSorcier; i++) {
+            for (int i = 0; i < joueurActif().positionSorcier; i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
                     positions.add(i);
                     System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
@@ -166,9 +166,9 @@ public class Plateau {
             }
         } else {
             if (this.deplacementFuturPossible(carteChoisie)){
-                positions.add(joueurActif().sorcier().positionSorcier - carteChoisie.getValeur());
+                positions.add(joueurActif().positionSorcier - carteChoisie.getValeur());
             }
-            for (int i = joueurActif().sorcier().positionSorcier + 1; i < continuum.size(); i++) {
+            for (int i = joueurActif().positionSorcier + 1; i < continuum.size(); i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
                    positions.add(i);
                    System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
@@ -188,11 +188,8 @@ public class Plateau {
     }
 
     public void changerJoueurActif() {
-        if (joueurActif == 1) {
-            joueurActif = 2;
-        } else {
-            joueurActif = 1;
-        }
+        joueurActif = (joueurActif % 2);
+        joueurActif++;
     }
 
 
@@ -249,16 +246,16 @@ public class Plateau {
 
     public int getPositionSorcier(int joueur) {
         if (joueur == 1) 
-            return joueur1.sorcier.getPositionSorcier();
+            return joueur1.getPositionSorcier();
         else 
-            return joueur2.sorcier.getPositionSorcier();
+            return joueur2.getPositionSorcier();
     }
 
     public void setTempsSorcier(int joueur) {
         if (joueur == 1) {
-            joueur1.sorcier.setSensDuTemps(true);
+            joueur1.setSensDuTemps(true);
         } else {
-            joueur2.sorcier.setSensDuTemps(false);
+            joueur2.setSensDuTemps(false);
         }
     }
 

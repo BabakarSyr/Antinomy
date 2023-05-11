@@ -36,28 +36,28 @@ public class Jeu
         plateau.setJoueurActif(num_joueur_actif);  // [1-2]
         if (num_joueur_actif==1)
         {
-          plateau.getJoueur(1).sorcier.setSensDuTemps(true);
-          plateau.getJoueur(2).sorcier.setSensDuTemps(false);
+          plateau.getJoueur(1).setSensDuTemps(true);
+          plateau.getJoueur(2).setSensDuTemps(false);
         }
         else
         {
-          plateau.getJoueur(1).sorcier.setSensDuTemps(false);
-          plateau.getJoueur(2).sorcier.setSensDuTemps(true);
+          plateau.getJoueur(1).setSensDuTemps(false);
+          plateau.getJoueur(2).setSensDuTemps(true);
         }
       }
       else if (dejaVuJoueur1.equals("oui")) 
       {
         int num_joueur_actif = 1;
         plateau.setJoueurActif(num_joueur_actif);
-        plateau.getJoueur(1).sorcier.setSensDuTemps(true);
-        plateau.getJoueur(2).sorcier.setSensDuTemps(false);
+        plateau.getJoueur(1).setSensDuTemps(true);
+        plateau.getJoueur(2).setSensDuTemps(false);
       }
       else 
       {
         int num_joueur_actif = 2;
         plateau.setJoueurActif(num_joueur_actif);
-        plateau.getJoueur(1).sorcier.setSensDuTemps(false);
-        plateau.getJoueur(2).sorcier.setSensDuTemps(true);
+        plateau.getJoueur(1).setSensDuTemps(false);
+        plateau.getJoueur(2).setSensDuTemps(true);
       }
     }
 
@@ -103,8 +103,8 @@ public class Jeu
     
     public void paradoxe(int indiceCarteContinuum)
     {
-        boolean tempsSorcier = plateau.joueurActif().sorcier.getSensDuTemps();
-        if(indiceCarteContinuum>joueurActif().sorcier.getPositionSorcier()){
+        boolean tempsSorcier = plateau.joueurActif().getSensDuTemps();
+        if(indiceCarteContinuum>joueurActif().getPositionSorcier()){
             echangerParadoxe(true==tempsSorcier);
         }
         else{
@@ -120,7 +120,7 @@ public class Jeu
 
     //On a duel si positionSorcierJoueur1 == positionSorcierJoueur2
     public boolean estDuel(){
-        return plateau.joueur1.sorcier.getPositionSorcier() == plateau.joueur2.sorcier.getPositionSorcier();
+        return plateau.joueur1.getPositionSorcier() == plateau.joueur2.getPositionSorcier();
     }
 
     public void jouerCarte(int indiceCarteMain, int indiceContinuum){
@@ -133,7 +133,7 @@ public class Jeu
     }
 
     public boolean estPossibleEchangerParadoxe(int indiceContinuum){
-        int sorcier=joueurActif().sorcier.getPositionSorcier();
+        int sorcier=joueurActif().getPositionSorcier();
             if(indiceContinuum>sorcier){
                 return sorcier<6;
             }
@@ -143,7 +143,7 @@ public class Jeu
         return false;
     }
     public boolean estPossibleEchangerParadoxe(boolean futur){
-        int sorcier=joueurActif().sorcier.getPositionSorcier();
+        int sorcier=joueurActif().getPositionSorcier();
         if(futur){
             return sorcier<6;
         }
@@ -153,7 +153,7 @@ public class Jeu
     }
 
     public void deplacerSorcier(int positionSorcier) {
-        joueurActif().sorcier.positionSorcier = positionSorcier;
+        joueurActif().positionSorcier = positionSorcier;
     }
 
     //Equivalent echanger carte
@@ -174,7 +174,7 @@ public class Jeu
     public void echangerParadoxe(boolean futur) {
         Joueur joueur = joueurActif();
         joueur.melangerMain();
-        int indexSorcier = joueur.sorcier.getPositionSorcier();
+        int indexSorcier = joueur.getPositionSorcier();
         int j = 0;
         if(!futur){
             for (int i = indexSorcier - 3; i < indexSorcier; i++) {
