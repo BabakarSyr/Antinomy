@@ -125,27 +125,32 @@ public class Plateau {
         return null;
     }
 
-    public boolean deplacementFuturPossible(Carte carteChoisie) {
+    public int deplacementFuturPossible(Carte carteChoisie) {
         int valeurCarte = carteChoisie.getValeur();
+        int res=-1;
+        int positionSorcier = joueurActif().positionSorcier;
         //Si le futur du sorcier est a droite
-        if(joueurActif == 1){
-            return (joueurActif().positionSorcier + valeurCarte < continuum.size());
-        }
+        if(joueurActif == 1)
+            if(positionSorcier+ valeurCarte < continuum.size())
+                res= positionSorcier+valeurCarte;
+        
         // le futur est a gauche
-        else{
-            return (joueurActif().positionSorcier - valeurCarte >= 0);
-        }
+        else
+            if(positionSorcier - valeurCarte >= 0)
+                res= positionSorcier-valeurCarte;
+        return res;
+        
     }
 
-    public boolean deplacementPassePossible(Carte carteChoisie) {
+    public  ArrayList<Integer> deplacementPassePossible(Carte carteChoisie) {
         Forme formeCarte = carteChoisie.getForme();
         Couleur couleurCarte = carteChoisie.getCouleur();
-
+        ArrayList<Integer> positions=new ArrayList<>();
         //Si le passé du sorcier est à gauche
         if(joueurActif == 1){
             for (int i = joueurActif().positionSorcier - 1; i >= 0; i--) {
                 if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
-                    return true;
+                    positions.add (i);
                 }        
             }
         } 
@@ -153,39 +158,23 @@ public class Plateau {
         else {
             for (int i = joueurActif().positionSorcier + 1; i < continuum.size(); i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public ArrayList<Integer> cartesAccessibles(Carte carteChoisie) {
-        Forme formeCarte = carteChoisie.getForme();
-        Couleur couleurCarte = carteChoisie.getCouleur();
-        ArrayList <Integer> positions = new ArrayList<Integer>();
-        if(joueurActif == 1){
-            if (this.deplacementFuturPossible(carteChoisie)){
-                positions.add(joueurActif().positionSorcier + carteChoisie.getValeur());
-            }
-            for (int i = 0; i < joueurActif().positionSorcier; i++) {
-                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
-                    positions.add(i);
-                    System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
-                }
-            }
-        } else {
-            if (this.deplacementFuturPossible(carteChoisie)){
-                positions.add(joueurActif().positionSorcier - carteChoisie.getValeur());
-            }
-            for (int i = joueurActif().positionSorcier + 1; i < continuum.size(); i++) {
-                if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte) {
-                   positions.add(i);
-                   System.out.println("Les positions possibles pour vous deplacer vers le passé sont : " + i);
+                    positions.add (i);
                 }
             }
         }
         return positions;
+    }
+
+    public ArrayList<Integer> cartesAccessibles(Carte carteChoisie) {
+        ArrayList <Integer> positions = new ArrayList<Integer>();
+        List <Integer> positionsPasse = deplacementPassePossible(carteChoisie);
+        int positionFutur = deplacementFuturPossible(carteChoisie);
+        if(positionFutur != -1)
+            positions.add(positionFutur);
+        if(!positionsPasse.isEmpty())
+            positions.addAll(positionsPasse);
+        return positions;
+     
     }
 
     public void afficherCartesAcceccibles(ArrayList<Integer> listeIndiceCartes)
