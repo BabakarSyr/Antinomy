@@ -238,6 +238,26 @@ public class TestPlateau {
                         plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(2),plateau.getPositionSorcier(2));
                     }
                 }
+
+            if(jeu.estDuel())
+            {
+                System.out.println("C'est l'heure du Duel!");
+                System.out.println("Rappel,la couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
+                //Les 2 joueurs affichent leur main
+                System.out.println("La main du joueur 1 est : ");
+                for(int k =0;i<3;i++){
+                
+                    System.out.println("Carte "+k+" : "+plateau.joueur1.getMain().get(i).toString());
+                    
+                }
+                System.out.println();
+                System.out.println("La main du joueur 2 est : ");
+                for(int k =0;i<3;i++){
+                    
+                    System.out.println("Carte "+k+" : "+plateau.joueur2.getMain().get(i).toString());
+                }
+                System.out.println();
+            }
                 jeu.duel();
 
                 System.out.println();

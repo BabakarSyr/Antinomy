@@ -102,11 +102,12 @@ public class Jeu
     
     public void paradoxe(int indiceCarteContinuum)
     {
+        boolean tempsSorcier = plateau.joueurActif.sorcier.getSensDuTemps();
         if(indiceCarteContinuum>joueurActif().sorcier.getPositionSorcier()){
-            echangerParadoxe(true);
+            echangerParadoxe(true==tempsSorcier);
         }
         else{
-            echangerParadoxe(false);
+            echangerParadoxe(false==tempsSorcier);
         }
         joueurActif().ajouterCristaux(1);
         plateau.codex.changerCouleurInterdite();
@@ -204,41 +205,17 @@ public class Jeu
     {
       if (estDuel())
       {
-        System.out.println("C'est l'heure du Duel!");
-        System.out.println("Rappel,la couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
         int valeurMainJoueur1= 0;
         int valeurMainJoueur2 = 0;
-
-
-        //Les 2 jouerurs affichent leur main
-        System.out.println("La main du joueur 1 est : ");
-        for(int i=0;i<3;i++){
-           
-            System.out.println("Carte "+i+" : "+plateau.joueur1.getMain().get(i).toString());
-            
-        }
-       System.out.println();
-        System.out.println("La main du joueur 2 est : ");
-        for(int i=0;i<3;i++){
-            
-            System.out.println("Carte "+i+" : "+plateau.joueur2.getMain().get(i).toString());
-        }
-        System.out.println();
     
-
-
-        
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        System.out.println("couleur interdite :" + couleurInterdite);
         for (Carte carte : plateau.joueur1.getMain()) 
         {
             valeurMainJoueur1 += carte.getValeur(couleurInterdite);
-            System.out.println("carte : " + carte.getForme() + carte.getCouleur() + carte.getValeur());
         }
     
         for (Carte carte : plateau.joueur2.getMain()) {
             valeurMainJoueur2 += carte.getValeur(couleurInterdite);
-            System.out.println("carte : " + carte.getForme() + carte.getCouleur() + carte.getValeur());
         }
         System.out.println("Le total de points du joueur " +plateau.joueur1.getNom()+ " est :" +valeurMainJoueur1);
         System.out.println("Le total de points du joueur " +plateau.joueur2.getNom()+ " est :" +valeurMainJoueur2);
@@ -276,19 +253,13 @@ public class Jeu
                 return;
         } 
         // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
-        Random random = new Random();
-            
-            
+                      
         plateau.joueur1.melangerMain();
         plateau.joueur2.melangerMain();
-            
-       // Sélectionner une carte au hasard pour chaque joueur
-        int indexCarteJoueur1 = random.nextInt(3);
-        int indexCarteJoueur2 = random.nextInt(3);
 
-        Carte carteJoueur1 = plateau.joueur1.getMain().get(indexCarteJoueur1);
+        Carte carteJoueur1 = plateau.joueur1.getMain().get(0);
         System.out.println(plateau.joueur1.getNom() + " tire la carte " + carteJoueur1.toString());
-        Carte carteJoueur2 = plateau.joueur2.getMain().get(indexCarteJoueur2);
+        Carte carteJoueur2 = plateau.joueur2.getMain().get(0);
 
         System.out.println(plateau.joueur2.getNom() + " tire la carte " + carteJoueur2.toString());
         // On compare  les valeurs des cartes en tenant compte de la couleur interdite

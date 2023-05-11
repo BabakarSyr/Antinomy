@@ -9,9 +9,14 @@ public class Sorcier {
     boolean sensDuTemps; // true si le futur est à droite et le passé à gauche, false sinon
     int positionSorcier;
 
+    public Sorcier() {
+        this.sensDuTemps = true;
+        this.positionSorcier=-1;
+    }
+
    public Sorcier(boolean sensDuTemps) {
        this.sensDuTemps = sensDuTemps;
-        
+       this.positionSorcier=-1;
    }
     
   
@@ -19,11 +24,8 @@ public class Sorcier {
        return positionSorcier;
    }
 
-    public void getSensDuTemps() {
-        if(sensDuTemps)
-            System.out.println("Ton futur est à droite et ton passé à gauche");
-        else
-            System.out.println("Ton futur est à gauche et ton passé à droite");
+    public boolean getSensDuTemps() {
+        return this.sensDuTemps;
     }
 
     public void setSensDuTemps(boolean sensDuTemps) {

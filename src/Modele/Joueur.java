@@ -14,7 +14,7 @@ public class Joueur {
     public Joueur(String nom, int nombreCristaux) {
         this.nom = nom;
         this.nombreCristaux = nombreCristaux;
-        this.sorcier = new Sorcier(true);
+        this.sorcier = new Sorcier();
         this.main = new ArrayList<>();
     }
 
