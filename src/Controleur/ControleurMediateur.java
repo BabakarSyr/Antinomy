@@ -140,7 +140,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }
                 else
                 {
-                    System.out.println("mouvement impossible");
+                    infoPlateau = "mouvement impossible";
                 }
                 break;
             case PARADOXE:
@@ -153,6 +153,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     else{
                         changerTour();
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
+                        infoPlateau = "";
                     }
                     carteSelectionnee = -1;
                     voirMainAdversaire = false;

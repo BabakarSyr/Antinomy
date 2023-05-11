@@ -6,9 +6,11 @@ import java.util.Random;
 
 
 
+
+
 public class Jeu
 {
-     Plateau plateau;
+    Plateau plateau;
     
     
     public Jeu()
@@ -119,19 +121,34 @@ public class Jeu
     
     public void paradoxe(int indiceCarteContinuum)
     {
-        boolean tempsSorcier = plateau.joueurActif().getSensDuTemps();
         if(indiceCarteContinuum>joueurActif().getPositionSorcier()){
-            echangerParadoxe(true==tempsSorcier);
+            echangerParadoxe(true);
         }
         else{
-            echangerParadoxe(false==tempsSorcier);
+            echangerParadoxe(false);
         }
-        joueurActif().ajouterCristaux(1);
+        joueurActif().ajouterCristaux();
         plateau.codex.changerCouleurInterdite();
     }
 
     public boolean partieTerminee() {
         return plateau.joueur1.getNombreCristaux() == 3 || plateau.joueur2.getNombreCristaux() == 3;
+    }
+
+    public String nomVainqueur()
+    {
+        if (partieTerminee() && plateau.joueur1.getNombreCristaux() == 3)
+        {
+            return plateau.joueur1.getNom();
+        }
+        else if (partieTerminee() && plateau.joueur2.getNombreCristaux() == 3)
+        {
+            return plateau.joueur2.getNom();
+        }
+        else
+        {
+            return null;
+        }
     }
 
     //On a duel si positionSorcierJoueur1 == positionSorcierJoueur2
