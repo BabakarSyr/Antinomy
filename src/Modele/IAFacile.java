@@ -18,12 +18,13 @@ public class IAFacile extends IA
     }
 
     @Override
-	public int joue() 
+	public void joue() 
     {
         int mouvementChoisi;
         int carteChoisie;
         ArrayList<Integer> positions;
         this.setPosInitiale();
+        ArrayList<Integer> choice = new ArrayList<Integer>();
         for (Carte c : joueurIA.getMain())
         {
             positions =  plateau.cartesAccessibles(c);
@@ -38,8 +39,9 @@ public class IAFacile extends IA
                     int resultatDuel = simulerMouvement(joueurIA.getIndiceCarte(c), mouvementChoisi);
                     if (resultatDuel == 1)
                     {
-                        jeu.jouerCarte(joueurIA.getIndiceCarte(c), mouvementChoisi);
-                        return 1;
+                        choice.add(joueurIA.getIndiceCarte(c));
+                        choice.add(mouvementChoisi);
+                        //return choice;
                     }
                     else
                     {
@@ -55,8 +57,9 @@ public class IAFacile extends IA
                     int resultatDuel = simulerMouvement(joueurIA.getIndiceCarte(c), mouvementChoisi);
                     if (resultatDuel == 1)
                     {
-                        jeu.jouerCarte(joueurIA.getIndiceCarte(c), mouvementChoisi);
-                        return 1;
+                        choice.add(joueurIA.getIndiceCarte(c));
+                        choice.add(mouvementChoisi);
+                       // return choice;
                     }
                     else
                     {
@@ -69,7 +72,8 @@ public class IAFacile extends IA
         positions =  plateau.cartesAccessibles(joueurIA.getMain().get(carteChoisie));
         mouvementChoisi = r.nextInt(positions.size());
         mouvementChoisi = positions.get(mouvementChoisi);
-        jeu.jouerCarte(carteChoisie, mouvementChoisi);
-        return 1;
+        choice.add(carteChoisie);
+        choice.add(mouvementChoisi);
+        //return choice;
     }
 }

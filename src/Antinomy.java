@@ -4,7 +4,7 @@
 import Controleur.ControleurMediateur;
 import Global.Configuration;
 import Modele.Jeu;
-import Modele.Plateau;
+
 import Vue.CollecteurEvenements;
 import Vue.InterfaceGraphique;
 
