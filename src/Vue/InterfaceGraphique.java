@@ -1,7 +1,7 @@
 package Vue;
 
 import javax.swing.* ;
-import java.awt.* ;
+//import java.awt.* ;
 
 import Modele.*;
 
@@ -10,6 +10,9 @@ import Modele.*;
 public class InterfaceGraphique extends JFrame implements Runnable {
 	Jeu jeu;
 	CollecteurEvenements controleur;
+	PlateauGraphique plateau;
+	int height;
+	int width;
 
 	public InterfaceGraphique(Jeu j, CollecteurEvenements c){
 		jeu = j;
@@ -21,18 +24,26 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		SwingUtilities.invokeLater(vue);
 	}	
 
+	public void paintComponent() {
+		width = getSize().width;
+		height = getSize().height;
+	}
 
-	//TO-DO améliorer la position et taille du bouton
 	public void run() {
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("Ma fenetre a moi");
-		JButton bouton = new JButton("Menu");
 		frame.setSize(500, 300);
-		//bouton.setSize(100, 100);
-		int y = getHeight();
-		int x = getWidth();
-		bouton.setBounds(x/10, y/100,100,100);
 
+		// Creation d'un bouton
+		JButton bouton = new JButton("Manu");
+
+		// Recuperation taille de la frame
+		int y = frame.getHeight();
+		int x = frame.getWidth();
+		//System.out.println("x = "+x+" y = "+y);
+
+		bouton.setBounds(x-(x/5)*2,0,x/5,y/8);
+	
 		// Ajout de notre composant de dessin dans la fenetre
 		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu, controleur);
 		
@@ -49,4 +60,5 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		frame.setVisible(true);
 
 	}
+
 }
