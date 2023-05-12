@@ -41,7 +41,7 @@ public abstract class IA
     {
         ArrayList<Integer> positions =  this.plateau.positionsDepart();
         this.positionIA = positions.get(0);
-        if (this.plateau.getJoueurActif() != this.joueurIA)
+        if (this.plateau.joueurActif() != this.joueurIA)
         {
             this.plateau.changerJoueurActif();
             this.jeu.deplacerSorcier(positionIA);
