@@ -1,10 +1,10 @@
 package Modele;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public interface Joueur {
+public interface Joueur
+{
 
     public int getNombreCristaux();
     public void ajouterCristaux();
