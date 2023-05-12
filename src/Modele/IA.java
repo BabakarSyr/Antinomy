@@ -91,12 +91,16 @@ public abstract class IA
             {
                 return -1;
             }
+            else if (gagnant ==  null)
+            {
+                return 0;
+            }
         }
-        return 0;
+        return 1;
     }
 
-    public int joue()
+    public ArrayList<Integer> joue()
     {
-        return 0;
+        return null;
     }
 }
