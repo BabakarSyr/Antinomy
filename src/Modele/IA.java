@@ -95,6 +95,8 @@ public abstract class IA
         return 0;
     }
 
-    public void joue()
-    {}
+    public int joue()
+    {
+        return 0;
+    }
 }
