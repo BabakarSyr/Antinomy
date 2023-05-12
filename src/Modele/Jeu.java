@@ -186,7 +186,7 @@ public class Jeu
     }
 
     public void deplacerSorcier(int positionSorcier) {
-        joueurActif().positionSorcier = positionSorcier;
+        joueurActif().setPositionSorcier(positionSorcier);
     }
 
     //Equivalent echanger carte
