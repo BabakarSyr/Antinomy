@@ -146,8 +146,7 @@ public class PlateauGraphique extends JComponent {
 		tracerSorcier(continuum, true);
 		tracerSorcier(continuum, false);
 		tracerScore();
-		tracerMessage(J1);
-		//boutonMenu();
+		tracerMessage();
 	}
 	// Trace le jeton du sorcier passé en paramètre:
 	// sorcier: true, trace le sorcier du joueur1
@@ -196,7 +195,7 @@ public class PlateauGraphique extends JComponent {
 		drawable.drawString("Joueur 1 : " + cristaux, longueur, hauteur*9);
 	}
 
-	void tracerMessage(boolean J1){
+	void tracerMessage(){
 		String msg = c.infoPlateau();
 		if (joueurActif()){
 			int hauteurPrevisualisation = hauteurCarte/4;
