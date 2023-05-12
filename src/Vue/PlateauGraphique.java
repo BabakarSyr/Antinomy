@@ -324,6 +324,11 @@ public class PlateauGraphique extends JComponent {
 	boolean joueurActif(){
 		return jeu.joueurActif()==jeu.plateau().joueur1;
 	}
+
+	boolean estJoueur1(Joueur j)
+	{
+		return j==jeu.plateau().joueur1;
+	}
 	void tracerImage(Carte carte, int position){
 	}
 
