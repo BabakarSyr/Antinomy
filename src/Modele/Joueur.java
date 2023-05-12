@@ -135,6 +135,10 @@ public class Joueur {
     //// methodes sorcier  ////
     ///////////////////////////
 
+    public void setPositionSorcier(int position) 
+    {
+        this.positionSorcier = position;
+    }
     public int getPositionSorcier() 
     {
         return this.positionSorcier;

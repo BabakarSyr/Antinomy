@@ -6,9 +6,11 @@ import java.util.Random;
 
 
 
+
+
 public class Jeu
 {
-     Plateau plateau;
+    Plateau plateau;
     
     
     public Jeu()
@@ -16,20 +18,31 @@ public class Jeu
 		this.plateau = new Plateau();
     }
 
-    public Jeu(Plateau p){
+    public Jeu(Plateau p)
+    {
         this.plateau = p;
     }
-   
-    
-    public Jeu copie(){
-       Jeu jeu = new Jeu(plateau.copie());
-        
-        return jeu;
-    }
-    
+
+    ////////
     public Plateau plateau()
     {
         return this.plateau;
+    }
+
+    public void definirJoueur1(Joueur j)
+    {
+        if (j==plateau.joueur1)
+        {
+            plateau.joueur1.setSensDuTemps(true);
+            plateau.joueur2.setSensDuTemps(false);
+            plateau.joueurActif=1;
+        }
+        else
+        {
+            plateau.joueur1.setSensDuTemps(false);
+            plateau.joueur2.setSensDuTemps(true);
+            plateau.joueurActif=2;
+        }
     }
     
     public void definirOrdresJoueurs(String dejaVuJoueur1, String dejaVuJoueur2)
@@ -106,49 +119,36 @@ public class Jeu
         return memeCouleur || memeForme || memeValeur;
     }
     
-
-
-
-    public boolean estParadoxe(ArrayList<Carte> cartes ) {
-        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        
-    
-        boolean memeCouleur = true;
-        boolean memeForme = true;
-        boolean memeValeur = true;
-
-        Carte carte = cartes.get(0);
-        if (carte.getCouleur() == couleurInterdite) {
-            return false;
-        }
-        for (int i = 1; i < cartes.size(); i++) {
-            if (cartes.get(i).getCouleur() == couleurInterdite) {
-                return false;
-            }
-            memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == carte.getCouleur());
-            memeForme = memeForme&(cartes.get(i).getForme() == carte.getForme());
-            memeValeur = memeValeur&(cartes.get(i).getValeur() == carte.getValeur());
-            
-        }
-        return memeCouleur || memeForme || memeValeur;
-    }
-
-
-
-    public void paradoxe(int indiceCarteContinuum){
-        boolean tempsSorcier = plateau.joueurActif().getSensDuTemps();
+    public void paradoxe(int indiceCarteContinuum)
+    {
         if(indiceCarteContinuum>joueurActif().getPositionSorcier()){
-            echangerParadoxe(true==tempsSorcier);
+            echangerParadoxe(true);
         }
         else{
-            echangerParadoxe(false==tempsSorcier);
+            echangerParadoxe(false);
         }
-        joueurActif().ajouterCristaux(1);
+        joueurActif().ajouterCristaux();
         plateau.codex.changerCouleurInterdite();
     }
 
     public boolean partieTerminee() {
-        return plateau.joueur1.getNombreCristaux() == 5 || plateau.joueur2.getNombreCristaux() == 5;
+        return plateau.joueur1.getNombreCristaux() == 3 || plateau.joueur2.getNombreCristaux() == 3;
+    }
+
+    public String nomVainqueur()
+    {
+        if (partieTerminee() && plateau.joueur1.getNombreCristaux() == 3)
+        {
+            return plateau.joueur1.getNom();
+        }
+        else if (partieTerminee() && plateau.joueur2.getNombreCristaux() == 3)
+        {
+            return plateau.joueur2.getNom();
+        }
+        else
+        {
+            return null;
+        }
     }
 
     //On a duel si positionSorcierJoueur1 == positionSorcierJoueur2
@@ -186,7 +186,7 @@ public class Jeu
     }
 
     public void deplacerSorcier(int positionSorcier) {
-        joueurActif().positionSorcier = positionSorcier;
+        joueurActif().setPositionSorcier(positionSorcier);
     }
 
     //Equivalent echanger carte
@@ -247,11 +247,13 @@ public class Jeu
         return valeurMain;
     }
 
-    public Joueur meilleurMain(){
+    public Joueur meilleurMain()
+    {
         int valeurMainJoueur1 = valeurMain(plateau.joueurActif());
         int valeurMainJoueur2 = valeurMain(plateau.joueurInactif());
         
-        if (valeurMainJoueur1 > valeurMainJoueur2) {
+        if (valeurMainJoueur1 > valeurMainJoueur2) 
+        {
             return plateau.joueurActif();
         }
         else if (valeurMainJoueur1 < valeurMainJoueur2)
@@ -389,56 +391,6 @@ public class Jeu
         System.out.println("Égalité!");
         return null;
     }
-
-
-    public void paradoxeIA_aleatoirechoix(){
-        if(estParadoxe()){
-    
-            plateau.joueurActif().ajouterCristaux(1);
-    
-            plateau.joueurActif().melangerMain();
-    
-            Boolean direction;
-            Random rand = new Random();
-    
-                 direction = rand.nextBoolean() ?  true: false;
-                while(!estPossibleEchangerParadoxe(direction)){
-                    direction = rand.nextBoolean() ?  true: false;
-    
-                }
-    
-                if(direction)
-                    echangerParadoxe(direction);
-                else    
-                echangerParadoxe(direction);
-    
-                System.out.println("Voici le plateau apres votre coup :");
-    
-                plateau.codex.changerCouleurInterdite();
-    
-        }
-      }
-
-
-      public boolean DeuxCarteMemeProp() {
-        boolean mainValide = false;
-        int val_carte1 = joueurActif().main.get(0).getValeur();
-        Forme forme_carte1 =joueurActif().main. get(0).getForme();
-        Couleur couleur_carte1 = joueurActif().main.get(0).getCouleur();
-        for(int i=1;i<3;i++){
-            //Verifier que les cartes sont different de la couleur interdite
-            if(joueurActif().main.get(i).getCouleur()!=couleurInterdite()){
-               
-            
-            if(joueurActif().main.get(i).getValeur()==val_carte1 || joueurActif().main.get(i).getForme()==forme_carte1 || joueurActif().main.get(i).getCouleur()==couleur_carte1){
-                mainValide=true;
-            }
-         }
-        
-        }
-        return mainValide;
-    }
-    
     
 }
 
