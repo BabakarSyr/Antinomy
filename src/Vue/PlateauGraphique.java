@@ -146,7 +146,7 @@ public class PlateauGraphique extends JComponent {
 		tracerSorcier(continuum, true);
 		tracerSorcier(continuum, false);
 		tracerScore();
-		tracerMessage();
+		tracerMessage(J1);
 		//boutonMenu();
 	}
 	// Trace le jeton du sorcier passé en paramètre:
@@ -190,19 +190,31 @@ public class PlateauGraphique extends JComponent {
 		int cristaux2 = jeu.plateau().joueur2.getNombreCristaux();
 		int hauteur=getHeight()/10;
 		int longueur=getWidth()/8*5;
-		Font fonte = new Font("Serif", Font.BOLD, getHeight()/25);
+		Font fonte = new Font("Serif", Font.BOLD, getHeight()/35);
         drawable.setFont(fonte);
 		drawable.drawString("Joueur 2 : " + cristaux2, longueur, hauteur);
 		drawable.drawString("Joueur 1 : " + cristaux, longueur, hauteur*9);
 	}
 
-	void tracerMessage(){
+	void tracerMessage(boolean J1){
 		String msg = c.infoPlateau();
-		int hauteur=getHeight()/10*8;
-		int longueur=3*largeurCarte;
-		Font fonte = new Font("Serif", Font.BOLD, getHeight()/25);
-        drawable.setFont(fonte);
-		drawable.drawString(msg, longueur, hauteur);
+		if (joueurActif()){
+			int hauteurPrevisualisation = hauteurCarte/4;
+			int hauteur=getHeight()/10*8-hauteurPrevisualisation;
+			int longueur=3*largeurCarte;
+			Font fonte = new Font("Serif", Font.BOLD, getHeight()/40);
+			drawable.setFont(fonte);
+			drawable.drawString(msg, longueur, hauteur);
+		}
+		else{
+			int hauteurPrevisualisation = hauteurCarte/4;
+			//4 hauteur cartes
+			int hauteur=getHeight()/3-hauteurPrevisualisation;
+			int longueur=3*largeurCarte;
+			Font fonte = new Font("Serif", Font.BOLD, getHeight()/40);
+			drawable.setFont(fonte);
+			drawable.drawString(msg, longueur, hauteur);
+		}
 	}
 
 	// Trace les cartes d'un joueur
