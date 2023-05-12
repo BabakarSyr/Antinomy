@@ -13,7 +13,7 @@ public class Plateau {
     public Joueur joueur1;
     public Joueur joueur2;
     ArrayList<Integer> positionsDepart;
-    List<Carte> All_Cartes=new ArrayList<>();
+    List<Carte> Reliques=new ArrayList<>();
 
     ArrayList<Carte> continuum=new ArrayList<>();
 
@@ -44,33 +44,30 @@ public class Plateau {
         p.positionsDepart=this.positionsDepart;
         return p;
     }
-    public List<Carte> getAll_Cartes() {
-        List<Carte> All_Cartes=new ArrayList<>();
-        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VERT,1));
-        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
-        All_Cartes.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
-        All_Cartes.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
-
-        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
-        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
-        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3));
-        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VERT,4));
-
-        All_Cartes.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
-        All_Cartes.add(new Carte(Forme.CLE, Couleur.VERT,2));
-        All_Cartes.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
-        All_Cartes.add(new Carte(Forme.CLE, Couleur.BLEU,4));
-
-        All_Cartes.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
-        All_Cartes.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
-        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VERT,3));
-        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
-        return All_Cartes;
-    }
+    
     public void initialiser(){
-        List <Carte> All_Cartes=getAll_Cartes();
-       //Copier le contenu de All_Cartes dans continuum
-        continuum.addAll(All_Cartes);
+        
+        Reliques.add(new Carte(Forme.PLUME, Couleur.VERT,1));
+        Reliques.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
+        Reliques.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
+        Reliques.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
+
+        Reliques.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
+        Reliques.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
+        Reliques.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3));
+        Reliques.add(new Carte(Forme.ANNEAU, Couleur.VERT,4));
+
+        Reliques.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
+        Reliques.add(new Carte(Forme.CLE, Couleur.VERT,2));
+        Reliques.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
+        Reliques.add(new Carte(Forme.CLE, Couleur.BLEU,4));
+
+        Reliques.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
+        Reliques.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
+        Reliques.add(new Carte(Forme.CRANE, Couleur.VERT,3));
+        Reliques.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
+       //Copier le contenu de Reliques dans continuum
+        continuum.addAll(Reliques);
 
         
         

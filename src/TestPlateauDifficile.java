@@ -52,12 +52,12 @@ public class TestPlateauDifficile {
             
             jeu.definir_ordres_joueurs(plateau, dejaVuJoueur1, dejaVuJoueur2);
 
-            int num_joueur_inactif = plateau.getJoueurActif() == plateau.getJoueur(1) ? 2 : 1;
+            int num_joueur_inactif = plateau.joueurActif() == plateau.getJoueur(1) ? 2 : 1;
 
 
 
 
-            System.out.println("Le joueur " + plateau.getJoueurActif().getNom() + " commence la partie !");
+            System.out.println("Le joueur " + plateau.joueurActif().getNom() + " commence la partie !");
             System.out.println();
 
             System.out.println("Voici le plateau de jeu :");
@@ -101,12 +101,12 @@ public class TestPlateauDifficile {
             jeu.deplacerSorcier(pos);
             System.out.println("\nTu as choisi joueur  "+plateau.getJoueur(num_joueur_actif).getNom()+" de le placer a la position :"+plateau.getPositionSorcier(num_joueur_actif));
             
-            plateau.getJoueur(num_joueur_actif).sorcier.getSensDuTemps();
+            plateau.getJoueur(num_joueur_actif).getSensDuTemps();
 
             plateau.changerJoueurActif();
             System.out.println();
             
-            System.out.println(plateau.joueurActif.getNom());
+            System.out.println(plateau.joueurActif().getNom());
             // Lecture de la carte à jouer
             System.out.println("Voici votre main pour vous aider à choisir le bon emplacement:");
             jeu.afficher_cartes_main();
@@ -143,18 +143,18 @@ public class TestPlateauDifficile {
                     jeu.afficher_cartes_main();
                 }
                 System.out.println("Rappel : La  couleur interdite indiqué par le codex pour ce tour est:"+(String)plateau.codex.getCouleurInterdite().getCode() );
-                System.out.println("la position de ton sorcier joueur "+ plateau.getJoueurActif().getNom() + " est :"+plateau.getPositionSorcier(num_joueur_actif));
+                System.out.println("la position de ton sorcier joueur "+ plateau.joueurActif().getNom() + " est :"+plateau.getPositionSorcier(num_joueur_actif));
                 System.out.println();
 
                
                
             
-            if (plateau.getJoueurActif().getNom().equals(nomJoueur2)) { 
+            if (plateau.joueurActif().getNom().equals(nomJoueur2)) { 
                 System.out.print("Choisissez la carte à jouer dans votre main(1, 2 ou 3) : "+"\n");
                 in= sc.next();
                 int indexCarteChoisie = Integer.parseInt(in)-1;
 
-                Carte carteChoisie = plateau.joueurActif.getMain().get(indexCarteChoisie);
+                Carte carteChoisie = plateau.joueurActif().getMain().get(indexCarteChoisie);
                 boolean pasDeDeplacements = true;
                 plateau.cartesAccessibles(carteChoisie);
                 ArrayList<Integer> positionsPossibles = plateau.cartesAccessibles(carteChoisie);
@@ -187,41 +187,119 @@ public class TestPlateauDifficile {
 
                 //Si le nom du joeur actif est le meme que celui du joueur 1
                 System.out.println("Voici le plateau apres votre coup :");
-                if(plateau.getJoueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
+                if(plateau.joueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
                     plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_actif),plateau.getPositionSorcier(num_joueur_inactif));
                 else
                     plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(num_joueur_inactif),plateau.getPositionSorcier(num_joueur_actif));
 
-                jeu.paradoxe();
-                jeu.duel();
-
-                System.out.println();
-                System.out.println("Ton sorcier "+plateau.getJoueurActif().getNom() +" est maintenant situé à la position :"+plateau.getPositionSorcier(num_joueur_actif));
-
-               
+                    if(jeu.estParadoxe())
+                    {
+                        System.out.println("Vous avez un paradoxe");
+                        
+                        //Afficher les cartes du joueur actif
+                        jeu.afficher_cartes_main();
+                        
+                        //Le joueur actif gagne 1 cristal
+                        plateau.joueurActif().ajouterCristaux(1);
+                                    
+                        System.out.println("Récapitulatif :");
+                        System.out.println("Le joueur "+plateau.joueur1.getNom()+" a en sa possession "+plateau.joueur1.getNombreCristaux()+" cristaux");
+                        System.out.println("Le joueur "+plateau.joueur2.getNom()+" a en sa possession "+plateau.joueur2.getNombreCristaux()+" cristaux");
+                                        
+                        //Le joueur melange les cartes entre ses mains
+                        plateau.joueurActif().melangerMain();
+                        String direction;
+                        if (jeu.estPossibleEchangerParadoxe(true) && !jeu.estPossibleEchangerParadoxe(false))
+                        {
+                            jeu.echangerParadoxe(true);
+                        }
+                        else if (!jeu.estPossibleEchangerParadoxe(true) && jeu.estPossibleEchangerParadoxe(false))
+                        {
+                            jeu.echangerParadoxe(false);
+                        }
+                        else
+                        {
+                            System.out.print("Vous choississez de mettre vos 3 cartes mélangé a gauche ou a droite de votre baguette magique ?(gauche ou droite) : ");
+                            do
+                            {
+                                direction = sc.next().toLowerCase();
+                                if (direction!="gauche" || direction!="droite")
+                                {
+                                    System.out.print("choisissez gauche ou droite : ");
+                                }
+                            }
+                            while(direction!="gauche" || direction!="droite");
+                            boolean futur = true;
+                            if(direction == "gauche"){
+                                futur = false;
+                            }
+                            if(direction == "droite"){
+                                futur = true;
+                            }
+                            jeu.echangerParadoxe(futur);
+                        }
+                        plateau.codex.changerCouleurInterdite();
+                        System.out.println("La nouvelle couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
+                        System.out.println("Voici le plateau apres votre coup :");
+                        if(plateau.joueurActif().getNom().equals(plateau.getJoueur(1).getNom()))
+                        {
+                            plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(1),plateau.getPositionSorcier(1));
+                        }
+                        else
+                        {
+                            plateau.afficher_colorSorcier_continuum(plateau.getPositionSorcier(2),plateau.getPositionSorcier(2));
+                        }
+                    }
+    
+                if(jeu.estDuel())
+                {
+                    System.out.println("C'est l'heure du Duel!");
+                    System.out.println("Rappel,la couleur interdite est :"+ (String)plateau.codex.getCouleurInterdite().getCode());
+                    //Les 2 joueurs affichent leur main
+                    System.out.println("La main du joueur 1 est : ");
+                    for(int k =0;i<3;i++){
+                    
+                        System.out.println("Carte "+k+" : "+plateau.joueur1.getMain().get(i).toString());
+                        
+                    }
+                    System.out.println();
+                    System.out.println("La main du joueur 2 est : ");
+                    for(int k =0;i<3;i++){
+                        
+                        System.out.println("Carte "+k+" : "+plateau.joueur2.getMain().get(i).toString());
+                    }
+                    System.out.println();
+                }
+                    jeu.duel();
+    
+                    System.out.println();
+                    System.out.println("Ton sorcier "+plateau.joueurActif().getNom() +" est maintenant situé à la position :"+plateau.getPositionSorcier(num_joueur_actif));
+    
+                   
+                    
+                     // Une fois que le joueur a terminé son tour, on change de joueur actif au niveau du plateau
+                    plateau.changerJoueurActif();
+                    System.out.println();
+                    System.out.println("Le joueur actif est maintenant le joueur " + plateau.joueurActif().getNom() );
+    
+                   
+                    //le numero du joueur actif est changé dans le plateau et celui du joueur inactif est changé aussi
+                    num_joueur_actif = plateau.joueurActif() == plateau.getJoueur(1) ? 1 : 2;
+                    num_joueur_inactif = plateau.joueurActif() == plateau.getJoueur(1) ? 2 : 1;
+    
+             
+                    
+                    i++;
+                }
+                int score1 = plateau.getJoueur(1).getNombreCristaux();
+                int score2 = plateau.getJoueur(2).getNombreCristaux();
+                if(score1 > score2)
+                    System.out.println("Le joueur "+plateau.getJoueur(1).getNom()+" a gagné avec un score de "+score1+" contre "+score2+" pour le joueur "+plateau.getJoueur(2).getNom());
+                else
+                    System.out.println("Le joueur "+plateau.getJoueur(2).getNom()+" a gagné avec un score de "+score2+" contre "+score1+" pour le joueur "+plateau.getJoueur(1).getNom());
                 
-                 // Une fois que le joueur a terminé son tour, on change de joueur actif au niveau du plateau
-                plateau.changerJoueurActif();
-                System.out.println();
-                System.out.println("Le joueur actif est maintenant le joueur " + plateau.getJoueurActif().getNom() );
-
-               
-                //le numero du joueur actif est changé dans le plateau et celui du joueur inactif est changé aussi
-                num_joueur_actif = plateau.getJoueurActif() == plateau.getJoueur(1) ? 1 : 2;
-                num_joueur_inactif = plateau.getJoueurActif() == plateau.getJoueur(1) ? 2 : 1;
-
-         
-                
-                i++;
             }
-            int score1 = plateau.getJoueur(1).getNombreCristaux();
-            int score2 = plateau.getJoueur(2).getNombreCristaux();
-            if(score1 > score2)
-                System.out.println("Le joueur "+plateau.getJoueur(1).getNom()+" a gagné avec un score de "+score1+" contre "+score2+" pour le joueur "+plateau.getJoueur(2).getNom());
-            else
-                System.out.println("Le joueur "+plateau.getJoueur(2).getNom()+" a gagné avec un score de "+score2+" contre "+score1+" pour le joueur "+plateau.getJoueur(1).getNom());
-            
         }
+        
     }
     
-}

@@ -30,24 +30,27 @@ public class IADifficile {
     }
    
     public Map<Carte, Boolean> Cartes_inconnu_par_IA() {
-        Map<Carte, Boolean> Carte = new HashMap<>();
-        List<Carte> Reliques = clone.All_Cartes;
+        Map<Carte, Boolean> Cartes = new HashMap<>();
+        List<Carte> Reliques = clone.Reliques;
         List<Carte> continuum = clone.continuum;
         // Initialiser chaque carte à false (inconnue)
         for (Carte carte : Reliques) {
-            Carte.put(carte, false);
+            Cartes.put(carte, false);
+            
         }
+
         // Supprimer toutes les cartes que l'IA a en main dans Reliques
         for (int i = 0; i < 3; i++) {
-            Carte carte = clone.joueur2.main.get(i);
-            Carte.remove(carte);
+           //Recuperer clé d'indice5 dans hashmap=
+            Carte carte = clone.joueur1.main.get(i);
+            Cartes.remove(carte); 
         }
-        // Supprimer toutes les cartes du continuum présent dans Reliques
+        // Supprimer toutes les cartes Reliques présent dans Cartes
         for (int j = 0; j < continuum.size(); j++) {
             Carte carte_continuum = continuum.get(j);
-            Carte.remove(carte_continuum);
+            Cartes.remove(carte_continuum);
         }
-        return Carte;
+        return Cartes;
     }
 
 
@@ -133,202 +136,85 @@ public class IADifficile {
                     }
                 }
 
-                //return carteAvant; 
-                //Maintenant l'IA sait que l'adversaire a entre ses main cette carte
+                break;
             }
         }
-        // Aucune carte n'a été remplacée mais ce cas se se produira jamais
-        //return null; 
+        
     }
 
 
-    /* 
-
-    public  int[]  Meilleur_Coup(int profondeur, boolean joueurMax ){
-        int score=0;
-        int meilleurScore=-1;
-        int meilleurePosition = -1;
-        int meilleurCarte=-1;
-        Partie plateauClone = clone.copie();
-       
-
-       //int carte_rapportant_plus_points=-1;
-       //int max_points=-1;
-       int total_points=0;
-       int meilleur_total_points=-1;
-        for(int index_carte = 0; index_carte < 3; index_carte++){
-            
-
-             //Si le mouvement(a savoir jouer) permet à l'IA d'obtenir 3 cartes de la même couleur, valeur ou icône (sans inclure la couleur interdite), attribuez un score élevé (par exemple, 100 points).
-            List<Integer> Mouvement_Possible_carte=plateauClone.joueur2.sorcier.calculerEmplacementsAccessibles(plateauClone.joueur2.main.getCarte(index_carte), plateauClone.continuum);
-            //Parcourir les mouvement possible et pour chaque mouvement possible ca veut dire que la carte i peut aller a la possition i du MouvementPossible(jouerCarte).Verifier si ce coup(le fait de jouer)permet d'obtenir  3 cartes de la même couleur, valeur ou icône (sans inclure la couleur interdite), attribuez un score élevé
-       
-           
-            for(int position : Mouvement_Possible_carte){
-                Carte carte_continuum=plateauClone.continuum.get(position);
-                plateauClone.joueur2.sorcier.setPositionSorcier(position);
-                
-                Carte carte_jouee=plateauClone.joueur2.jouerCarte(index_carte,plateauClone.continuum); 
-                //Meilleur total de points entre les mains de l'IA
-               
-                 total_points=plateauClone.joueur2.totalValeurMain();
-                if(total_points>meilleur_total_points){
-                    meilleur_total_points=total_points;
-                   // carte_rapportant_plus_points=index_carte;
-                }
-                
-               
-                if(carte_continuum.getCouleur()!=plateauClone.codex.getCouleurInterdite()){
-        
-                    if(carte_jouee.getCouleur()==plateauClone.codex.getCouleurInterdite()){
-                        score+=20;
-                    }
-
-                        //Si le fait de jouer cette carte va permettre a l'IA de créer un paradoxe,on lui attribue le maximum de points
-                    if(clone.isParadoxe(plateauClone.joueur2.main))
-                       score+=100;
-                    else{
-                        if(carte_jouee.getValeur()<carte_continuum.getValeur()){
-                          
-                            if(clone.joueur2.getAllCouleurMain().contains(carte_continuum.getCouleur()) )
-                                score+=60;//on peut se rapproche du paradoxe
-                            
-                            if(clone.joueur2.getAllValeurMain().contains(carte_continuum.getValeur()))
-                                score+=60;
-                            if(clone.joueur2.getAllFormeMain().contains(carte_continuum.getForme()))
-                                score+=60;
-                            
-                            //On récupére une carte plus forte entre les mains mais ce dernier ne nous permet pas d'avoir au moins 2 cartes de la même couleur, valeur ou forme (sans inclure la couleur interdite)
-                            if(!clone.joueur2.getAllValeurMain().contains(carte_continuum.getValeur())){
-                                score+=40;
-                            }
-                        }
-                       
-                    
-                    }   
-              
-                }
-                else
-                    score-=20;
-
-
-                
-                //Attribuer des points en fonction de la possibilité d'engager un duel :
-                //plus la proba de gagner le duel est élevée, plus le score est élevé
-                if(clone.isDuel()){
-                    double probabilite=Probabilite_Gagner_Duel();
-                    if(probabilite>50)
-                        score+=probabilite;
-                    
-                    else
-                    //Si le mouvement expose l'IA à un risque élevé de perdre un duel
-                        score-=50;
-                }
-
-                
-                //Coup qui va  permettre à l'adversaire de créer un Paradoxe
-                if(clone.isParadoxe(Vrai_Main_Adversaire))
-                    score-=50;
-
-
-
-
-                    if (joueurMax) {
-                        // Appel récursif pour trouver le meilleur coup pour l'adversaire
-                        int[] resultat = Meilleur_Coup(profondeur - 1, false);
-                        score += resultat[0];
-                    } else {
-                        // Appel récursif pour trouver le meilleur coup pour l'IA
-                        int[] resultat = Meilleur_Coup(profondeur - 1, true);
-                        score -= resultat[0];
-                    }
-
-                    
-                if (score > meilleurScore) {
-                    meilleurScore = score;
-                    meilleurePosition = position;
-                    meilleurCarte=index_carte;
-                    score=0;//Remise a zero du score pour la prochaine carte
-                }
-            }
-
-        }
-        
-        
-        return new int[]{meilleurCarte, meilleurePosition};
-    }
-    }*/
-
-
-    public int[] minimax(Jeu etat, int profondeur) {
+    public int[] minimax(Jeu JeuClone, int profondeur) {
         int meilleurScore;
-        int[] meilleurCoup = new int[2];
-        Jeu nouvelEtat = etat.copie();
-
-        if (profondeur == 0 || etat.partieTerminee()) {
+        int[] meilleurCoup = new int[3];
         
-            meilleurScore = evaluer(etat);
-            meilleurCoup = null;
+        if (profondeur == 0 || JeuClone.partieTerminee()) {
+            meilleurCoup[0]=evaluer(JeuClone);
+            return  meilleurCoup;
+            
         } 
-        else if ( nouvelEtat.plateau.joueurActif.getNom()==etat.plateau.joueur1.getNom()) {
+        else if ( JeuClone.plateau.joueurActif().getNom()==JeuClone.plateau.joueur1.getNom()) {
             // Tour de l'IA=Max(minimax(etatcourantdujeu,profondeur-1,tourIA).Donc l'IA cherche a maximiser son score
             meilleurScore = Integer.MIN_VALUE;
-            for (int i = 0; i < 3; i++) {
-                Carte carte = nouvelEtat.plateau.joueur1.main.get(i);
+            for(int i=0;i<3;i++){
+                Carte carte = JeuClone.plateau.joueur1.main.get(i);
 
-                List<Integer> Mouvement_Possible=etat.plateau.cartesAccessibles(carte);
+                List<Integer> Mouvement_Possible=JeuClone.plateau.cartesAccessibles(carte);
                 for (int j : Mouvement_Possible) {
                   
                    
-                    nouvelEtat.jouerCarte(i, j);
-                    nouvelEtat.paradoxeIA_aleatoirechoix();
-                    nouvelEtat.duel();
+                    JeuClone.jouerCarte(i, j);
+                    //JeuClone.paradoxeIA_aleatoirechoix();
+                    if(JeuClone.estDuel())
+                       JeuClone.duel();
 
                     nbTours--;
-                    nouvelEtat.plateau.changerJoueurActif();
+                    JeuClone.plateau.changerJoueurActif();
                     //le joueur actif sera l'adversaire
-                    int score = minimax(nouvelEtat, profondeur - 1)[0];
+                    int score = minimax(JeuClone, profondeur - 1)[0];
                     if (score > meilleurScore) {
                         meilleurScore = score;
-                        meilleurCoup[0] = i;
-                        meilleurCoup[1] = j;
+                        meilleurCoup[1] = i;
+                        meilleurCoup[2] = j;
                     }
                 }
             }
+            
+          
         } 
         else {
             // Tour de l'adversaire=Min(minimax(etatcourantdujeu,profondeur-1,tourIA).Donc l'adversaire cherche a minimiser le score d'évaluation
             meilleurScore = Integer.MAX_VALUE;
-            for (int i = 0; i < 3; i++) {
-                for (Carte carte : Potentiel_Main_Adversaire.keySet()) {
-                    if (Potentiel_Main_Adversaire.get(carte)) {
-                        continue;
-                    }
-                    Jeu etatAvant = nouvelEtat.copie();
-                    for (int j : etat.plateau.cartesAccessibles(carte)) {
+                for (int i = 0; i < 3; i++) {
+                    
+                    Carte carte = JeuClone.plateau.joueur2.main.get(i);
 
-                        nouvelEtat.jouerCarte(i, j);
-                        nouvelEtat.paradoxe();
-                        nouvelEtat.duel();
+                    for (int j : JeuClone.plateau.cartesAccessibles(carte) ) {
+
+                        JeuClone.jouerCarte(i, j);
+                        JeuClone.paradoxeIA_aleatoirechoix();
+                        if(JeuClone.estDuel())
+                          JeuClone.duel();
+
 
                         nbTours=nbTours+2;
-                       Coup_jouer_Par_Adversaire(nouvelEtat.plateau,etatAvant.plateau);
-
-                        nouvelEtat.plateau.changerJoueurActif();
-                        int score = minimax(nouvelEtat, profondeur - 1)[0];
+                       //Coup_jouer_Par_Adversaire(JeuClone.plateau,etatAvant.plateau);
+                       JeuClone.plateau.changerJoueurActif();
+                        
+                        int score = minimax(JeuClone, profondeur - 1)[0];
                         if (score < meilleurScore) {
                             meilleurScore = score;
-                            meilleurCoup[0] = i;
-                            meilleurCoup[1] = j;
+                            meilleurCoup[1] = i;
+                            meilleurCoup[2] = j;
                         }
                       
                     }
                    
+                   
                 }
-            }
+            
         }
     
-        return new int[] { meilleurCoup[0], meilleurCoup[1]};
+        return  meilleurCoup;
     }
     
     public int evaluer(Jeu etat) {
@@ -339,72 +225,30 @@ public class IADifficile {
         
         //Par exemple si IA a 4 cristaux de moins que son adversaire alors le score de l'IA sera de -80
         score += 20 * (cristauxIA - cristauxAdversaire);
-        
-       //Si la combinaison de cartes entre les main de l'IA lui permet de faire un paradoxe alors on ajoute au score 100
-       if(etat.plateau.joueurActif==etat.plateau.joueur2){
+   
             if (etat.estParadoxe())
                 score += 100;
             if (etat.estDuel()) {
-                if(nbTours<3){
-                //Si le mouvement expose l'IA à un risque élevé de perdre un duel
                 
-                    double probabilite = Probabilite_Gagner_Duel();
-                    if (probabilite > 50)
-                        score += probabilite;
-                    else
-                        score -= 50;
-                }
-                else{
-                   int val_main_IA=etat.plateau.joueur2.totalValeurMain();
-                     int val_main_Adversaire=0;
-                    for (ArrayList<Carte> combinaison : mainPossible) {
-                        val_main_Adversaire=0;
-                        for (Carte carte : combinaison) {
-                            val_main_Adversaire+=carte.getValeur();
-                        }
-                    }
-                    if(val_main_IA>val_main_Adversaire)
-                        score+=100;
-                }
+                Joueur gagnant = etat.meilleurMain();
+                if (gagnant == etat.plateau.joueur1)
+                      score+=100;
+                else 
+                    score-=100;
+            
             }
             //Si l'IA a 2 cartes de la meme valeur,couleur ou forme alors on ajoute 50 au score
-            if(etat.plateau.joueurActif.DeuxCarteMemeProp())
-                score += 50;
-
-            //
-            
-          
-        }
-        else{
-        
-            if(nbTours<3){
-                ArrayList <ArrayList<Carte>> combinaisons = All_Main_Possible();
-                int count=0;
-                for (ArrayList<Carte> combinaison : combinaisons) {
-                    if (etat.estParadoxe(combinaison))
-                    count += 100;
-                }
-                int moyenne_score = count / combinaisons.size();//On a toujours 4 combinaisons possibles tat que on a pas atteint la profodeur 6
-                score += moyenne_score ;
-            }
-            else{
-                //Convertir Potentiel_Main_Adversaire en ArrayList
-                ArrayList<Carte> vrai_main_Adversaire=new ArrayList<>(Potentiel_Main_Adversaire.keySet());
-                if (etat.estParadoxe(vrai_main_Adversaire))
-                    score += 100;
-            }
             if(etat.plateau.joueur1.DeuxCarteMemeProp())
                 score += 50;
-
-        }
 
         return score;
     }
 
     public void jouer(Jeu Jeu) {
-
-        int meilleurCarte=minimax(Jeu, 6)[0];
-        int meilleurePosition=minimax(Jeu, 6)[1];
+        Jeu JeuClone = Jeu.copie();
+        int[] res=minimax(JeuClone, 3);
+        int meilleurCarte=res[1];
+        int meilleurePosition=res[2];
        
         Jeu.jouerCarte(meilleurCarte, meilleurePosition);
     }

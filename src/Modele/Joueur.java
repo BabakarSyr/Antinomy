@@ -169,6 +169,7 @@ public class Joueur {
         Forme forme_carte1 = main.get(0).getForme();
         Couleur couleur_carte1 = main.get(0).getCouleur();
         for(int i=1;i<3;i++){
+            
             if(main.get(i).getValeur()==val_carte1 || main.get(i).getForme()==forme_carte1 || main.get(i).getCouleur()==couleur_carte1){
                 mainValide=true;
             }
