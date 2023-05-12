@@ -45,6 +45,15 @@ public class Humain implements Joueur{
         this.positionSorcier=posSorcier;
     }
 
+    public Humain(Joueur j)
+    {
+        this.nom = j.getNom();
+        this.nombreCristaux = j.getNombreCristaux();
+        this.main = j.getMain();
+        this.sensDuTemps = j.getSensDuTemps();
+        this.positionSorcier = j.getPositionSorcier();
+    }
+
     ///////////////////////////
     ////  methodes joueur  ////
     ///////////////////////////
