@@ -5,7 +5,6 @@ import java.util.List;
 
 public interface Joueur
 {
-
     public int getNombreCristaux();
     public void ajouterCristaux();
    
@@ -29,5 +28,7 @@ public interface Joueur
 
     public boolean getSensDuTemps();
     public void setSensDuTemps(boolean sensDuTemps);
+    public ArrayList<Integer> joue();
+    public boolean estIA();
 }
 

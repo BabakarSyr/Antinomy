@@ -151,5 +151,15 @@ public class Humain implements Joueur{
         this.main = main;
     }
 
+    public boolean estIA()
+    {
+        return false;
+    }
+
+    public ArrayList<Integer> joue()
+    {
+        return null;
+    }
+
 }
 

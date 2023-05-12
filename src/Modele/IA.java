@@ -257,4 +257,10 @@ public abstract class IA implements Joueur
     {
         return null;
     }
+
+    public boolean estIA()
+    {
+        return true;
+    }
+
 }
