@@ -24,8 +24,8 @@ public class Plateau {
     public Plateau() {
         
         
-        joueur1=new Joueur();
-        joueur2=new Joueur();
+        joueur1=new Humain();
+        joueur2=new Humain();
       
         joueurActif = 1;
         codex=new Codex(new Carte(null, null,0));

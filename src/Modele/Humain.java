@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Joueur {
+public class Humain extends Joueur{
     String nom;
     ArrayList<Carte> main;
     int nombreCristaux;
@@ -14,8 +14,7 @@ public abstract class Joueur {
     //////////////////////
     //// CONSTRUCTEUR ////
     //////////////////////
-
-    public Joueur() {
+    public Humain() {
         this.nom = "";
         this.nombreCristaux = 0;
         this.main = new ArrayList<>();
@@ -23,7 +22,7 @@ public abstract class Joueur {
         this.positionSorcier=-1;
     }
 
-    public Joueur(String nom) {
+    public Humain(String nom) {
         this.nom = nom;
         this.nombreCristaux = 0;
         this.main = new ArrayList<>();
@@ -31,7 +30,7 @@ public abstract class Joueur {
         this.positionSorcier=-1;
     }
 
-    public Joueur(String nom, int nombreCristaux) {
+    public Humain(String nom, int nombreCristaux) {
         this.nom = nom;
         this.nombreCristaux = nombreCristaux;
         this.main = new ArrayList<>();
@@ -39,7 +38,7 @@ public abstract class Joueur {
         this.positionSorcier=-1;
     }
 
-    public Joueur(String nom, int nombreCristaux, boolean sensDuTemps, int posSorcier) {
+    public Humain(String nom, int nombreCristaux, boolean sensDuTemps, int posSorcier) {
         this.nom = nom;
         this.nombreCristaux = nombreCristaux;
         this.main = new ArrayList<>();
@@ -51,27 +50,33 @@ public abstract class Joueur {
     ////  methodes joueur  ////
     ///////////////////////////
 
+    @Override
     public int getNombreCristaux() {
         return nombreCristaux;
     }
 
+    @Override
     public void ajouterCristaux() {
         this.nombreCristaux ++;
     }
    
+    @Override
     public void ajouterCristaux(int nombreCristaux) {
         this.nombreCristaux += nombreCristaux;
     }
 
+    @Override
     public void retirerCristaux() {
         this.nombreCristaux --;
     }
 
+    @Override
     public void retirerCristaux(int nombreCristaux) {
         this.nombreCristaux -= nombreCristaux;
     }
     
     //Voler un cristal à un autre joueur
+    @Override
     public boolean volerCristal(Joueur autreJoueur) {
         if (autreJoueur.getNombreCristaux() > 0) {
             //On ajoute un cristal au joueur actuel 
@@ -84,22 +89,23 @@ public abstract class Joueur {
             return false;
         }
     }
-
+    @Override
     public String getNom() {
         return nom;
     }
+    @Override
     public void setNom(String nom) {
         this.nom = nom;
     }
-
+    @Override
     public ArrayList<Carte> getMain() {
         return main;
     }
-
+    @Override
     public void melangerMain(){
         Collections.shuffle(main);
     }
-
+    @Override
     public int getIndiceCarte(Carte c)
     {
         for (int i = 0; i < this.main.size(); i++)
@@ -112,8 +118,8 @@ public abstract class Joueur {
         return -1;
     }
 
-
     //Equivalent echanger carte
+    @Override
     public Carte jouerCarte(int index, List<Carte> continuum) {//index=[0-2]
         int positionSorcier = getPositionSorcier();
         Carte carte = main.get(index);
@@ -134,17 +140,17 @@ public abstract class Joueur {
     ///////////////////////////
     //// methodes sorcier  ////
     ///////////////////////////
-
+    @Override
     public int getPositionSorcier() 
     {
         return this.positionSorcier;
     }
- 
+    @Override
     public boolean getSensDuTemps() 
     {
         return this.sensDuTemps;
     }
- 
+    @Override
     public void setSensDuTemps(boolean sensDuTemps) 
     {
         this.sensDuTemps = sensDuTemps;

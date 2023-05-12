@@ -26,6 +26,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         infoPlateau = "Placez votre sorcier !";
         voirMainAdversaire = false;
         voirMainJoueurActif = true;
+        random = new Random();
+        //clicCarteContinuum(jeu.joueurActif().jouerCarte(carteSelectionnee, null));
 	}
 
     // ============ Clic Souris ================
@@ -78,6 +80,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     infoPlateau = "Egalité le jeu continue !";
                 }
                 changerTour();
+                changerEtatJeu(EtatJeu.DEBUT_TOUR);
                 break;
             case DEBUT_PARTIE:
                 break;
