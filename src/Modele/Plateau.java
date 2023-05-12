@@ -6,7 +6,8 @@ import java.util.List;
 
 
 
-public class Plateau {
+public class Plateau implements Cloneable
+{
     //TODO remplacer joueur actif par un indice et creer une methode qui retourne le joueur actif: j1 ou j2
     public int joueurActif;
 
@@ -300,6 +301,18 @@ public class Plateau {
         }
         return s;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        Plateau obj = (Plateau) super.clone();
+        obj.setJoueurActif(this.joueurActif);
+        obj.joueur1 = new Humain(this.joueur1);
+        obj.joueur2 = new Humain(this.joueur2);
+        obj.positionsDepart = new ArrayList<>(this.positionsDepart);
+        obj.continuum = new ArrayList<>(this.getContinuum());
+        obj.codex = new Codex(this.codex.carte);
+        return obj;
+    }
+
 }
-
-
