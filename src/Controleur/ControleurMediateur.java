@@ -27,7 +27,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         voirMainAdversaire = false;
         voirMainJoueurActif = true;
         random = new Random();
-        //clicCarteContinuum(jeu.joueurActif().jouerCarte(carteSelectionnee, null));
 	}
 
     // ============ Clic Souris ================
@@ -182,7 +181,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
-    //TODO implémenter methode changerTour
     private void changerTour() {
         jeu.plateau().changerJoueurActif();
     }
