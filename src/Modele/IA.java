@@ -4,7 +4,7 @@ import java.util.Random;
 
 import java.util.ArrayList;
 
-public abstract class IA extends Joueur
+public abstract class IA implements Joueur
 {
     Random r;
     Jeu jeu;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Humain extends Joueur{
+public class Humain implements Joueur{
     String nom;
     ArrayList<Carte> main;
     int nombreCristaux;
@@ -14,6 +14,7 @@ public class Humain extends Joueur{
     //////////////////////
     //// CONSTRUCTEUR ////
     //////////////////////
+
     public Humain() {
         this.nom = "";
         this.nombreCristaux = 0;
@@ -29,7 +30,6 @@ public class Humain extends Joueur{
         this.sensDuTemps = true;
         this.positionSorcier=-1;
     }
-
     public Humain(String nom, int nombreCristaux) {
         this.nom = nom;
         this.nombreCristaux = nombreCristaux;
@@ -37,7 +37,6 @@ public class Humain extends Joueur{
         this.sensDuTemps = true;
         this.positionSorcier=-1;
     }
-
     public Humain(String nom, int nombreCristaux, boolean sensDuTemps, int posSorcier) {
         this.nom = nom;
         this.nombreCristaux = nombreCristaux;
@@ -49,27 +48,22 @@ public class Humain extends Joueur{
     ///////////////////////////
     ////  methodes joueur  ////
     ///////////////////////////
-
     @Override
     public int getNombreCristaux() {
         return nombreCristaux;
     }
-
     @Override
     public void ajouterCristaux() {
         this.nombreCristaux ++;
     }
-   
     @Override
     public void ajouterCristaux(int nombreCristaux) {
         this.nombreCristaux += nombreCristaux;
     }
-
     @Override
     public void retirerCristaux() {
         this.nombreCristaux --;
     }
-
     @Override
     public void retirerCristaux(int nombreCristaux) {
         this.nombreCristaux -= nombreCristaux;
@@ -118,6 +112,7 @@ public class Humain extends Joueur{
         return -1;
     }
 
+
     //Equivalent echanger carte
     @Override
     public Carte jouerCarte(int index, List<Carte> continuum) {//index=[0-2]
@@ -146,6 +141,12 @@ public class Humain extends Joueur{
         return this.positionSorcier;
     }
     @Override
+    public void setPositionSorcier(int position) 
+    {
+        this.positionSorcier = position;
+    }
+
+    @Override
     public boolean getSensDuTemps() 
     {
         return this.sensDuTemps;
@@ -154,6 +155,11 @@ public class Humain extends Joueur{
     public void setSensDuTemps(boolean sensDuTemps) 
     {
         this.sensDuTemps = sensDuTemps;
+    }
+
+    @Override
+    public void setMain(ArrayList<Carte> main) {
+        this.main = main;
     }
 
 }

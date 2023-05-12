@@ -10,8 +10,8 @@ public class Plateau {
     //TODO remplacer joueur actif par un indice et creer une methode qui retourne le joueur actif: j1 ou j2
     public int joueurActif;
 
-    public Joueur joueur1;
-    public Joueur joueur2;
+    public Humain joueur1;
+    public Humain joueur2;
     ArrayList<Integer> positionsDepart;
 
     ArrayList<Carte> continuum=new ArrayList<>();
@@ -128,9 +128,9 @@ public class Plateau {
     public int deplacementFuturPossible(Carte carteChoisie) {
         int valeurCarte = carteChoisie.getValeur();
         int res=-1;
-        int positionSorcier = joueurActif().positionSorcier;
+        int positionSorcier = joueurActif().getPositionSorcier();
         //Si le futur du sorcier est a droite
-        if(joueurActif().sensDuTemps)
+        if(joueurActif().getSensDuTemps())
         {
             if(positionSorcier+ valeurCarte < continuum.size())
             {
@@ -155,8 +155,8 @@ public class Plateau {
         Couleur couleurCarte = carteChoisie.getCouleur();
         ArrayList<Integer> positions=new ArrayList<>();
         //Si le passé du sorcier est à gauche
-        if(joueurActif().sensDuTemps){
-            for (int i = joueurActif().positionSorcier - 1; i >= 0; i--) {
+        if(joueurActif().getSensDuTemps()){
+            for (int i = joueurActif().getPositionSorcier() - 1; i >= 0; i--) {
                 if( continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
                     positions.add (i);
                 }        
@@ -164,7 +164,7 @@ public class Plateau {
         } 
         //Le passé du sorcier est à droite
         else {
-            for (int i = joueurActif().positionSorcier + 1; i < continuum.size(); i++) {
+            for (int i = joueurActif().getPositionSorcier() + 1; i < continuum.size(); i++) {
                 if (continuum.get(i).getForme() == formeCarte || continuum.get(i).getCouleur() == couleurCarte){
                     positions.add (i);
                 }
