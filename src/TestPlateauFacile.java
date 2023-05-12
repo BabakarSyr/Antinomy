@@ -25,7 +25,7 @@ public class TestPlateauFacile {
         try (Scanner sc = new Scanner(System.in)) {
             
             //le joueur1 est en rose
-            String nomJoueur1 = "\033[38;5;208m\033[7mMerlin\033[0m";
+            String nomJoueur1 = "\033[38;5;208m\033[7mIAFACILE\033[0m";
             
             System.out.println();
             
@@ -37,7 +37,7 @@ public class TestPlateauFacile {
 
                     
             plateau.getJoueur(1).setNom(nomJoueur1);
-            plateau.getJoueur(2).setNom(nomJoueur2);
+           plateau.getJoueur(2).setNom(nomJoueur2);
 
           
             System.out.println(plateau.joueur1.getNom()+",avez-vous ressenti du déjà-vu récemment ? : "); 
@@ -303,4 +303,6 @@ public class TestPlateauFacile {
         }
         
     }
+    
+
     
