@@ -25,7 +25,7 @@ public class TestPlateauFacile {
         try (Scanner sc = new Scanner(System.in)) {
             
             //le joueur1 est en rose
-            String nomJoueur1 = "\033[38;5;208m\033[7mIAFACILE\033[0m";
+            String nomJoueur1 = "IAFACILE";
             
             System.out.println();
             
@@ -131,7 +131,7 @@ public class TestPlateauFacile {
                 
             System.out.println("\nTest jouer");
 
-            IAFacile ia = new IAFacile(jeu);
+            IAFacile ia = new IAFacile(jeu.plateau());
             int i=0;
 
 
