@@ -31,5 +31,18 @@ public interface Joueur
     public ArrayList<Integer> joue();
     public Coup joueCoup();
     public boolean estIA();
-}
 
+    //Retourne vrai si tous les cartes de la main du joueur sont de la meme forme
+    public boolean mainMemeForme();
+
+    //Retourne vrai si tous les cartes de la main du joueur sont de la meme couleur
+    public boolean mainMemeCouleur();
+
+    //Retourne vrai si tous les cartes de la main du joueur sont de la meme valeur
+    public boolean mainMemeValeur();
+
+    //Retourne vrai si tous les cartes de la main du joueur ne sont pas de la couleur bannie
+    public boolean mainCouleurBannie();
+
+    public int valeurMain();
+}
