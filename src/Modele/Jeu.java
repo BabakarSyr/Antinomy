@@ -213,8 +213,8 @@ public class Jeu
 
     public Joueur meilleurMain()
     {
-        int valeurMainJoueur1 = plateau().joueurActif().valeurMain();
-        int valeurMainJoueur2 = plateau().joueurInactif().valeurMain();
+        int valeurMainJoueur1 = plateau().valeurMain(plateau.joueurActif());
+        int valeurMainJoueur2 = plateau().valeurMain(plateau.joueurInactif());
         
         if (valeurMainJoueur1 > valeurMainJoueur2) 
         {

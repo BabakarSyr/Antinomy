@@ -383,4 +383,16 @@ public class Plateau extends Historique<Coup> implements Cloneable
         return obj;
     }
 
+    public int valeurMain(Joueur j)
+    {
+        int valeurMain = 0;
+        Couleur couleurInterdite = this.codex.getCouleurInterdite();
+        for (Carte carte : j.getMain()) 
+        {
+            valeurMain += carte.getValeur(couleurInterdite);
+        }
+        System.out.println("valeur de la main :" + valeurMain);
+        return valeurMain;
+    }
+
 }

@@ -128,6 +128,8 @@ public class IAFacile extends IA
         ArrayList<Integer> positions;
         Coup choice = new Coup();
         boolean resultatDuel;
+        ArrayList<Integer> paradoxPositions = new ArrayList<Integer>();
+
 
         if (positionSorcier==-1)
         {
@@ -137,7 +139,7 @@ public class IAFacile extends IA
         else
         {
             //Etape 1. Recuperer la position de l'adversaire
-            int posAdversaire = plateau.getPositionSorcier(ordreAdversaire);
+            Integer posAdversaire = plateau.getPositionSorcier(ordreAdversaire);
 
             ArrayList<Integer> cartes = new ArrayList<>();
             for (int i = 0; i < 3; i++)
@@ -160,7 +162,7 @@ public class IAFacile extends IA
                 {
                     //Etape 4a. Si oui, choisir ce mouvement
                     mouvementChoisi = posAdversaire;
-                    resultatDuel=jeu.valeurMain(plateau.getJoueur(ordreIA))<jeu.valeurMain(plateau.getJoueur(ordreAdversaire));
+                    resultatDuel=plateau.valeurMain(plateau.getJoueur(ordreIA))<jeu.plateau.valeurMain(plateau.getJoueur(ordreAdversaire));
                     //resultatDuel = simulerMouvement(carteChoisie, mouvementChoisi);
                     //Etape 4b. Si on gagne pas le duel, on l'enleve des positions valides
                     if (!resultatDuel)
@@ -170,18 +172,21 @@ public class IAFacile extends IA
                 }
 
                 //Etape 5. Parmi les positions valides, recuperer celles qui entrainnent la formation d'un paradoxe
-                ArrayList<Integer> paradoxPositions = peutFormerParadoxe(main.get(carteChoisie), positions);
+                paradoxPositions = peutFormerParadoxe(main.get(carteChoisie), positions);
 
                 //Etape 6. S'il y a au moins une position valide qui entrainne la formation d'un paradoxe
-                if (paradoxPositions.size() >= 1)
+                if (paradoxPositions!=null)
                 {
-                    //Choisir aleatoirement une position et jouer ça
-                    mouvementChoisi = r.nextInt(paradoxPositions.size());
-                    mouvementChoisi = paradoxPositions.get(mouvementChoisi);
-                    choice.indiceCarteJouee=carteChoisie;
-                    choice.indiceCarteContinuum=mouvementChoisi;
-                    choice.indiceParadoxe=choisirSens();
-                    return choice;
+                    if (!paradoxPositions.isEmpty())
+                    {
+                        //Choisir aleatoirement une position et jouer ça
+                        mouvementChoisi = r.nextInt(paradoxPositions.size());
+                        mouvementChoisi = paradoxPositions.get(mouvementChoisi);
+                        choice.indiceCarteJouee=carteChoisie;
+                        choice.indiceCarteContinuum=mouvementChoisi;
+                        choice.indiceParadoxe=choisirSens();
+                        return choice;
+                    }
                 }
                 //Etape 7. Sinon on passe à la carte suivante
                 cartes.remove(carteChoisie);
