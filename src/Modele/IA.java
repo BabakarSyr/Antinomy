@@ -24,24 +24,22 @@ public abstract class IA implements Joueur
     int ordreAdversaire;
 
 
-    public IA(Plateau p)
+    public IA()
     {
         setNom("IA");
         this.nombreCristaux = 0;
         this.main = new ArrayList<>();
         this.sensDuTemps = true;
         this.positionSorcier = -1;
-        initIA(p);
     }
 
-    public IA(Plateau p, boolean sensDuTemps)
+    public IA(boolean sensDuTemps)
     {
         setNom("IA");
         this.nombreCristaux = 0;
         this.main = new ArrayList<>();
         this.sensDuTemps = sensDuTemps;
         this.positionSorcier = -1;
-        initIA(p);
     }
 
     public void setNom(String nom)
