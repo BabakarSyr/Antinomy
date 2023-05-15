@@ -6,7 +6,26 @@ public class Coup extends Commande{
     int indiceCarteJouee, indiceCarteContinuum, indiceParadoxe;
     Plateau plateau;
 
-    public Coup() {
+    public Coup() 
+    {
+        this.indiceCarteJouee=-1;
+        this.indiceCarteContinuum=-1;
+        this.indiceParadoxe=-1;
+    }
+
+    public int indiceCarteContinuum()
+    {
+        return this.indiceCarteContinuum;
+    }
+
+    public int indiceCarteJouee()
+    {
+        return this.indiceCarteJouee;
+    }
+
+    public int indiceParadoxe()
+    {
+        return this.indiceParadoxe;
     }
 
     public void fixerPlateau(Plateau p){

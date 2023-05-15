@@ -4,6 +4,7 @@ package Controleur;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Modele.Coup;
 import Modele.EtatJeu;
 import Modele.Jeu;
 import Modele.Joueur;
@@ -79,12 +80,8 @@ public class ControleurMediateur implements CollecteurEvenements {
                 else{
                     infoPlateau = "Egalité le jeu continue !";
                 }
-                changerTour();
                 changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                if (estTourIA())
-                {
-                    tourIA(jeu.joueurActif().joue());
-                }
+                changerTour();
                 break;
             case DEBUT_PARTIE:
                 break;
@@ -100,12 +97,8 @@ public class ControleurMediateur implements CollecteurEvenements {
                 Joueur joueur = jeu.duel();
                 if(joueur != null){
                     infoPlateau = joueur.getNom() + " à remporté le duel !";
-                    changerTour();
                     changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                    if (estTourIA())
-                    {
-                        tourIA(jeu.joueurActif().joue());
-                    }
+                    changerTour();
                 }
                 else{
                     infoPlateau = "Egalité selectionnez une carte pour départager !";
@@ -143,14 +136,10 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteSelectionnee = -1;
                         voirMainAdversaire = false;
                     }else{
-                        changerTour();
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
                         carteSelectionnee = -1;
-                        if (estTourIA())
-                        {
-                            tourIA(jeu.joueurActif().joue());
-                        }
+                        changerTour();
                     }
                 }
                 else
@@ -166,13 +155,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                         infoPlateau = "Duel ! Cliquez pour voir la main de l'adversaire.";
                     }
                     else{
-                        changerTour();
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                        if (estTourIA())
-                        {
-                            tourIA(jeu.joueurActif().joue());
-                        }
                         infoPlateau = "";
+                        changerTour();
                     }
                     carteSelectionnee = -1;
                     voirMainAdversaire = false;
@@ -184,17 +169,11 @@ public class ControleurMediateur implements CollecteurEvenements {
             case DEBUT_PARTIE:
                 if(jeu.positionsDepart().contains(indiceCarteContinuum)){
                     jeu.deplacerSorcier(indiceCarteContinuum);
-                    if(jeu.plateau().joueurInactif().getPositionSorcier() == -1){
-                        changerTour();
-                    }else{
+                    if(jeu.plateau().joueurInactif().getPositionSorcier() != -1){
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
-                        changerTour();
-                        if (estTourIA())
-                        {
-                            tourIA(jeu.joueurActif().joue());
-                        }
                     }
+                    changerTour();
                 }
                 break;
             default:
@@ -204,8 +183,16 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     private void changerTour() {
         jeu.plateau().changerJoueurActif();
-        voirMainJoueurActif=true;
-        voirMainAdversaire=false;
+        if (estTourIA())
+        {
+            //tourIA (jeu.joueurActif().joue());
+            tourIA (jeu.joueurActif().joueCoup());
+        }
+        else
+        {
+            voirMainJoueurActif=true;
+            voirMainAdversaire=false;
+        }
     }
 
     public int carteSelectionnee(){
@@ -254,12 +241,44 @@ public class ControleurMediateur implements CollecteurEvenements {
     //joue le tour de l'IA
     public void tourIA (ArrayList<Integer> coupIA)
     {
-        voirMainJoueurActif = false;
-        clicCarteMain(coupIA.get(0));
-        clicCarteContinuum(coupIA.get(1));
-        if (coupIA.size()>2)
+        if(coupIA==null)
         {
-            clicCarteContinuum(coupIA.get(2));
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\nla liste de coups est vide grosse banane\n\n\n\n\n\n\n\n\n\n\n\n");
+            return;
+        }
+        if (etatJeu == EtatJeu.DEBUT_PARTIE)
+        {
+            clicCarteContinuum(coupIA.get(0));
+            System.out.println("sorcier du joueur "+ jeu.plateau().joueurActif +" a la position"+jeu.plateau().joueurActif().getPositionSorcier());
+
+        }
+        else
+        {
+            voirMainJoueurActif = false;
+            clicCarteMain(coupIA.get(0));
+            clicCarteContinuum(coupIA.get(1));
+            if (coupIA.size()>2)
+            {
+                clicCarteContinuum(coupIA.get(2));
+            }
+        }
+    }
+
+    public void tourIA (Coup coupIA)
+    {
+        if (etatJeu == EtatJeu.DEBUT_PARTIE)
+        {
+            clicCarteContinuum(coupIA.indiceCarteContinuum());
+        }
+        else
+        {
+            voirMainJoueurActif = false;
+            clicCarteMain(coupIA.indiceCarteJouee());
+            clicCarteContinuum(coupIA.indiceCarteContinuum());
+            if (coupIA.indiceParadoxe()!= -1)
+            {
+                clicCarteContinuum(coupIA.indiceParadoxe());
+            }
         }
     }
 
@@ -268,5 +287,4 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.joueurActif().estIA();
     }
 
-    
 }

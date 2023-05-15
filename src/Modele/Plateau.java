@@ -6,13 +6,14 @@ import java.util.List;
 
 
 
-public class Plateau extends Historique<Coup> implements Cloneable
+public class Plateau //extends Historique<Coup> implements Cloneable
 {
     //TODO remplacer joueur actif par un indice et creer une methode qui retourne le joueur actif: j1 ou j2
     public int joueurActif;
 
     public Humain joueur1;
-    public Humain joueur2;
+    //public Humain joueur2;
+    public IAFacile joueur2;
     ArrayList<Integer> positionsDepart;
 
     ArrayList<Carte> continuum=new ArrayList<>();
@@ -26,12 +27,14 @@ public class Plateau extends Historique<Coup> implements Cloneable
         
         
         joueur1=new Humain();
-        joueur2=new Humain();
+        //joueur2=new Humain();
+        joueur2=new IAFacile();
       
         joueurActif = 1;
         codex=new Codex(new Carte(null, null,0));
     
         initialiser();
+        joueur2.initIA(this);
     }
    
 
@@ -346,7 +349,7 @@ public class Plateau extends Historique<Coup> implements Cloneable
             return null;
         }
 	}
-
+/*
     public Coup joueCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
         Coup coup = elaboreCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
         if(coup != null){
@@ -355,19 +358,21 @@ public class Plateau extends Historique<Coup> implements Cloneable
         return coup;
 	}
 
+    
     @Override
 	public void faire(Coup nouveau) {
         nouveau.fixerPlateau(this);
 		super.faire(nouveau);
-	}
+	}  */
 
     @Override
-    public Plateau clone() throws CloneNotSupportedException
+    public Object clone() throws CloneNotSupportedException
     {
-        Plateau obj = (Plateau) super.clone();
+        Plateau obj = new Plateau();//super.clone();
         obj.setJoueurActif(this.joueurActif);
         obj.joueur1 = new Humain(this.joueur1);
-        obj.joueur2 = new Humain(this.joueur2);
+        //obj.joueur2 = new Humain(this.joueur2);
+        obj.joueur2 = new IAFacile();
         obj.positionsDepart = new ArrayList<>(this.positionsDepart);
         obj.continuum = new ArrayList<>(this.getContinuum());
         obj.codex = new Codex(this.codex.carte);

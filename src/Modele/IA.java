@@ -182,32 +182,47 @@ public abstract class IA implements Joueur
 
     public ArrayList<Integer> peutFormerParadoxe (Carte carte, ArrayList<Integer> accessibles)
     {
-        Plateau plateauClone = null;
-        try
-        {
-            plateauClone = (Plateau) this.plateau.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            e.printStackTrace();
-        }
-        Jeu jeuClone = new Jeu(plateauClone);
-        Joueur joueurIAClone = plateauClone.getJoueur(this.ordreIA);
-        int indiceCarte = joueurIAClone.getIndiceCarte(carte);
+        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
+        ArrayList<Carte> cartes = this.getMain();
+        Carte c;
+    
+        boolean memeCouleur = true;
+        boolean memeForme = true;
+        boolean memeValeur = true;
+        boolean memeCouleur2, memeForme2, memeValeur2;
         ArrayList<Integer> paradoxes = new ArrayList<>();
-        for (Integer i : accessibles)
+
+        if (cartes.get(0)==carte)
         {
-            jeuClone.jouerCarte(indiceCarte, i);
-            if (jeuClone.estParadoxe())
-            {
-                paradoxes.add(i);
+            c=cartes.get(1);
+        }
+        else
+        {
+            c=cartes.get(2);
+        }
+        for (int i = 0; i < cartes.size(); i++) {
+            if (cartes.get(i)==carte && cartes.get(i).getCouleur() == couleurInterdite) {
+                return null;
             }
-            jeuClone.echangerCarte(indiceCarte, i);
+            memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == c.getCouleur());
+            memeForme = memeForme&(cartes.get(i).getForme() == c.getForme());
+            memeValeur = memeValeur&(cartes.get(i).getValeur() == c.getValeur());
+            
+        }
+        for (int j : accessibles)
+        {
+            memeCouleur2=memeCouleur& (jeu.plateau.continuum.get(j).getCouleur()==c.getCouleur());
+            memeForme2=memeForme&(jeu.plateau.continuum.get(j).getValeur()==c.getValeur());
+            memeValeur2=memeValeur&(jeu.plateau.continuum.get(j).getCouleur()==c.getCouleur());
+            if (memeCouleur2 || memeForme2 || memeValeur2)
+            {
+                paradoxes.add(j);
+            }
         }
         return paradoxes;
     }
 
-    public int simulerMouvement(int indexCarteChoisie, int intexContinuum)
+    public int simulerMouvement(int indexCarteChoisie, int indexContinuum)
     {
         Plateau plateauClone = null;
         try
@@ -220,7 +235,7 @@ public abstract class IA implements Joueur
         }
         Jeu jeuClone = new Jeu(plateauClone);
         Joueur joueurIAClone = plateauClone.getJoueur(this.ordreIA);
-        jeuClone.jouerCarte(indexCarteChoisie, intexContinuum);
+        jeuClone.jouerCarte(indexCarteChoisie, indexContinuum);
         if (jeuClone.estDuel())
         {
             Joueur gagnant = jeuClone.meilleurMain();

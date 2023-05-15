@@ -29,6 +29,7 @@ public interface Joueur
     public boolean getSensDuTemps();
     public void setSensDuTemps(boolean sensDuTemps);
     public ArrayList<Integer> joue();
+    public Coup joueCoup();
     public boolean estIA();
 }
 

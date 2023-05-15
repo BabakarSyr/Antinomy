@@ -161,5 +161,11 @@ public class Humain implements Joueur{
         return null;
     }
 
+    public Coup joueCoup()
+    {
+        return null;
+    }
+
+
 }
 
