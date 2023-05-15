@@ -1,10 +1,13 @@
 package Modele;
 import Patterns.Commande;
+import Structures.Iterateur;
+import Structures.Sequence;
 
 public class Coup extends Commande{
 
     int indiceCarteJouee, indiceCarteContinuum, indiceParadoxe;
     Plateau plateau;
+    Sequence<Plateau> sequencePlateau;
 
     public Coup() 
     {
@@ -41,12 +44,20 @@ public class Coup extends Commande{
 
     @Override
     public void execute(){
-
+        jouerCoup();
     }
 
     @Override
 	public void desexecute(){
+        jouerCoup();
+    }
 
+    private void jouerCoup() {
+        Iterateur<Plateau> iterateur = sequencePlateau.iterateur();
+        while (iterateur.aProchain()) {
+            Plateau plateau = iterateur.prochain();
+            this.plateau.majPlateau(plateau);
+        }
     }
 
 }

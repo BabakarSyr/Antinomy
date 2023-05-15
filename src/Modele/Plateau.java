@@ -6,7 +6,7 @@ import java.util.List;
 
 
 
-public class Plateau //extends Historique<Coup> implements Cloneable
+public class Plateau extends Historique<Coup> implements Cloneable
 {
     //TODO remplacer joueur actif par un indice et creer une methode qui retourne le joueur actif: j1 ou j2
     public int joueurActif;
@@ -349,8 +349,8 @@ public class Plateau //extends Historique<Coup> implements Cloneable
             return null;
         }
 	}
-/*
-    public Coup joueCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
+
+    public Coup jouerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
         Coup coup = elaboreCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
         if(coup != null){
             faire(coup);
@@ -358,15 +358,19 @@ public class Plateau //extends Historique<Coup> implements Cloneable
         return coup;
 	}
 
-    
+    public void majPlateau(Plateau p) {
+        this.joueurActif().setMain(p.joueurActif().getMain());
+        this.continuum = p.continuum;
+	}
+
     @Override
 	public void faire(Coup nouveau) {
         nouveau.fixerPlateau(this);
 		super.faire(nouveau);
-	}  */
+	}
 
     @Override
-    public Object clone() throws CloneNotSupportedException
+    public Plateau clone() throws CloneNotSupportedException
     {
         Plateau obj = new Plateau();//super.clone();
         obj.setJoueurActif(this.joueurActif);
