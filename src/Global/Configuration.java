@@ -41,7 +41,7 @@ public class Configuration {
 		chargerProprietes(defaut, in, "antinomy.cfg");
 		// Il faut attendre le dernier moment pour utiliser le logger
 		// car celui-ci s'initialise avec les propriétés
-		String message = "Fichier de propriétés defaut.cfg chargé";
+		String message = "Fichier de propriétés antinomy.cfg chargé";
 		String nom = System.getProperty("user.home") + File.separator + ".antinomy";
 		try {
 			in = new FileInputStream(nom);

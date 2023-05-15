@@ -3,6 +3,7 @@ package Modele;
 import Global.Configuration;
 import Patterns.Commande;
 import Structures.Sequence;
+import Structures.SequenceListe;
 
 public class Historique<E extends Commande> {
 	Sequence<E> passe, futur;
@@ -12,8 +13,8 @@ public class Historique<E extends Commande> {
 	}
 
 	void reinitialise() {
-		passe = Configuration.nouvelleSequence();
-		futur = Configuration.nouvelleSequence();
+		passe = new SequenceListe<>();
+		futur = new SequenceListe<>();
 	}
 
 	public boolean peutAnnuler() {
