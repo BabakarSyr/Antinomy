@@ -180,6 +180,31 @@ public abstract class IA implements Joueur
         return carte;
     }
 
+    //Retourne vrai si tous les cartes de la main du joueur sont de la meme forme
+    public boolean mainMemeForme()
+    {
+        return (main.get(0).getForme() == main.get(1).getForme() && main.get(1).getForme()== main.get(2).getForme());
+    }
+
+    //Retourne vrai si tous les cartes de la main du joueur sont de la meme couleur
+    public boolean mainMemeCouleur()
+    {
+        return (main.get(0).getCouleur() == main.get(1).getCouleur() && main.get(1).getCouleur()== main.get(2).getCouleur());
+    }
+
+    //Retourne vrai si tous les cartes de la main du joueur sont de la meme valeur
+    public boolean mainMemeValeur()
+    {
+        return (main.get(0).getValeur() == main.get(1).getValeur() && main.get(1).getValeur()== main.get(2).getValeur());
+    }
+
+    //Retourne vrai si tous les cartes de la main du joueur ne sont pas de la couleur bannie
+    public boolean mainCouleurBannie()
+    {
+        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
+        return main.get(0).getCouleur() !=  couleurInterdite && main.get(1).getCouleur() != couleurInterdite && main.get(3).getCouleur() != couleurInterdite;
+    }
+
     public ArrayList<Integer> peutFormerParadoxe (Carte carte, ArrayList<Integer> accessibles)
     {
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
