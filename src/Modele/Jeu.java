@@ -436,21 +436,6 @@ public class Jeu
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       /*Ecrire la fonction paradoxe pour l'IA difficile
        Il est en effet important de réfléchir à la direction à prendre lors d'un déplacement dans le jeu Antinomy. Pour maximiser vos chances de former un Paradoxe ou de gagner un Duel, vous devriez envisager plusieurs facteurs, tels que la proximité des cartes qui pourraient vous aider à former un Paradoxe, la distance par rapport à votre adversaire, et la couleur interdite du Codex.
 
