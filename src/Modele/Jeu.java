@@ -191,36 +191,12 @@ public class Jeu
 
     //Equivalent echanger carte
     public void echangerCarte(int indiceCarteMain, int indiceContinuum) {//indiceCarteMain=[0-2]
-            Joueur joueur = joueurActif();
-            Carte carte = joueur.getMain().get(indiceCarteMain);
-            joueur.getMain().remove(indiceCarteMain);
-        
-            // Échange de la carte avec la carte à la position du sorcier dans le continuum
-            Carte carteContinuum = continuum().get(indiceContinuum);
-            continuum().set(indiceContinuum, carte);
-        
-            // Ajouter la carte du continuum à la main du joueur
-            joueur.getMain().add(indiceCarteMain, carteContinuum);
+        plateau.echangerCarte(indiceCarteMain, indiceContinuum);
     }
 
     // echange les 3 cartes en main avec 3 cartes du plateau suite à un paradoxe
     public void echangerParadoxe(boolean futur) {
-        Joueur joueur = joueurActif();
-        joueur.melangerMain();
-        int indexSorcier = joueur.getPositionSorcier();
-        int j = 0;
-        if(!futur){
-            for (int i = indexSorcier - 3; i < indexSorcier; i++) {
-                echangerCarte(j, i);
-                j++;
-            }
-        }
-        else{
-            for (int i = indexSorcier + 1; i < indexSorcier + 4; i++) {
-                echangerCarte(j, i);
-                j++;
-            }
-        }
+        plateau.echangerParadoxe(futur);
     }
 
     public Joueur joueurActif(){

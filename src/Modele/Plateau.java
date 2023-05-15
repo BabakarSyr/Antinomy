@@ -6,7 +6,7 @@ import java.util.List;
 
 
 
-public class Plateau implements Cloneable
+public class Plateau extends Historique<Coup> implements Cloneable
 {
     //TODO remplacer joueur actif par un indice et creer une methode qui retourne le joueur actif: j1 ou j2
     public int joueurActif;
@@ -174,6 +174,40 @@ public class Plateau implements Cloneable
         return positions;
     }
 
+    //Equivalent echanger carte
+    public void echangerCarte(int indiceCarteMain, int indiceContinuum) {//indiceCarteMain=[0-2]
+        Joueur joueur = joueurActif();
+        Carte carte = joueur.getMain().get(indiceCarteMain);
+        joueur.getMain().remove(indiceCarteMain);
+    
+        // Échange de la carte avec la carte à la position du sorcier dans le continuum
+        Carte carteContinuum = continuum.get(indiceContinuum);
+        continuum.set(indiceContinuum, carte);
+    
+        // Ajouter la carte du continuum à la main du joueur
+        joueur.getMain().add(indiceCarteMain, carteContinuum);
+    }
+
+    // echange les 3 cartes en main avec 3 cartes du plateau suite à un paradoxe
+    public void echangerParadoxe(boolean futur) {
+        Joueur joueur = joueurActif();
+        joueur.melangerMain();
+        int indexSorcier = joueur.getPositionSorcier();
+        int j = 0;
+        if(!futur){
+            for (int i = indexSorcier - 3; i < indexSorcier; i++) {
+                echangerCarte(j, i);
+                j++;
+            }
+        }
+        else{
+            for (int i = indexSorcier + 1; i < indexSorcier + 4; i++) {
+                echangerCarte(j, i);
+                j++;
+            }
+        }
+    }
+
     public ArrayList<Integer> cartesAccessibles(Carte carteChoisie) {
         ArrayList <Integer> positions = new ArrayList<Integer>();
         List <Integer> positionsPasse = deplacementPassePossible(carteChoisie);
@@ -302,8 +336,33 @@ public class Plateau implements Cloneable
         return s;
     }
 
+    public Coup elaboreCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
+
+		Coup coup = new Coup();
+
+        if(cartesAccessibles(joueurActif().getMain().get(indiceCarteJouee)).contains(indiceContinuum)){
+            return coup.creerCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
+        }else{
+            return null;
+        }
+	}
+
+    public Coup joueCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
+        Coup coup = elaboreCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
+        if(coup != null){
+            faire(coup);
+        }
+        return coup;
+	}
+
     @Override
-    public Object clone() throws CloneNotSupportedException
+	public void faire(Coup nouveau) {
+        nouveau.fixerPlateau(this);
+		super.faire(nouveau);
+	}
+
+    @Override
+    public Plateau clone() throws CloneNotSupportedException
     {
         Plateau obj = (Plateau) super.clone();
         obj.setJoueurActif(this.joueurActif);
