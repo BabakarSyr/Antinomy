@@ -211,22 +211,10 @@ public class Jeu
         return plateau.couleurInterdite();
     }
 
-    public int valeurMain(Joueur j)
-    {
-        int valeurMain = 0;
-        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        for (Carte carte : j.getMain()) 
-        {
-            valeurMain += carte.getValeur(couleurInterdite);
-        }
-        System.out.println("valeur de la main :" + valeurMain);
-        return valeurMain;
-    }
-
     public Joueur meilleurMain()
     {
-        int valeurMainJoueur1 = valeurMain(plateau.joueurActif());
-        int valeurMainJoueur2 = valeurMain(plateau.joueurInactif());
+        int valeurMainJoueur1 = plateau().joueurActif().valeurMain();
+        int valeurMainJoueur2 = plateau().joueurInactif().valeurMain();
         
         if (valeurMainJoueur1 > valeurMainJoueur2) 
         {
