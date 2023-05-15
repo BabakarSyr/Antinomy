@@ -50,7 +50,7 @@ public class TestPlateauDifficile {
             String dejaVuJoueur2 = sc.next().toLowerCase();
             
             
-            jeu.definir_ordres_joueurs(plateau, dejaVuJoueur1, dejaVuJoueur2);
+            jeu.definirOrdresJoueurs(dejaVuJoueur1, dejaVuJoueur2);
 
             int num_joueur_inactif = plateau.joueurActif() == plateau.getJoueur(1) ? 2 : 1;
 

@@ -47,10 +47,20 @@ public class Joueur {
         this.positionSorcier=posSorcier;
     }
 
+    
     ///////////////////////////
     ////  methodes joueur  ////
     ///////////////////////////
+    public Joueur copie() {
+        Joueur clone = new Joueur(this.nom, this.nombreCristaux);
+       
+        clone.main =new ArrayList<>(main);
+        clone.sensDuTemps = sensDuTemps;
+        clone.positionSorcier = positionSorcier;
+        return clone;
 
+    }
+    
     public int getNombreCristaux() {
         return nombreCristaux;
     }
@@ -69,6 +79,9 @@ public class Joueur {
 
     public void retirerCristaux(int nombreCristaux) {
         this.nombreCristaux -= nombreCristaux;
+    }
+    public void setNombreCristaux(int nombreCristaux) {
+        this.nombreCristaux = nombreCristaux;
     }
     
     //Voler un cristal à un autre joueur
@@ -155,18 +168,6 @@ public class Joueur {
     }
 
 
-
-
-    
-
-    public int totalValeurMain() {
-        int total = 0;
-        for (Carte carte : main) {
-            total += carte.getValeur();
-        }
-        return total;
-    }
-
     public boolean DeuxCarteMemeProp() {
         boolean mainValide = false;
         int val_carte1 = main.get(0).getValeur();
@@ -180,16 +181,12 @@ public class Joueur {
         }
         return mainValide;
     }
-    public Joueur copie() {
-        Joueur clone = new Joueur(this.nom, this.nombreCristaux);
-       
-        clone.main =new ArrayList<>(main);
-        clone.sensDuTemps = sensDuTemps;
-        clone.positionSorcier = positionSorcier;
-        return clone;
-
-    }
     
+ 
+
+
+
+
 
 }
 

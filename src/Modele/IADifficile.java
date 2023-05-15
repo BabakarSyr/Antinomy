@@ -6,6 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 
+class Noeud {
+    public Jeu etat;
+    public int score;
+    public List<Noeud> fils;
+
+
+    public Noeud(Jeu etat, int score) {
+        this.etat = etat;
+        this.score = score;
+        this.fils = new ArrayList<>();
+    }
+}
+
+
 public class IADifficile {
     //IA c'es le joeuur 2 du plateau
    
@@ -16,6 +30,7 @@ public class IADifficile {
     int nbTours;
 
     Plateau clone;
+    int[] meilleurCoup ;
 
 
     public IADifficile(String nom, int nombreCristaux,Plateau partie) {
@@ -26,6 +41,7 @@ public class IADifficile {
        
         this.Potentiel_Main_Adversaire = Cartes_inconnu_par_IA();
         this.mainPossible=All_Main_Possible();
+        this.meilleurCoup=new int[2];
   
     }
    
@@ -143,82 +159,385 @@ public class IADifficile {
     }
 
 
-    public int[] minimax(Jeu JeuClone, int profondeur) {
-        int meilleurScore;
-        int[] meilleurCoup = new int[3];
-        
+
+    //Ecrire une fonction qui renvoie la liste des coups possibles d'un joueur
+    public List<Coup> coupsPossibles(Jeu Jeu) {
+        List<Coup> coups = new ArrayList<>();
+        //On parcourt les cartes de la main du joueur
+        for (int i = 0; i < 3; i++) {
+            Carte carte = Jeu.plateau.joueurActif().main.get(i);
+            //On parcourt les positions possibles pour chaque carte
+            List<Integer> positions = Jeu.plateau.cartesAccessibles(carte);
+            for (int position : positions) {
+                coups.add(new Coup(i, position));
+            }
+        }
+        return coups;
+    }
+
+    /* 
+    public  int[] minimax(Jeu JeuClone, int profondeur) {
+        //Noeud noeud = new Noeud(JeuClone, 0);
+       
+    
         if (profondeur == 0 || JeuClone.partieTerminee()) {
-            meilleurCoup[0]=evaluer(JeuClone);
-            return  meilleurCoup;
+            //noeud.valeur = evaluer(JeuClone);
+            //return noeud;
+
+
+
+            
+            return  evaluer(JeuClone);
+
             
         } 
         else if ( JeuClone.plateau.joueurActif().getNom()==JeuClone.plateau.joueur1.getNom()) {
             // Tour de l'IA=Max(minimax(etatcourantdujeu,profondeur-1,tourIA).Donc l'IA cherche a maximiser son score
-            meilleurScore = Integer.MIN_VALUE;
-            for(int i=0;i<3;i++){
-                Carte carte = JeuClone.plateau.joueur1.main.get(i);
-
-                List<Integer> Mouvement_Possible=JeuClone.plateau.cartesAccessibles(carte);
-                for (int j : Mouvement_Possible) {
-                  
+            List <Coup> coups = coupsPossibles(JeuClone);
+            int meilleurScore = Integer.MIN_VALUE;
+            for (Coup coup : coups) {
+                int i = coup.carte;
+                int j = coup.position;
                    
-                    JeuClone.jouerCarte(i, j);
-                    //JeuClone.paradoxeIA_aleatoirechoix();
-                    if(JeuClone.estDuel())
-                       JeuClone.duel();
+                JeuClone.jouerCarte(i, j);
+                if(JeuClone.estParadoxe()){
+                    JeuClone.plateau.joueurActif().ajouterCristaux(1);
+                    boolean condition = true;
+                    
+                    if(!JeuClone.estPossibleEchangerParadoxe(condition))
+                        condition = false;
+                    
+                    JeuClone.echangerParadoxe(condition);
+                    if(condition)
+                        condition = false;
+                    else
+                        condition = true;
 
-                    nbTours--;
-                    JeuClone.plateau.changerJoueurActif();
-                    //le joueur actif sera l'adversaire
-                    int score = minimax(JeuClone, profondeur - 1)[0];
+                    int score = minimax(JeuClone, profondeur)[0];
+                    //noeud.fils.add(score);
+                    
                     if (score > meilleurScore) {
                         meilleurScore = score;
-                        meilleurCoup[1] = i;
-                        meilleurCoup[2] = j;
+                       
+                        meilleurCoup[0] = i;
+                        meilleurCoup[1] = j;
                     }
                 }
+                    
+                if(JeuClone.estDuel())
+                    JeuClone.duel();
+
+                nbTours--;
+                JeuClone.plateau.changerJoueurActif();
+                //le joueur actif sera l'adversaire
+                int score = minimax(JeuClone, profondeur - 1)[0];
+                //noeud.fils.add(score);
+                
+                if (score > meilleurScore) {
+                    meilleurScore = score;
+                    
+                    meilleurCoup[0] = i;
+                    meilleurCoup[1] = j;
+                }
             }
-            
-          
+            return meilleurCoup;
         } 
         else {
             // Tour de l'adversaire=Min(minimax(etatcourantdujeu,profondeur-1,tourIA).Donc l'adversaire cherche a minimiser le score d'évaluation
-            meilleurScore = Integer.MAX_VALUE;
-                for (int i = 0; i < 3; i++) {
+           int meilleurScore = Integer.MAX_VALUE;
+           List <Coup> coups = coupsPossibles(JeuClone);
+      
+            for (Coup coup : coups) {
+                int i = coup.carte;
+                int j = coup.position;
+
+                JeuClone.jouerCarte(i, j);
+                if(JeuClone.estParadoxe()){
+                    JeuClone.plateau.joueur2.ajouterCristaux(1);
+                    boolean condition = true;
                     
-                    Carte carte = JeuClone.plateau.joueur2.main.get(i);
+                    if(!JeuClone.estPossibleEchangerParadoxe(condition))
+                        condition = false;
+                    
+                    JeuClone.echangerParadoxe(condition);
+                    if(condition)
+                        condition = false;
+                    else
+                        condition = true;
 
-                    for (int j : JeuClone.plateau.cartesAccessibles(carte) ) {
-
-                        JeuClone.jouerCarte(i, j);
-                        JeuClone.paradoxeIA_aleatoirechoix();
-                        if(JeuClone.estDuel())
-                          JeuClone.duel();
-
-
-                        nbTours=nbTours+2;
-                       //Coup_jouer_Par_Adversaire(JeuClone.plateau,etatAvant.plateau);
-                       JeuClone.plateau.changerJoueurActif();
+                        int score = minimax(JeuClone, profondeur)[0];
+                        //noeud.fils.add(score);
                         
-                        int score = minimax(JeuClone, profondeur - 1)[0];
                         if (score < meilleurScore) {
+
                             meilleurScore = score;
-                            meilleurCoup[1] = i;
-                            meilleurCoup[2] = j;
+                           
+                            
                         }
-                      
-                    }
-                   
-                   
+
                 }
+                if(JeuClone.estDuel())
+                    JeuClone.duel();
+
+
+                nbTours=nbTours+2;
+                //Coup_jouer_Par_Adversaire(JeuClone.plateau,etatAvant.plateau);
+                JeuClone.plateau.changerJoueurActif();
+                
+                int score = minimax(JeuClone, profondeur - 1)[0];
+                //noeud.fils.add(score);
+                
+                if (score < meilleurScore) {
+                    meilleurScore = score;
+                  
+                
+                }
+                      
+            }
+            return meilleurCoup;
             
         }
     
-        return  meilleurCoup;
-    }
+       
+    }*/
+
+    /*
+    public List<Coup> minimax(Jeu JeuClone, int profondeur) {
+        List<Coup> meilleurChemin = new ArrayList<>();
+        if (profondeur == 0 || JeuClone.partieTerminee()) {
+            meilleurChemin.add(null);
+            return meilleurChemin;
+        } else if (JeuClone.plateau.joueurActif().getNom() == JeuClone.plateau.joueur1.getNom()) {
+            List<Coup> coups = coupsPossibles(JeuClone);
+            int meilleurScore = Integer.MIN_VALUE;
+            for (Coup coup : coups) {
+                int i = coup.carte;
+                int j = coup.position;
+                JeuClone.jouerCarte(i, j);
+                if (JeuClone.estParadoxe()) {
+                    JeuClone.plateau.joueurActif().ajouterCristaux(1);
+                    boolean condition = true;
+                    if (!JeuClone.estPossibleEchangerParadoxe(condition))
+                        condition = false;
+                    JeuClone.echangerParadoxe(condition);
+                    if (condition)
+                        condition = false;
+                    else
+                        condition = true;
+                    int score = minimax(JeuClone, profondeur).get(0).score;
+                    if (score > meilleurScore) {
+                        meilleurScore = score;
+                        meilleurChemin.clear();
+                        coup.score = meilleurScore; // Mettre à jour le score du coup
+                        meilleurChemin.add(coup);
+                        meilleurChemin.addAll(minimax(JeuClone, profondeur).subList(1, profondeur + 1));
+                    }
+                }
+                if (JeuClone.estDuel())
+                    JeuClone.duel();
+
+                nbTours--;
+                JeuClone.plateau.changerJoueurActif();
+                int score = minimax(JeuClone, profondeur - 1).get(0).score;
+                if (score > meilleurScore) {
+                    meilleurScore = score;
+                    meilleurChemin.clear();
+                    coup.score = meilleurScore; // Mettre à jour le score du coup
+                    meilleurChemin.add(coup);
+                    meilleurChemin.addAll(minimax(JeuClone, profondeur - 1).subList(1, profondeur));
+                }
+            }
+            meilleurChemin.get(0).score = meilleurScore;
+            return meilleurChemin;
+        } else {
+            int meilleurScore = Integer.MAX_VALUE;
+            List<Coup> coups = coupsPossibles(JeuClone);
+            for (Coup coup : coups) {
+                int i = coup.carte;
+                int j = coup.position;
+                JeuClone.jouerCarte(i, j);
+                if (JeuClone.estParadoxe()) {
+                    JeuClone.plateau.joueur2.ajouterCristaux(1);
+                    boolean condition = true;
+                    if (!JeuClone.estPossibleEchangerParadoxe(condition))
+                        condition = false;
+                    JeuClone.echangerParadoxe(condition);
+                    if (condition)
+                        condition = false;
+                    else
+                        condition = true;
+                    int score = minimax(JeuClone, profondeur).get(0).score;
+                    if (score < meilleurScore) {
+                        meilleurScore = score;
+                        meilleurChemin.clear();
+                        coup.score = meilleurScore; // Mettre à jour le score du coup
+                        meilleurChemin.add(coup);
+                        meilleurChemin.addAll(minimax(JeuClone, profondeur).subList(1, profondeur + 1));
+                    }
+                }
+                if (JeuClone.estDuel())
+                    JeuClone.duel();
+                nbTours--;
+                JeuClone.plateau.changerJoueurActif();
+                int score = minimax(JeuClone, profondeur - 1).get(0).score;
+                if (score < meilleurScore) {
+                    meilleurScore = score;
+                    meilleurChemin.clear();
+                    coup.score = meilleurScore; // Mettre à jour le score du coup
+                    meilleurChemin.add(coup);
+                    meilleurChemin.addAll(minimax(JeuClone, profondeur - 1).subList(1, profondeur));
+                }
+            }
+            meilleurChemin.get(0).score = meilleurScore;
+            return meilleurChemin;
+        }
+    }*/
+
+    public int minimax(Jeu JeuClone, int profondeur, List<Coup> historique, Noeud parent) {
+        if (profondeur == 0 || JeuClone.partieTerminee()) {
+            return evaluer(JeuClone);
+        } else if (JeuClone.plateau.joueurActif().getNom() == JeuClone.plateau.joueur1.getNom()) {
+            List<Coup> coups = coupsPossibles(JeuClone);
+            int meilleurScore = Integer.MIN_VALUE;
+            Coup meilleurCoup = null;
+            for (Coup coup : coups) {
+                int i = coup.carte;
+                int j = coup.position;
+                Noeud noeud = new Noeud(JeuClone, 0);
+                parent.fils.add(noeud);
+
     
+                JeuClone.jouerCarte(i, j);
+                /* 
+                if (JeuClone.estParadoxe()) {
+                    JeuClone.plateau.joueurActif().ajouterCristaux(1);
+                    boolean condition = true;
+    
+                    if (!JeuClone.estPossibleEchangerParadoxe(condition))
+                        condition = false;
+    
+                    JeuClone.echangerParadoxe(condition);
+                    if (condition)
+                        condition = false;
+                    else
+                        condition = true;
+    
+                    int score = minimax(JeuClone, profondeur, historique, noeud);
+                    if (score > meilleurScore) {
+                        meilleurScore = score;
+                        meilleurCoup = coup;
+                        noeud.score = meilleurScore;
+
+                    }
+    
+                } else {*/
+                    if (JeuClone.estDuel())
+                        JeuClone.duel();
+    
+                    nbTours--;
+                    JeuClone.plateau.changerJoueurActif();
+                    int score = minimax(JeuClone, profondeur - 1, historique, noeud);
+                   
+                    List<Noeud> n=parent.fils.get(i).fils;
+                    /*Recuperer le score du noeud avec le plus faible score*/
+                    int min = Integer.MAX_VALUE;
+
+                    //parcourir les fils de n
+                    for (Noeud noeud1 : n) {
+                        if (noeud1.score < min) {
+                            min = noeud1.score;
+                        }
+                    }
+                    noeud.score = min;
+
+                    
+
+
+                    if (score > meilleurScore) {
+                        meilleurScore = score;
+                        meilleurCoup = coup;
+                        //noeud.score = meilleurScore;
+                    }
+                //}
+    
+                //JeuClone.annulerDernierCoup();
+            }
+    
+            if (meilleurCoup != null) {
+                historique.add(meilleurCoup);
+            }
+            return meilleurScore;
+        } else {
+            List<Coup> coups = coupsPossibles(JeuClone);
+            int meilleurScore = Integer.MAX_VALUE;
+            Coup meilleurCoup = null;
+            for (Coup coup : coups) {
+                int i = coup.carte;
+                int j = coup.position;
+
+                Noeud noeud = new Noeud(JeuClone, 0);
+                parent.fils.add(noeud);
+
+    
+                JeuClone.jouerCarte(i, j);
+                /*if (JeuClone.estParadoxe()) {
+                    JeuClone.plateau.joueur2.ajouterCristaux(1);
+                    boolean condition = true;
+    
+                    if (!JeuClone.estPossibleEchangerParadoxe(condition))
+                        condition = false;
+    
+                    JeuClone.echangerParadoxe(condition);
+                    if (condition)
+                        condition = false;
+                    else
+                        condition = true;
+    
+                    int score = minimax(JeuClone, profondeur, historique, noeud);
+                    if (score < meilleurScore) {
+                        meilleurScore = score;
+                        meilleurCoup = coup;
+                        noeud.score = meilleurScore;
+
+                    }
+    
+                } else {*/
+                    if (JeuClone.estDuel())
+                        JeuClone.duel();
+    
+                    nbTours=nbTours+2;
+                    JeuClone.plateau.changerJoueurActif();
+                    int score = minimax(JeuClone, profondeur - 1, historique, noeud);
+                    //Metrre a jour le score du noeud
+                    noeud.score = score;
+
+                    if (score < meilleurScore) {
+                        meilleurScore = score;
+                        meilleurCoup = coup;
+                       // noeud.score = meilleurScore;
+
+
+                    }
+              //  }
+                //JeuClone.annulerDernierCoup();
+            }
+    
+            if (meilleurCoup != null) {
+                historique.add(meilleurCoup);
+            }
+            return meilleurScore;
+        }
+    }
+
+   
+
+
+
+
+
     public int evaluer(Jeu etat) {
         int score = 0;
+        
     
         int cristauxIA = etat.plateau.joueur2.getNombreCristaux();
         int cristauxAdversaire = etat.plateau.joueur1.getNombreCristaux();
@@ -227,30 +546,56 @@ public class IADifficile {
         score += 20 * (cristauxIA - cristauxAdversaire);
    
             if (etat.estParadoxe())
-                score += 100;
+                score+=100;
             if (etat.estDuel()) {
                 
                 Joueur gagnant = etat.meilleurMain();
                 if (gagnant == etat.plateau.joueur1)
-                      score+=100;
-                else 
-                    score-=100;
-            
+                    if(etat.plateau.joueur1.nombreCristaux!=0)
+                      score+=50;
+                else if(gagnant == etat.plateau.joueur2)
+                    score-=50;
+                else{
+                   Joueur gagne =etat.duelEgalite();
+                   if(gagne==etat.plateau.joueur1)
+                        score+=50;
+                   else if(gagne==etat.plateau.joueur2)
+                        score-=50;
+               }
             }
-            //Si l'IA a 2 cartes de la meme valeur,couleur ou forme alors on ajoute 50 au score
-            if(etat.plateau.joueur1.DeuxCarteMemeProp())
-                score += 50;
+            
+           // }
+            //Si le joueur a 2 cartes de la meme valeur,couleur ou forme alors on ajoute 50 au score
+            //if(etat.plateau.joueurActif().DeuxCarteMemeProp())
+              //  score += 50;
+
+            //Plus un sorcier a un grand nombre de possibilité de mouvement mieux c'est pour lui
+               
+           int nbIA=etat.plateau.nbMouvementPossibleSorcier(etat.plateau.joueur1);
+            int nbAdversaire=etat.plateau.nbMouvementPossibleSorcier(etat.plateau.joueur2);
+            score+=nbIA-nbAdversaire;
 
         return score;
     }
 
     public void jouer(Jeu Jeu) {
         Jeu JeuClone = Jeu.copie();
-        int[] res=minimax(JeuClone, 3);
-        int meilleurCarte=res[1];
-        int meilleurePosition=res[2];
+        List<Coup> historique = new ArrayList<>();
+        Noeud n=new Noeud(JeuClone,0);
+        int meilleurscore=minimax(JeuClone, 2, historique,n);
+        System.out.println("meilleur score : " + meilleurscore);
+        Coup meilleurCoup = historique.get(0);
+        int i = meilleurCoup.carte;
+        int j = meilleurCoup.position;
+        Jeu.jouerCarte(i, j);
        
-        Jeu.jouerCarte(meilleurCarte, meilleurePosition);
+
+
+
+       // int meilleurCarte=res[0];
+        //int meilleurePosition=res[1];
+       
+        //Jeu.jouerCarte(meilleurCarte, meilleurePosition);
     }
     
 

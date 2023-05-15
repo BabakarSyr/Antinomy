@@ -184,6 +184,25 @@ public class Plateau {
      
     }
 
+    public int nbMouvementPossibleSorcier(Joueur j){
+        //Pour cahque carte que le joueur a en main on regarde les cartes accessibles et la taille de cette arraylist est le nombre de mouvement possible de cette carte .Onde vra sommer le nombre de mouvement possible de ses 3 cartes en main
+        int nb=0;
+ 
+        for (int i = 0; i < 3; i++) {
+            nb+=cartesAccessibles(j.main.get(i)).size();
+            
+        }
+        
+        return nb;
+
+    }
+
+
+
+
+
+
+
     public void afficherCartesAcceccibles(ArrayList<Integer> listeIndiceCartes)
     {
         System.out.println("emplacements possibles :");

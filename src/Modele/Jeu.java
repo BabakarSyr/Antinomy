@@ -29,6 +29,11 @@ public class Jeu
         return this.plateau;
     }
 
+    public Jeu copie()
+    {
+        return new Jeu(plateau.copie());
+    }
+
     public void definirJoueur1(Joueur j)
     {
         if (j==plateau.joueur1)
@@ -119,6 +124,11 @@ public class Jeu
         return memeCouleur || memeForme || memeValeur;
     }
     
+    
+
+
+
+
     public void paradoxe(int indiceCarteContinuum)
     {
         if(indiceCarteContinuum>joueurActif().getPositionSorcier()){
@@ -132,7 +142,7 @@ public class Jeu
     }
 
     public boolean partieTerminee() {
-        return plateau.joueur1.getNombreCristaux() == 3 || plateau.joueur2.getNombreCristaux() == 3;
+        return plateau.joueur1.getNombreCristaux() == 5 || plateau.joueur2.getNombreCristaux() == 5;
     }
 
     public String nomVainqueur()
@@ -175,6 +185,8 @@ public class Jeu
             }
         return false;
     }
+
+    //true=droite false=gauche
     public boolean estPossibleEchangerParadoxe(boolean futur){
         int sorcier=joueurActif().getPositionSorcier();
         if(futur){
@@ -392,5 +404,83 @@ public class Jeu
         return null;
     }
     
+
+    public void paradoxeIA_aleatoirechoix(){
+        if(estParadoxe()){
+
+            plateau.joueurActif().ajouterCristaux(1);
+
+            plateau.joueurActif().melangerMain();
+
+            Boolean direction;
+            Random rand = new Random();
+
+                 direction = rand.nextBoolean() ?  true: false;
+                while(!estPossibleEchangerParadoxe(direction)){
+                    direction = rand.nextBoolean() ?  true: false;
+
+                }
+
+                if(direction)
+                    echangerParadoxe(direction);
+                else    
+                echangerParadoxe(direction);
+
+                System.out.println("Voici le plateau apres votre coup :");
+
+                plateau.codex.changerCouleurInterdite();
+
+        }
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*Ecrire la fonction paradoxe pour l'IA difficile
+       Il est en effet important de réfléchir à la direction à prendre lors d'un déplacement dans le jeu Antinomy. Pour maximiser vos chances de former un Paradoxe ou de gagner un Duel, vous devriez envisager plusieurs facteurs, tels que la proximité des cartes qui pourraient vous aider à former un Paradoxe, la distance par rapport à votre adversaire, et la couleur interdite du Codex.
+
+Si vous avez plusieurs options de déplacement qui vous permettent d'échanger des cartes avec des cartes qui pourraient vous aider à former un Paradoxe, vous devriez considérer quelle direction vous donnera la meilleure chance d'obtenir ces cartes. Si vous avez déjà des cartes qui correspondent à une couleur, une valeur ou une icône spécifique, vous pourriez être en mesure de prédire dans quelle direction vous avez le plus de chances de trouver une carte complémentaire.
+
+En outre, vous devriez également tenir compte de la position de votre adversaire et essayer d'anticiper ses mouvements pour bloquer ses possibilités de formation de Paradoxe. Si vous êtes en mesure de vous rapprocher de votre adversaire, vous pourriez être en mesure de lancer un Duel et de voler un cristal.
+
+Enfin, il est important de garder à l'esprit la couleur interdite du Codex, car cela pourrait limiter vos possibilités de déplacement et de formation de Paradoxe. Si vous avez déjà joué une carte dans la couleur interdite, vous devez trouver un moyen de contourner cette limitation pour maximiser vos chances de gagner.
+
+D'abord, il est important de déterminer ce que vous souhaitez que la fonction Paradoxe fasse exactement. Voici ce que j'ai compris de vos explications :
+
+La fonction Paradoxe doit déterminer la meilleure direction à prendre pour maximiser les chances de former un Paradoxe ou de gagner un Duel.
+La fonction Paradoxe doit considérer plusieurs facteurs, tels que la proximité des cartes qui pourraient aider à former un Paradoxe, la distance par rapport à l'adversaire et la couleur interdite du Codex.
+La fonction Paradoxe doit prédire dans quelle direction il y a le plus de chances de trouver une carte complémentaire si des cartes correspondent déjà à une couleur, une valeur ou une icône spécifique.
+La fonction Paradoxe doit tenir compte de la position de l'adversaire et anticiper ses mouvements pour bloquer ses possibilités de formation de Paradoxe.
+La fonction Paradoxe doit aider à contourner la limitation imposée par la couleur interdite du Codex.
+
+       */
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
