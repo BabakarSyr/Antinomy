@@ -159,23 +159,12 @@ public abstract class IA implements Joueur
             this.ordreIA = 2;
             this.ordreAdversaire = 1;
         }
-        setPosInitiale();
+        calculPosInitiale();
     }
 
-    public void setPosInitiale()
+    public int calculPosInitiale()
     {
-        ArrayList<Integer> positions =  this.plateau.positionsDepart();
-        this.positionSorcier = positions.get(0);
-        if (!this.plateau.joueurActif().getNom().equals(this.nom))
-        {
-            this.plateau.changerJoueurActif();
-            this.jeu.deplacerSorcier(this.positionSorcier);
-            this.plateau.changerJoueurActif();
-        }
-        else
-        {
-            this.jeu.deplacerSorcier(this.positionSorcier);
-        }
+        return this.plateau.positionsDepart().get(0);
     }
 
     //Equivalent echanger carte
@@ -263,4 +252,8 @@ public abstract class IA implements Joueur
         return true;
     }
 
+    public int choisirSens()
+    {
+        return 0;
+    }
 }
