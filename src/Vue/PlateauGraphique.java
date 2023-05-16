@@ -132,6 +132,7 @@ public class PlateauGraphique extends JComponent {
     }
 
 	void tracerContinuum(){
+		tracerFond();
 		debutContinuumY = 2*hauteurCarte;
 		hauteurContinuum = hauteurCarte;
 		largeurContinuum = width;
@@ -149,6 +150,10 @@ public class PlateauGraphique extends JComponent {
 		tracerScore();
 		tracerMessage();
 		
+	}
+
+	void tracerFond(){
+		drawable.drawImage(aspects.fond.image(), 0, 0,width, height, null);
 	}
 
 	void tracerFleche(ArrayList<Carte> continuum){
