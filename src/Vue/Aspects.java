@@ -8,7 +8,8 @@ public class Aspects
     plume_bleu, plume_rouge, plume_vert, plume_violet,
     codex_bleu, codex_rouge, codex_vert, codex_violet, 
     carte_dos, carte_dos2,
-    sorcier1, sorcier2;
+    sorcier1, sorcier2,
+	fleche1, fleche2;
 
 
 	public Aspects()
@@ -68,6 +69,7 @@ public class Aspects
 		carte_dos= new ImageJeu("codex");
 		sorcier1= new ImageJeu("sorcier_1");
 		sorcier2= new ImageJeu("sorcier_2");
+		
     }
 
     public void chargerCarte1()
@@ -93,6 +95,7 @@ public class Aspects
 		codex_violet = new ImageJeu("codex");
 		codex_vert= new ImageJeu("codex");
 		carte_dos= new ImageJeu("codex");
+		
     }
 
     public void chargerSorciers1()
@@ -136,6 +139,8 @@ public class Aspects
 		carte_dos= new ImageJeu("carte_dos2");
 		sorcier1= new ImageJeu("sorcier1");
 		sorcier2= new ImageJeu("sorcier2");
+		fleche1 = new ImageJeu("fleche_temps_J1");
+		fleche2 = new ImageJeu("fleche_temps_J2");
     }
 
     public void chargerCarte2()

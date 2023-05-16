@@ -143,11 +143,23 @@ public class PlateauGraphique extends JComponent {
 			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
 		}
 		tracerCodex(continuum);
+		tracerFleche(continuum);
 		tracerSorcier(continuum, true);
 		tracerSorcier(continuum, false);
 		tracerScore();
 		tracerMessage();
+		
 	}
+
+	void tracerFleche(ArrayList<Carte> continuum){
+		if (joueurActif()){
+			drawable.drawImage(aspects.fleche2.image(), debutContinuumX, hauteurCarte/3*9, finContinuumX-largeurCarte, hauteurCarte, null);
+		}
+		else{
+			drawable.drawImage(aspects.fleche1.image(), debutContinuumX, hauteurCarte, finContinuumX-largeurCarte, hauteurCarte, null);
+		}
+	}
+
 	// Trace le jeton du sorcier passé en paramètre:
 	// sorcier: true, trace le sorcier du joueur1
 	//			false, trace le sorcier du joueur2
