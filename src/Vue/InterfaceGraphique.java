@@ -32,13 +32,14 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		// Ajout de notre composant de dessin dans la fenetre
 		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu, controleur);
 
+		// Parametre des boutons 
 		plateauGraphique.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.weightx = 0.5;
         gbc.weighty = 0.33;
-        //gbc.gridx = 1;
-        //gbc.gridy = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.NORTHEAST;
         boutonOptionsJeu = new JButton("Menu");
         //boutonOptionsJeu.addActionListener(new AdaptateurCommande(controleur, "OptionsJeu"));
