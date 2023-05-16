@@ -142,7 +142,7 @@ public class Aspects
 		sorcier2= new ImageJeu("sorcier2");
 		fleche1 = new ImageJeu("fleche_temps_J1");
 		fleche2 = new ImageJeu("fleche_temps_J2");
-		fond = new ImageJeu("fond1");
+		fond = new ImageJeu("fond3");
     }
 
     public void chargerCarte2()
