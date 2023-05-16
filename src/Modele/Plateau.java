@@ -26,7 +26,7 @@ public class Plateau extends Historique<Coup> implements Cloneable
     public Plateau() {
         
         
-        joueur1=new Humain();
+        joueur1=new Humain("manu");
         //joueur2=new Humain();
         joueur2=new IAFacile();
       

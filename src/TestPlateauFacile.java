@@ -131,7 +131,7 @@ public class TestPlateauFacile {
                 
             System.out.println("\nTest jouer");
 
-            IAFacile ia = new IAFacile(jeu.plateau());
+            IAFacile ia = new IAFacile();
             int i=0;
 
 

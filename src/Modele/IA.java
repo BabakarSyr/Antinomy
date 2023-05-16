@@ -223,10 +223,10 @@ public abstract class IA implements Joueur
         }
         else
         {
-            c=cartes.get(2);
+            c=cartes.get(0);
         }
         for (int i = 0; i < cartes.size(); i++) {
-            if (cartes.get(i)==carte && cartes.get(i).getCouleur() == couleurInterdite) {
+            if (cartes.get(i)!=carte && cartes.get(i).getCouleur() == couleurInterdite) {
                 return null;
             }
             memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == c.getCouleur());

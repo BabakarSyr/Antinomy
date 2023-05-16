@@ -259,7 +259,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         else
         {
             voirMainJoueurActif=true;
-            voirMainAdversaire=false;
+            //voirMainAdversaire=false;
         }
     }
 
