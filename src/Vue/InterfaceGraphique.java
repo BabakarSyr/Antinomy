@@ -1,7 +1,7 @@
 package Vue;
 
 import javax.swing.* ;
-//import java.awt.* ;
+import java.awt.* ;
 
 import Modele.*;
 
@@ -13,6 +13,8 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	PlateauGraphique plateau;
 	int height;
 	int width;
+
+	JButton boutonOptionsJeu, boutonHistoriqueArriere, boutonHistoriqueAvant;
 
 	public InterfaceGraphique(Jeu j, CollecteurEvenements c){
 		jeu = j;
@@ -32,7 +34,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	public void run() {
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("Ma fenetre a moi");
-		frame.setSize(500, 300);
+		frame.setSize(1280, 720);
 
 		// Creation d'un bouton
 		JButton bouton = new JButton("Manu");
@@ -46,6 +48,37 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	
 		// Ajout de notre composant de dessin dans la fenetre
 		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu, controleur);
+
+		plateauGraphique.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.33;
+        // Top/right
+        // gbc.gridx = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.NORTHEAST;
+        boutonOptionsJeu = new JButton("Menu");
+        //boutonOptionsJeu.addActionListener(new AdaptateurCommande(controleur, "OptionsJeu"));
+        plateauGraphique.add(boutonOptionsJeu, gbc);
+		gbc.gridy++;
+        gbc.anchor = GridBagConstraints.SOUTHWEST;
+        gbc.insets = new Insets(0, 0, 0, 0);
+
+        boutonHistoriqueArriere = new JButton("←");
+        //boutonHistoriqueArriere.addActionListener(new AdaptateurCommande(controleur, "Annuler"));
+        boutonHistoriqueArriere.setEnabled(false);
+        boutonHistoriqueAvant = new JButton("→");
+        //boutonHistoriqueAvant.addActionListener(new AdaptateurCommande(controleur, "Refaire"));
+        boutonHistoriqueAvant.setEnabled(false);
+        Container historiqueAvantArriere = Box.createHorizontalBox();
+        historiqueAvantArriere.add(boutonHistoriqueArriere);
+        historiqueAvantArriere.add(boutonHistoriqueAvant);
+
+        Container historiqueBox = Box.createVerticalBox();
+        historiqueBox.add(historiqueAvantArriere);
+        plateauGraphique.add(historiqueBox, gbc);
 		
 		frame.add(bouton);
 		frame.add(plateauGraphique);

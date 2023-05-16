@@ -355,6 +355,14 @@ public class Jeu
         System.out.println("Égalité!");
         return null;
     }
+
+    public void annuler(){
+        plateau.annuler();
+    }
+
+    public void refaire(){
+        plateau.refaire();
+    }
     
 }
 
