@@ -11,8 +11,6 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	Jeu jeu;
 	CollecteurEvenements controleur;
 	PlateauGraphique plateau;
-	int height;
-	int width;
 
 	JButton boutonOptionsJeu, boutonHistoriqueArriere, boutonHistoriqueAvant;
 
@@ -26,25 +24,10 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		SwingUtilities.invokeLater(vue);
 	}	
 
-	public void paintComponent() {
-		width = getSize().width;
-		height = getSize().height;
-	}
-
 	public void run() {
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("Ma fenetre a moi");
 		frame.setSize(1280, 720);
-
-		// Creation d'un bouton
-		JButton bouton = new JButton("Manu");
-
-		// Recuperation taille de la frame
-		int y = frame.getHeight();
-		int x = frame.getWidth();
-		//System.out.println("x = "+x+" y = "+y);
-
-		bouton.setBounds(x-(x/5)*2,0,x/5,y/8);
 	
 		// Ajout de notre composant de dessin dans la fenetre
 		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu, controleur);
@@ -54,10 +37,8 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
         gbc.weightx = 0.5;
         gbc.weighty = 0.33;
-        // Top/right
-        // gbc.gridx = 0;
-        gbc.gridx = 1;
-        gbc.gridy = 0;
+        //gbc.gridx = 1;
+        //gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.NORTHEAST;
         boutonOptionsJeu = new JButton("Menu");
         //boutonOptionsJeu.addActionListener(new AdaptateurCommande(controleur, "OptionsJeu"));
@@ -79,8 +60,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         Container historiqueBox = Box.createVerticalBox();
         historiqueBox.add(historiqueAvantArriere);
         plateauGraphique.add(historiqueBox, gbc);
-		
-		frame.add(bouton);
+
 		frame.add(plateauGraphique);
 
 		// Ecoute des évènements liés à la souris dans l'AireDeDessin
