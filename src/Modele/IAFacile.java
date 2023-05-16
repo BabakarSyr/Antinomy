@@ -22,11 +22,12 @@ public class IAFacile extends IA
     @Override
     public int choisirSens()
     {
+        int droite;
         //Si on ne peut pas placer des cartes à gauche
         if (positionSorcier < 3)
         {
             //On les place à droite
-            return 1;
+            return 8;
         }
         //Sinon, si on ne peut pas placer des cartes à droite
         else if (positionSorcier > 5)
@@ -37,7 +38,15 @@ public class IAFacile extends IA
         //Sinon, on choisi où les placer àleatoirement
         else
         {
-            return r.nextInt(2);
+            droite = r.nextInt(2);
+            if (droite == 1)
+            {
+                return 8;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 

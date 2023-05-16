@@ -132,16 +132,16 @@ public class Jeu
     }
 
     public boolean partieTerminee() {
-        return plateau.joueur1.getNombreCristaux() == 3 || plateau.joueur2.getNombreCristaux() == 3;
+        return plateau.joueur1.getNombreCristaux() == 5 || plateau.joueur2.getNombreCristaux() == 5;
     }
 
     public String nomVainqueur()
     {
-        if (partieTerminee() && plateau.joueur1.getNombreCristaux() == 3)
+        if (partieTerminee() && plateau.joueur1.getNombreCristaux() == 5)
         {
             return plateau.joueur1.getNom();
         }
-        else if (partieTerminee() && plateau.joueur2.getNombreCristaux() == 3)
+        else if (partieTerminee() && plateau.joueur2.getNombreCristaux() == 5)
         {
             return plateau.joueur2.getNom();
         }
