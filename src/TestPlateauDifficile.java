@@ -178,6 +178,7 @@ public class TestPlateauDifficile {
                 }
             }
             else{
+
                 ia.jouer(jeu);
             }
 

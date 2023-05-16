@@ -137,14 +137,16 @@ public class Plateau {
         int res=-1;
         int positionSorcier = joueurActif().positionSorcier;
         //Si le futur du sorcier est a droite
-        if(joueurActif == 1)
+        if(joueurActif == 1){
             if(positionSorcier+ valeurCarte < continuum.size())
                 res= positionSorcier+valeurCarte;
+        }
         
         // le futur est a gauche
-        else
+        else{
             if(positionSorcier - valeurCarte >= 0)
                 res= positionSorcier-valeurCarte;
+        }
         return res;
         
     }
@@ -215,6 +217,17 @@ public class Plateau {
     public void changerJoueurActif() {
         joueurActif = (joueurActif % 2);
         joueurActif++;
+    }
+    public Joueur changerJoueurActif(Joueur joueur) {
+       
+        if (joueur == joueur1) {
+            joueurActif = 2;
+            return joueur2;
+
+        } else {
+            joueurActif = 1;
+            return joueur1;
+        }
     }
 
 

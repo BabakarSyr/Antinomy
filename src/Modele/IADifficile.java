@@ -1,6 +1,7 @@
 package Modele;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,13 +12,23 @@ class Noeud {
     public int score;
     public List<Noeud> fils;
 
+    public Noeud(Jeu etat) {
+        this.etat = etat;
+        this.score = 0;
+        this.fils = new ArrayList<>();
+    }
 
     public Noeud(Jeu etat, int score) {
         this.etat = etat;
         this.score = score;
         this.fils = new ArrayList<>();
     }
+
+
+      
 }
+
+
 
 
 public class IADifficile {
@@ -393,17 +404,22 @@ public class IADifficile {
         }
     }*/
 
-    public int minimax(Jeu JeuClone, int profondeur, List<Coup> historique, Noeud parent) {
+    public int minimax(Jeu JeuClone, int profondeur,Joueur joeurActif, List<Coup> historique, Noeud parent) {
         if (profondeur == 0 || JeuClone.partieTerminee()) {
-            return evaluer(JeuClone);
-        } else if (JeuClone.plateau.joueurActif().getNom() == JeuClone.plateau.joueur1.getNom()) {
+            int res= evaluer(JeuClone);
+            parent.score=res;
+            return res;
+        } 
+        else if (JeuClone.plateau.joueurActif().getNom() == JeuClone.plateau.joueur1.getNom()) {
             List<Coup> coups = coupsPossibles(JeuClone);
             int meilleurScore = Integer.MIN_VALUE;
-            Coup meilleurCoup = null;
+           
+
+           // Coup meilleurCoup = null;
             for (Coup coup : coups) {
                 int i = coup.carte;
                 int j = coup.position;
-                Noeud noeud = new Noeud(JeuClone, 0);
+                Noeud noeud = new Noeud(JeuClone);
                 parent.fils.add(noeud);
 
     
@@ -435,47 +451,38 @@ public class IADifficile {
                         JeuClone.duel();
     
                     nbTours--;
-                    JeuClone.plateau.changerJoueurActif();
-                    int score = minimax(JeuClone, profondeur - 1, historique, noeud);
-                   
-                    List<Noeud> n=parent.fils.get(i).fils;
-                    /*Recuperer le score du noeud avec le plus faible score*/
-                    int min = Integer.MAX_VALUE;
-
-                    //parcourir les fils de n
-                    for (Noeud noeud1 : n) {
-                        if (noeud1.score < min) {
-                            min = noeud1.score;
-                        }
-                    }
-                    noeud.score = min;
-
                     
-
-
-                    if (score > meilleurScore) {
-                        meilleurScore = score;
-                        meilleurCoup = coup;
-                        //noeud.score = meilleurScore;
-                    }
+                    int score = minimax(JeuClone, profondeur - 1,JeuClone.plateau.changerJoueurActif(JeuClone.plateau.joueur1), historique, noeud);
+                    meilleurScore = Math.max(meilleurScore, score);
                 //}
     
-                //JeuClone.annulerDernierCoup();
+               
             }
     
-            if (meilleurCoup != null) {
+           /*  if (meilleurCoup != null) {
                 historique.add(meilleurCoup);
-            }
+            }*/
+           
+            //Renvoyer dans max le noeud ârmi les fils de parent qui a le score le plus grand=utilise Collections.max surles scores des fils de parent
+            parent.score=meilleurScore;
+
+
+
+
             return meilleurScore;
-        } else {
+        } 
+        else {
             List<Coup> coups = coupsPossibles(JeuClone);
             int meilleurScore = Integer.MAX_VALUE;
-            Coup meilleurCoup = null;
+           
+
+            
+           // Coup meilleurCoup = null;
             for (Coup coup : coups) {
                 int i = coup.carte;
                 int j = coup.position;
 
-                Noeud noeud = new Noeud(JeuClone, 0);
+                Noeud noeud = new Noeud(JeuClone);
                 parent.fils.add(noeud);
 
     
@@ -502,29 +509,29 @@ public class IADifficile {
                     }
     
                 } else {*/
-                    if (JeuClone.estDuel())
+                    if (JeuClone.estDuel()){
                         JeuClone.duel();
+                    }
     
                     nbTours=nbTours+2;
                     JeuClone.plateau.changerJoueurActif();
-                    int score = minimax(JeuClone, profondeur - 1, historique, noeud);
-                    //Metrre a jour le score du noeud
-                    noeud.score = score;
+                    int score = minimax(JeuClone, profondeur - 1,JeuClone.plateau.changerJoueurActif(JeuClone.plateau.joueur1), historique, noeud);
+                    meilleurScore = Math.min(meilleurScore, score);
 
-                    if (score < meilleurScore) {
+                   /*  if (score < meilleurScore) {
                         meilleurScore = score;
                         meilleurCoup = coup;
-                       // noeud.score = meilleurScore;
+                      
 
-
-                    }
+                    }*/
               //  }
-                //JeuClone.annulerDernierCoup();
+                
             }
     
-            if (meilleurCoup != null) {
+            /*if (meilleurCoup != null) {
                 historique.add(meilleurCoup);
-            }
+            }*/
+            parent.score=meilleurScore;
             return meilleurScore;
         }
     }
@@ -578,11 +585,12 @@ public class IADifficile {
         return score;
     }
 
+    
     public void jouer(Jeu Jeu) {
         Jeu JeuClone = Jeu.copie();
         List<Coup> historique = new ArrayList<>();
         Noeud n=new Noeud(JeuClone,0);
-        int meilleurscore=minimax(JeuClone, 2, historique,n);
+        int meilleurscore=minimax(JeuClone, 5,JeuClone.plateau.joueurActif(), historique,n);
         System.out.println("meilleur score : " + meilleurscore);
         Coup meilleurCoup = historique.get(0);
         int i = meilleurCoup.carte;

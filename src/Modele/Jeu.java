@@ -247,15 +247,13 @@ public class Jeu
         return plateau.couleurInterdite();
     }
 
-    public int valeurMain(Joueur j)
-    {
+    public int valeurMain(Joueur j){
         int valeurMain = 0;
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        for (Carte carte : j.getMain()) 
-        {
+        for (Carte carte : j.getMain()) {
             valeurMain += carte.getValeur(couleurInterdite);
         }
-        System.out.println("valeur de la main :" + valeurMain);
+        //System.out.println("valeur de la main :" + valeurMain);
         return valeurMain;
     }
 
@@ -284,13 +282,13 @@ public class Jeu
         if (gagnantDuel==j1) {
             // Le joueur 1 gagne le duel et vole un cristal au joueur 2
             if(j1.volerCristal(j2)){
-                System.out.println(j1.getNom() + " gagne le duel et vole un cristal à " + j2.getNom());
+                //System.out.println(j1.getNom() + " gagne le duel et vole un cristal à " + j2.getNom());
                 plateau.codex.changerCouleurInterdite();
             }
-            else
+            /*else
             {
                 System.out.println("Impossible de voler un cristal à " + j1.getNom() + " car il n'en a plus  ou n'en a pas.");
-            }
+            }*/
             return gagnantDuel;
 
         }
@@ -299,13 +297,13 @@ public class Jeu
             // Le joueur 2 gagne le duel et vole un cristal au joueur 1
             if(j2.volerCristal(j1))
             {
-                System.out.println(j2.getNom() + " gagne le duel et vole un cristal à " + j1.getNom());
+                //System.out.println(j2.getNom() + " gagne le duel et vole un cristal à " + j1.getNom());
                 plateau.codex.changerCouleurInterdite();
             }
-            else
+            /*else
             {
                 System.out.println("Impossible de voler un cristal à " + j2.getNom() + " car il n'en a plus  ou n'en a pas.");
-            }
+            }*/
             return gagnantDuel;
         }
         return null;
@@ -331,29 +329,31 @@ public class Jeu
         {
             if(j1.volerCristal(j2))
             {
-                System.out.println(j1.getNom() + " gagne le duel et vole un cristal à " + j2.getNom());
+                //System.out.println(j1.getNom() + " gagne le duel et vole un cristal à " + j2.getNom());
                 plateau.codex.changerCouleurInterdite();
             }
+            /* 
             else
             {
                 System.out.println("Impossible de voler un cristal à " + j1.getNom() + " car il n'en a plus  ou n'en a pas.");
-            }
+            }*/
             return j1;
         }
         if (valeurCarteJoueur1 < valeurCarteJoueur2) 
         {
             if(j2.volerCristal(j1))
             {
-                System.out.println(j2.getNom() + " gagne le duel et vole un cristal à " + j1.getNom());
+                //System.out.println(j2.getNom() + " gagne le duel et vole un cristal à " + j1.getNom());
                 plateau.codex.changerCouleurInterdite();
             }
+            /* 
             else
             {
                 System.out.println("Impossible de voler un cristal à " + j2.getNom() + " car il n'en a plus  ou n'en a pas.");
-            }
+            }*/
             return j2;
         }
-        System.out.println("Égalité!");
+        //System.out.println("Égalité!");
         return null;
     }
 
@@ -378,13 +378,14 @@ public class Jeu
         {
             if(j1.volerCristal(j2))
             {
-                System.out.println(j1.getNom() + " gagne le duel et vole un cristal à " + j2.getNom());
+                //System.out.println(j1.getNom() + " gagne le duel et vole un cristal à " + j2.getNom());
                 plateau.codex.changerCouleurInterdite();
             }
+            /* 
             else
             {
                 System.out.println("Impossible de voler un cristal à " + j1.getNom() + " car il n'en a plus  ou n'en a pas.");
-            }
+            }*/
             return j1;
         }
         if (valeurCarteJoueur1 < valeurCarteJoueur2) 
@@ -394,14 +395,29 @@ public class Jeu
                 System.out.println(j2.getNom() + " gagne le duel et vole un cristal à " + j1.getNom());
                 plateau.codex.changerCouleurInterdite();
             }
+            /* 
             else
             {
                 System.out.println("Impossible de voler un cristal à " + j2.getNom() + " car il n'en a plus  ou n'en a pas.");
-            }
+            }*/
             return j2;
         }
-        System.out.println("Égalité!");
+        //System.out.println("Égalité!");
         return null;
+    }
+
+    public Joueur DUEL(){
+        Joueur j=duel();
+        if(j==null){
+            if(duelEgalite()==null){
+                return null;
+            }
+            else{
+                j=duelEgalite();
+            }
+
+        }
+        return j;
     }
     
 
