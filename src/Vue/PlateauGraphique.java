@@ -134,6 +134,7 @@ public class PlateauGraphique extends JComponent {
 	void tracerContinuum(){
 		tracerFond();
 		debutContinuumY = 2*hauteurCarte;
+		//debutContinuumY = height/2-hauteurCarte/2;
 		hauteurContinuum = hauteurCarte;
 		largeurContinuum = width;
 		finContinuumX = debutContinuumX + largeurContinuum;
@@ -141,7 +142,7 @@ public class PlateauGraphique extends JComponent {
 		
 		ArrayList<Carte> continuum = jeu.plateau().getContinuum();
 		for(int i =0; i< continuum.size(); i++){
-			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i, debutContinuumY, largeurCarte, hauteurCarte, null);
+			drawable.drawImage(imageCarte(continuum.get(i)), largeurCarte*i+10, debutContinuumY, largeurCarte-5, hauteurCarte-5, null);
 		}
 		tracerCodex(continuum);
 		tracerFleche(continuum);
@@ -158,10 +159,11 @@ public class PlateauGraphique extends JComponent {
 
 	void tracerFleche(ArrayList<Carte> continuum){
 		if (joueurActif()){
-			drawable.drawImage(aspects.fleche2.image(), debutContinuumX, hauteurCarte/3*9, finContinuumX-largeurCarte, hauteurCarte, null);
+			//J1
+			drawable.drawImage(aspects.fleche2.image(), -40, hauteurCarte/4*11, finContinuumX, hauteurCarte+5, null);
 		}
 		else{
-			drawable.drawImage(aspects.fleche1.image(), debutContinuumX, hauteurCarte, finContinuumX-largeurCarte, hauteurCarte, null);
+			drawable.drawImage(aspects.fleche1.image(), -40, hauteurCarte/4*6, finContinuumX, hauteurCarte+5, null);
 		}
 	}
 
@@ -172,12 +174,12 @@ public class PlateauGraphique extends JComponent {
 		if(sorcier){
 			int posSorcier=jeu.plateau().getPositionSorcier(1);
 			if (posSorcier!=-1){
-				drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte, largeurCarte/2 , hauteurCarte/2, null);
+				drawable.drawImage(aspects.sorcier1.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte+15, largeurCarte/2 , hauteurCarte/2, null);
 			}
 		}else{
 			int posSorcier=jeu.plateau().getPositionSorcier(2);
 			if (posSorcier!=-1){
-				drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/2, null);
+				drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/3, null);
 			}
 		}
 	}
@@ -185,16 +187,16 @@ public class PlateauGraphique extends JComponent {
 	void tracerCodex(ArrayList<Carte> continuum){
 		switch (jeu.couleurInterdite()){
 			case ROUGE :
-				drawable.drawImage(aspects.codex_rouge.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_rouge.image(), largeurCarte*continuum.size()+50, debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			case VERT :
-				drawable.drawImage(aspects.codex_vert.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_vert.image(), largeurCarte*continuum.size()+50, debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			case VIOLET:
-				drawable.drawImage(aspects.codex_violet.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_violet.image(), largeurCarte*continuum.size()+50, debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			case BLEU :
-				drawable.drawImage(aspects.codex_bleu.image(), largeurCarte*continuum.size(), debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_bleu.image(), largeurCarte*continuum.size()+50, debutContinuumY, largeurCarte, hauteurCarte, null);
 				break;
 			default:
 				break;
@@ -273,18 +275,29 @@ public class PlateauGraphique extends JComponent {
 		carteSelectionne = c.carteSelectionnee();
 		
 		if(mainOuverte){
-			for(int i =0; i< main.size(); i++){
-				if (i == carteSelectionne && joueur == joueurActif()){
+			for(int i=0; i< main.size(); i++){
+				if (i == carteSelectionne && joueur){
 					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart-hauteurPrevisualisation, largeurCarte, hauteurCarte, null);
 				}
-				else {
-					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
+				if (i !=carteSelectionne && joueur) {
+					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart-20, largeurCarte, hauteurCarte, null);
+				}
+				if (i == carteSelectionne && !joueur){
+					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart-hauteurPrevisualisation, largeurCarte, hauteurCarte, null);
+				}
+				if (i !=carteSelectionne && !joueur) {
+					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart+20, largeurCarte, hauteurCarte, null);
 				}
 			}
 		}
 		else{
 			for(int i =0; i< main.size(); i++){
-				drawable.drawImage(aspects.carte_dos.image(), XDepart+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
+				if (joueur){
+					drawable.drawImage(aspects.carte_dos.image(), XDepart+largeurCarte*i, YDepart-20, largeurCarte, hauteurCarte, null);
+				}
+				else {
+					drawable.drawImage(aspects.carte_dos.image(), XDepart+largeurCarte*i, YDepart+20, largeurCarte, hauteurCarte, null);
+				}
 			}
 		}
 	}

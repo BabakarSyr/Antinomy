@@ -140,8 +140,10 @@ public class Aspects
 		carte_dos= new ImageJeu("carte_dos2");
 		sorcier1= new ImageJeu("sorcier1");
 		sorcier2= new ImageJeu("sorcier2");
-		fleche1 = new ImageJeu("fleche_temps_J1");
-		fleche2 = new ImageJeu("fleche_temps_J2");
+		//fleche1 = new ImageJeu("fleche_temps_J1");
+		//fleche2 = new ImageJeu("fleche_temps_J2");
+		fleche1 = new ImageJeu("fleche_J1");
+		fleche2 = new ImageJeu("fleche_J2");
 		fond = new ImageJeu("fond3");
     }
 
