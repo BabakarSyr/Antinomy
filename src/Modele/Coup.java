@@ -1,19 +1,22 @@
 package Modele;
+import java.util.ArrayList;
+
 import Patterns.Commande;
 import Structures.Iterateur;
 import Structures.Sequence;
+import Structures.SequenceListe;
 
 public class Coup extends Commande{
 
     int indiceCarteJouee, indiceCarteContinuum, indiceParadoxe;
+    ArrayList<Carte> mainJoueur;
+    ArrayList<Carte> continuum;
     Plateau plateau;
     Sequence<Plateau> sequencePlateau;
 
     public Coup() 
     {
-        this.indiceCarteJouee=-1;
-        this.indiceCarteContinuum=-1;
-        this.indiceParadoxe=-1;
+        sequencePlateau = new SequenceListe<Plateau>();
     }
 
     public int indiceCarteContinuum()
@@ -35,11 +38,12 @@ public class Coup extends Commande{
         this.plateau = p;
     }
 
-    public Coup creerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe){
+    public void creerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe){
         this.indiceCarteJouee = indiceCarteJouee;
         this.indiceCarteContinuum = indiceContinuum;
         this.indiceParadoxe = indiceParadoxe;
-        return this;
+        //mainJoueur = plateau.joueurActif().getMain();
+        //continuum = plateau.getContinuum();
     }
 
     @Override

@@ -20,6 +20,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     EtatJeu etatJeu;
     int carteSelectionnee;
     boolean voirMainAdversaire, voirMainJoueurActif;
+    Coup coup;
     
     public ControleurMediateur(Jeu j) {
         this.jeu = j;
@@ -45,9 +46,56 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
     @Override
-    public boolean commande(String com) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'commande'");
+    public boolean commande(String commande) {
+        switch (commande) {
+            case "Quitter":
+                System.exit(0);
+                break;
+            case "Annuler":
+                annule();
+                break;
+            case "Refaire":
+                refaire();
+                break;
+            case "MenuPrincipal":
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    void annule() {
+        if(etatJeu != EtatJeu.DEBUT_PARTIE) {
+            jeu.annuler();
+            /*if(jeu.plateau().peutAnnuler()){
+                interfaceUtilisateur.setBoutonHistoriqueArriere(true);
+            }else{
+                interfaceUtilisateur.setBoutonHistoriqueArriere(false);
+            }
+            if(jeu.plateau().peutRefaire()){
+                interfaceUtilisateur.setBoutonHistoriqueAvant(true);
+            }else{
+                interfaceUtilisateur.setBoutonHistoriqueAvant(false);
+            }*/
+        }
+    }
+
+    void refaire() {
+        if(etatJeu != EtatJeu.DEBUT_PARTIE) {
+            jeu.refaire();
+            /* 
+            if(jeu.plateau().peutAnnuler()){
+                interfaceUtilisateur.setBoutonHistoriqueArriere(true);
+            }else{
+                interfaceUtilisateur.setBoutonHistoriqueArriere(false);
+            }
+            if(jeu.plateau().peutRefaire()){
+                interfaceUtilisateur.setBoutonHistoriqueAvant(true);
+            }else{
+                interfaceUtilisateur.setBoutonHistoriqueAvant(false);
+            }
+            */
+        }
     }
 
     @Override
@@ -181,7 +229,27 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    public Coup creerCoup(int carteSelectionnee, int indiceCarteContinuum, int indiceParadoxe){
+        return jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, indiceParadoxe);
+    }
+
+    public void jouerCoup(Coup coup){
+        if(coup != null){
+            jeu.jouerCoup(coup);
+        }else{
+            System.out.println("Coup null fourni !");
+        }
+    }
+
+    public void majPlateau(int carteSelectionnee, int indiceCarteContinuum, int indiceParadoxe){
+        Coup coup = creerCoup(carteSelectionnee, indiceCarteContinuum, indiceParadoxe);
+        System.out.println("JAI BIEN CREE MON COUP!");
+        jouerCoup(coup);
+    }
+
     private void changerTour() {
+        //Coup coup = jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, indiceParadoxe);
+        //jouerCoup(coup);
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
         {

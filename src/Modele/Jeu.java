@@ -356,13 +356,31 @@ public class Jeu
         return null;
     }
 
-    public void annuler(){
-        plateau.annuler();
+    public void jouerCoup(Coup coup){
+        plateau.faire(coup);
     }
 
-    public void refaire(){
-        plateau.refaire();
+    public Coup creerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe){
+        return plateau.creerCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
     }
+
+    public boolean peutAnnuler() {
+		return plateau.peutAnnuler();
+	}
+
+	public boolean peutRefaire() {
+		return plateau.peutRefaire();
+	}
+
+	public Coup annuler() {
+		Coup coup = plateau.annuler();
+		return coup;
+	}
+
+	public Coup refaire() {
+		Coup coup = plateau.refaire();
+		return coup;
+	}
     
 }
 

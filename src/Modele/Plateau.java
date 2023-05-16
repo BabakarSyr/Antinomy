@@ -339,19 +339,16 @@ public class Plateau extends Historique<Coup> implements Cloneable
         return s;
     }
 
-    public Coup elaboreCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
+    public Coup creerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
 
 		Coup coup = new Coup();
-
-        if(cartesAccessibles(joueurActif().getMain().get(indiceCarteJouee)).contains(indiceContinuum)){
-            return coup.creerCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
-        }else{
-            return null;
-        }
+        System.out.println("ALLONS CREER NOTRE COUP !");
+        coup.creerCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe); 
+        return coup;
 	}
 
     public Coup jouerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
-        Coup coup = elaboreCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
+        Coup coup = creerCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
         if(coup != null){
             faire(coup);
         }
