@@ -1,6 +1,9 @@
 package Modele;
 
 import java.util.Random;
+
+import Structures.Noeud;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public abstract class IA implements Joueur
     ArrayList<Integer> paradoxPositions;
     int ordreIA;
     int ordreAdversaire;
+    Noeud treeConfig;
 
 
     public IA()
@@ -181,101 +185,76 @@ public abstract class IA implements Joueur
     }
 
     //Retourne vrai si tous les cartes de la main du joueur sont de la meme forme
-    public boolean mainMemeForme()
+    public boolean mainMemeForme(ArrayList<Carte> copieMain)
     {
-        return (main.get(0).getForme() == main.get(1).getForme() && main.get(1).getForme()== main.get(2).getForme());
+        return (copieMain.get(0).getForme() == copieMain.get(1).getForme() && copieMain.get(1).getForme()== copieMain.get(2).getForme());
     }
 
     //Retourne vrai si tous les cartes de la main du joueur sont de la meme couleur
-    public boolean mainMemeCouleur()
+    public boolean mainMemeCouleur(ArrayList<Carte> copieMain)
     {
-        return (main.get(0).getCouleur() == main.get(1).getCouleur() && main.get(1).getCouleur()== main.get(2).getCouleur());
+        return (copieMain.get(0).getCouleur() == copieMain.get(1).getCouleur() && copieMain.get(1).getCouleur()== copieMain.get(2).getCouleur());
     }
 
     //Retourne vrai si tous les cartes de la main du joueur sont de la meme valeur
-    public boolean mainMemeValeur()
+    public boolean mainMemeValeur(ArrayList<Carte> copieMain)
     {
-        return (main.get(0).getValeur() == main.get(1).getValeur() && main.get(1).getValeur()== main.get(2).getValeur());
+        return (copieMain.get(0).getValeur() == copieMain.get(1).getValeur() && copieMain.get(1).getValeur()== copieMain.get(2).getValeur());
     }
 
     //Retourne vrai si tous les cartes de la main du joueur ne sont pas de la couleur bannie
-    public boolean mainCouleurBannie()
+    public boolean mainCouleurBannie(ArrayList<Carte> copieMain)
     {
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        return main.get(0).getCouleur() !=  couleurInterdite && main.get(1).getCouleur() != couleurInterdite && main.get(3).getCouleur() != couleurInterdite;
+        return copieMain.get(0).getCouleur() !=  couleurInterdite && copieMain.get(1).getCouleur() != couleurInterdite && copieMain.get(3).getCouleur() != couleurInterdite;
+    }
+
+    public int valeurMain()
+    {
+        int valeurMain = 0;
+        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
+        for (Carte carte : main)
+        {
+            valeurMain += carte.getValeur(couleurInterdite);
+        }
+        return valeurMain;
     }
 
     public ArrayList<Integer> peutFormerParadoxe (Carte carte, ArrayList<Integer> accessibles)
     {
-        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        ArrayList<Carte> cartes = this.getMain();
-        Carte c;
-    
-        boolean memeCouleur = true;
-        boolean memeForme = true;
-        boolean memeValeur = true;
-        boolean memeCouleur2, memeForme2, memeValeur2;
         ArrayList<Integer> paradoxes = new ArrayList<>();
+        ArrayList<Carte> copieMain = new ArrayList<>();
 
-        if (cartes.get(0)==carte)
+        for (Carte c : main)
         {
-            c=cartes.get(1);
+            copieMain.add(c);
         }
-        else
+        copieMain.remove(carte);
+        for (Integer e : accessibles)
         {
-            c=cartes.get(0);
-        }
-        for (int i = 0; i < cartes.size(); i++) {
-            if (cartes.get(i)!=carte && cartes.get(i).getCouleur() == couleurInterdite) {
-                return null;
-            }
-            memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == c.getCouleur());
-            memeForme = memeForme&(cartes.get(i).getForme() == c.getForme());
-            memeValeur = memeValeur&(cartes.get(i).getValeur() == c.getValeur());
-            
-        }
-        for (int j : accessibles)
-        {
-            memeCouleur2=memeCouleur& (jeu.plateau.continuum.get(j).getCouleur()==c.getCouleur());
-            memeForme2=memeForme&(jeu.plateau.continuum.get(j).getValeur()==c.getValeur());
-            memeValeur2=memeValeur&(jeu.plateau.continuum.get(j).getCouleur()==c.getCouleur());
-            if (memeCouleur2 || memeForme2 || memeValeur2)
-            {
-                paradoxes.add(j);
-            }
+            Carte but = plateau.getContinuum().get(e);
+            copieMain.add(but);
+            if (mainCouleurBannie(copieMain) && (mainMemeCouleur(copieMain) || mainMemeForme(copieMain) || mainMemeValeur(copieMain)))
+            paradoxes.add(e);
+            copieMain.remove(but);
         }
         return paradoxes;
     }
 
     public int simulerMouvement(int indexCarteChoisie, int indexContinuum)
     {
-        Plateau plateauClone = null;
-        try
+        if (plateau.getJoueur(ordreAdversaire).getPositionSorcier() == indexContinuum)
         {
-            plateauClone = (Plateau) this.plateau.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            e.printStackTrace();
-        }
-        Jeu jeuClone = new Jeu(plateauClone);
-        Joueur joueurIAClone = plateauClone.getJoueur(this.ordreIA);
-        jeuClone.jouerCarte(indexCarteChoisie, indexContinuum);
-        if (jeuClone.estDuel())
-        {
-            Joueur gagnant = jeuClone.meilleurMain();
-            if (gagnant == joueurIAClone)
+            Joueur gagnant = jeu.meilleurMain();
+            if (gagnant.getNom().equals(nom))
             {
                 return 1;
             }
-            else if (gagnant == plateauClone.getJoueur(this.ordreAdversaire))
+            else if (gagnant.getNom().equals(plateau.getJoueur(ordreAdversaire).getNom()))
             {
                 return -1;
             }
-            else if (gagnant ==  null)
-            {
-                return 0;
-            }
+            return 0;
         }
         return 1;
     }
@@ -293,5 +272,76 @@ public abstract class IA implements Joueur
     public int choisirSens()
     {
         return 0;
+    }
+
+    public int calculScore()
+    {
+        String gagnant = jeu.nomVainqueur();
+        if (gagnant != null)
+        {
+            if (gagnant.equals(this.nom))
+            {
+                return +1000;
+            }
+            else
+            {
+                return -1000;
+            }
+        }
+        int score = 0;
+        for (Carte c : main)
+        {
+            score += c.getValeur(plateau.codex.couleurInterdite);
+        }
+        if (jeu.estDuel())
+        {
+            if (score > plateau.valeurMain(plateau.joueurInactif()))
+            {
+                score += 200;
+            }
+            else
+            {
+                score -= 200;
+            }
+        }
+        if (jeu.estParadoxe())
+        {
+            score += 100;
+        }
+        return score;
+    }
+
+    public Noeud minimax(int profondeur, boolean maxJoueur, int alpha, int beta)
+    {
+        if (profondeur == 0)
+        {
+            return new Noeud(plateau, )
+                calculScore(), )
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (profondeur == 0)
+        {
+            return;
+        }
+        for (Carte c : plateau.joueurActif().getMain())
+        {
+            for (int pos : plateau.cartesAccessibles(c))
+            {
+                Plateau plateauClone = plateau.clone();
+                Joueur joueurClone = plateauClone.getJoueurParNom(jou)
+            }
+        }
     }
 }
