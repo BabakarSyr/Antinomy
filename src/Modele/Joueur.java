@@ -68,6 +68,9 @@ public class Joueur {
     public void ajouterCristaux() {
         this.nombreCristaux ++;
     }
+    public void setCristaux(int nombreCristaux) {
+        this.nombreCristaux = nombreCristaux;
+    }
    
     public void ajouterCristaux(int nombreCristaux) {
         this.nombreCristaux += nombreCristaux;

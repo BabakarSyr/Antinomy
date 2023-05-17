@@ -404,10 +404,12 @@ public class IADifficile {
         }
     }*/
 
-    public int minimax(Jeu JeuClone, int profondeur,Joueur joeurActif, List<Coup> historique, Noeud parent) {
+    public int minimax(Jeu JeuClone, int profondeur,Joueur joeurActif, List<Coup> historique, /*Noeud parent,*/ int alpha, int beta) {
         if (profondeur == 0 || JeuClone.partieTerminee()) {
+            
+
             int res= evaluer(JeuClone);
-            parent.score=res;
+           // parent.score=res;
             return res;
         } 
         else if (JeuClone.plateau.joueurActif().getNom() == JeuClone.plateau.joueur1.getNom()) {
@@ -419,14 +421,17 @@ public class IADifficile {
             for (Coup coup : coups) {
                 int i = coup.carte;
                 int j = coup.position;
+                /* 
                 Noeud noeud = new Noeud(JeuClone);
                 parent.fils.add(noeud);
+                */
 
     
                 JeuClone.jouerCarte(i, j);
-                /* 
+                
                 if (JeuClone.estParadoxe()) {
                     JeuClone.plateau.joueurActif().ajouterCristaux(1);
+                    /* 
                     boolean condition = true;
     
                     if (!JeuClone.estPossibleEchangerParadoxe(condition))
@@ -438,23 +443,22 @@ public class IADifficile {
                     else
                         condition = true;
     
-                    int score = minimax(JeuClone, profondeur, historique, noeud);
-                    if (score > meilleurScore) {
-                        meilleurScore = score;
-                        meilleurCoup = coup;
-                        noeud.score = meilleurScore;
-
-                    }
+                    int score =minimax(JeuClone, profondeur - 1,JeuClone.plateau.changerJoueurActif(JeuClone.plateau.joueur1), historique,alpha,beta);
+                    meilleurScore = Math.max(meilleurScore, score);*/
     
-                } else {*/
+                } else {
                     if (JeuClone.estDuel())
                         JeuClone.duel();
     
                     nbTours--;
                     
-                    int score = minimax(JeuClone, profondeur - 1,JeuClone.plateau.changerJoueurActif(JeuClone.plateau.joueur1), historique, noeud);
+                    int score = minimax(JeuClone, profondeur - 1,JeuClone.plateau.changerJoueurActif(JeuClone.plateau.joueur1), historique,/* noeud,*/alpha,beta);
                     meilleurScore = Math.max(meilleurScore, score);
-                //}
+                   
+                    if(meilleurScore>=beta)
+                        return meilleurScore;
+                    alpha = Math.max(alpha, meilleurScore);
+                }
     
                
             }
@@ -464,9 +468,10 @@ public class IADifficile {
             }*/
            
             //Renvoyer dans max le noeud ârmi les fils de parent qui a le score le plus grand=utilise Collections.max surles scores des fils de parent
-            parent.score=meilleurScore;
+           
+           // parent.score=meilleurScore;
 
-
+           
 
 
             return meilleurScore;
@@ -481,14 +486,15 @@ public class IADifficile {
             for (Coup coup : coups) {
                 int i = coup.carte;
                 int j = coup.position;
-
+                /* 
                 Noeud noeud = new Noeud(JeuClone);
                 parent.fils.add(noeud);
-
+                */
     
                 JeuClone.jouerCarte(i, j);
-                /*if (JeuClone.estParadoxe()) {
+                if (JeuClone.estParadoxe()) {
                     JeuClone.plateau.joueur2.ajouterCristaux(1);
+                    /* 
                     boolean condition = true;
     
                     if (!JeuClone.estPossibleEchangerParadoxe(condition))
@@ -500,38 +506,37 @@ public class IADifficile {
                     else
                         condition = true;
     
-                    int score = minimax(JeuClone, profondeur, historique, noeud);
-                    if (score < meilleurScore) {
-                        meilleurScore = score;
-                        meilleurCoup = coup;
-                        noeud.score = meilleurScore;
-
-                    }
+                    int score = minimax(JeuClone, profondeur - 1,JeuClone.plateau.changerJoueurActif(JeuClone.plateau.joueur1), historique,alpha,beta);
+                    meilleurScore = Math.min(meilleurScore, score);*/
+                    
     
-                } else {*/
+                } 
+                else {
                     if (JeuClone.estDuel()){
                         JeuClone.duel();
                     }
     
                     nbTours=nbTours+2;
                     JeuClone.plateau.changerJoueurActif();
-                    int score = minimax(JeuClone, profondeur - 1,JeuClone.plateau.changerJoueurActif(JeuClone.plateau.joueur1), historique, noeud);
+                    int score = minimax(JeuClone, profondeur - 1,JeuClone.plateau.changerJoueurActif(JeuClone.plateau.joueur1), historique,/*  noeud,*/alpha,beta);
                     meilleurScore = Math.min(meilleurScore, score);
-
-                   /*  if (score < meilleurScore) {
-                        meilleurScore = score;
-                        meilleurCoup = coup;
-                      
-
-                    }*/
-              //  }
+                   if(meilleurScore<=alpha)
+                        return meilleurScore;
+                    beta = Math.min(beta, meilleurScore);
+                   
+      
                 
+                }
             }
     
             /*if (meilleurCoup != null) {
                 historique.add(meilleurCoup);
             }*/
-            parent.score=meilleurScore;
+            //parent.score=meilleurScore;
+
+          
+
+
             return meilleurScore;
         }
     }
@@ -576,11 +581,11 @@ public class IADifficile {
             //if(etat.plateau.joueurActif().DeuxCarteMemeProp())
               //  score += 50;
 
-            //Plus un sorcier a un grand nombre de possibilité de mouvement mieux c'est pour lui
+            /*Plus un sorcier a un grand nombre de possibilité de mouvement mieux c'est pour lui
                
            int nbIA=etat.plateau.nbMouvementPossibleSorcier(etat.plateau.joueur1);
             int nbAdversaire=etat.plateau.nbMouvementPossibleSorcier(etat.plateau.joueur2);
-            score+=nbIA-nbAdversaire;
+            score+=nbIA-nbAdversaire;*/
 
         return score;
     }
@@ -589,8 +594,12 @@ public class IADifficile {
     public void jouer(Jeu Jeu) {
         Jeu JeuClone = Jeu.copie();
         List<Coup> historique = new ArrayList<>();
-        Noeud n=new Noeud(JeuClone,0);
-        int meilleurscore=minimax(JeuClone, 5,JeuClone.plateau.joueurActif(), historique,n);
+       // Noeud n=new Noeud(JeuClone,0);
+        int alpha=Integer.MIN_VALUE;
+        int beta=Integer.MAX_VALUE;
+
+
+        int meilleurscore=minimax(JeuClone, 5,JeuClone.plateau.joueurActif(), historique,alpha,beta);
         System.out.println("meilleur score : " + meilleurscore);
         Coup meilleurCoup = historique.get(0);
         int i = meilleurCoup.carte;
