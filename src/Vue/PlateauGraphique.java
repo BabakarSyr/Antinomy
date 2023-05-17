@@ -6,7 +6,7 @@ import javax.swing.*;
 import Modele.Carte;
 import Modele.Jeu;
 import Modele.Joueur;
-import Modele.Plateau;
+
 import Modele.ZoneClic;
 
 import java.awt.*;
@@ -30,6 +30,7 @@ public class PlateauGraphique extends JComponent {
 	CollecteurEvenements c;
 
 	int carteSelectionne;
+	int indiceCarteSurbrillance;
 
 	public PlateauGraphique(Jeu j, CollecteurEvenements c) {
 		jeu = j;
@@ -64,12 +65,37 @@ public class PlateauGraphique extends JComponent {
 		finMainJoueur2Y = 0;
 
 		carteSelectionne=-1;
+		indiceCarteSurbrillance=-1;
 
 		voirMainAdversaire = false;
 	}
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
 	}
+	public void surbrillance(Graphics2D g2d ){
+
+            
+		Carte carte = jeu.plateau().joueurActif().getMain().get(c.carteSelectionnee());
+		ArrayList<Integer> cartesAccessibles = jeu.plateau().cartesAccessibles(carte);
+		//Mettre en surbrillance les cartes accessibles
+		for(int i = 0; i < cartesAccessibles.size(); i++){
+			indiceCarteSurbrillance = cartesAccessibles.get(i);
+			
+			if (indiceCarteSurbrillance >= 0 && indiceCarteSurbrillance < jeu.plateau().getContinuum().size()) {
+				// Dessiner le halo de surbrillance autour de la carte
+			
+				g2d.setStroke(new BasicStroke(5));
+				g2d.setColor(Color.YELLOW);
+		
+				int x = indiceCarteSurbrillance * (largeurCarte)+6;
+				int y = debutContinuumY;
+				g2d.drawRect(x, y, largeurCarte, hauteurCarte-3);
+			}
+			repaint(); 
+		}
+
+}
+
 
 	public void paintComponent(Graphics g) {
 		System.out.println("Entree dans paintComponent : " + compteur++);
@@ -100,6 +126,12 @@ public class PlateauGraphique extends JComponent {
 		}else{
 			tracerMainJoueur(c.voirMainAdversaire(), J1);
 			tracerMainJoueur(c.voirMainJoueurActif(), J2);
+		}
+
+		
+		if(c.carteSelectionnee() != -1){
+			surbrillance(drawable);
+			
 		}
 	}
 	

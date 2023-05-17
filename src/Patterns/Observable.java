@@ -8,7 +8,8 @@ public class Observable {
     Sequence<Observateur> observateurs;
 
     public Observable() {
-        observateurs = Configuration.instance().nouvelleSequence();
+        Configuration.instance();
+        observateurs = Configuration.nouvelleSequence();
     }
 
     public void ajouteObservateur(Observateur observateur) {

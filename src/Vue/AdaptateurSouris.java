@@ -3,7 +3,7 @@ package Vue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import Modele.EtatJeu;
+
 import Modele.ZoneClic;
 
 public class AdaptateurSouris extends MouseAdapter {
@@ -26,7 +26,7 @@ public class AdaptateurSouris extends MouseAdapter {
 				System.out.println("clic CONTINUUM");
 				indiceCarte = plateauGraphique.getCarte(ZoneClic.CONTINUUM);
 				System.out.println("carte " + indiceCarte);
-				c.clicCarteContinuum(indiceCarte,plateauGraphique);
+				c.clicCarteContinuum(indiceCarte);
 				plateauGraphique.setCarteSelectionne(-1);
 				plateauGraphique.repaint();
 				break;
@@ -53,9 +53,9 @@ public class AdaptateurSouris extends MouseAdapter {
 		if(actif){
 			indiceCarte = plateauGraphique.getCarte(zone);
 			System.out.println("carte " + indiceCarte);
-			c.clicCarteMain(indiceCarte,plateauGraphique);
+			c.clicCarteMain(indiceCarte);
 		}else{
-			c.clicCarteMainAdverse(plateauGraphique);
+			c.clicCarteMainAdverse();
 		}
 	}
 }

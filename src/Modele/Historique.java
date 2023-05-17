@@ -1,6 +1,6 @@
 package Modele;
 
-import Global.Configuration;
+
 import Patterns.Commande;
 import Structures.Sequence;
 import Structures.SequenceListe;

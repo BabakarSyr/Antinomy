@@ -4,14 +4,13 @@ package Controleur;
 import java.util.ArrayList;
 import java.util.Random;
 
-import Modele.Carte;
 import Modele.Coup;
 import Modele.EtatJeu;
 import Modele.Jeu;
 import Modele.Joueur;
-import Modele.ZoneClic;
+
 import Vue.CollecteurEvenements;
-import Vue.PlateauGraphique;
+
 
 public class ControleurMediateur implements CollecteurEvenements {
 
@@ -102,40 +101,18 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
 
-
-    public void surbrillance(PlateauGraphique p){
-         //Recuperer les cartes accessibles
-         Carte carte = jeu.plateau().joueurActif().getMain().get(carteSelectionnee);
-         ArrayList<Integer> cartesAccessibles = jeu.plateau().cartesAccessibles(carte);
-         //Mettre en surbrillance les cartes accessibles
-         for(int i = 0; i < cartesAccessibles.size(); i++){
-             p.surbrillanceCarte(cartesAccessibles.get(i));
-         }
-    }
-
     @Override
-    public void clicCarteMain(int indiceCarte, PlateauGraphique p) {
+    public void clicCarteMain(int indiceCarte) {
         switch(etatJeu){
             case DEBUT_TOUR:
                 carteSelectionnee = indiceCarte;
                 changerEtatJeu(EtatJeu.CARTE_SELECTIONNEE);
                 previsualisationDeplacement();
-                surbrillance(p);
+                
                 break;
             case CARTE_SELECTIONNEE:
                 if(indiceCarte != carteSelectionnee){
                     carteSelectionnee = indiceCarte;
-                    surbrillance(p);
-                  
-
-
-
-
-
-
-
-
-
 
                     previsualisationDeplacement();
                 }else{
@@ -157,7 +134,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     infoPlateau = "Egalité le jeu continue !";
                 }
                 changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                changerTour(p);
+                changerTour();
                 break;
             case DEBUT_PARTIE:
                 break;
@@ -166,7 +143,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
-    public void clicCarteMainAdverse(PlateauGraphique p) {
+    public void clicCarteMainAdverse( ) {
         switch(etatJeu){
             case DUEL:
                 voirMainAdversaire = true;
@@ -174,7 +151,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(joueur != null){
                     infoPlateau = joueur.getNom() + " à remporté le duel !";
                     changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                    changerTour(p);
+                    changerTour();
                 }
                 else{
                     infoPlateau = "Egalité selectionnez une carte pour départager !";
@@ -194,7 +171,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     // Actions à effectuer en cas de clic sur une des cartes du continuum
     @Override
-    public void clicCarteContinuum(int indiceCarteContinuum, PlateauGraphique p) {
+    public void clicCarteContinuum(int indiceCarteContinuum) {
         System.out.println(etatJeu);
         switch(etatJeu){
             case CARTE_SELECTIONNEE:
@@ -215,7 +192,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
                         carteSelectionnee = -1;
-                        changerTour(p);
+                        changerTour();
                     }
                 }
                 else
@@ -233,7 +210,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
-                        changerTour(p);
+                        changerTour();
                     }
                     carteSelectionnee = -1;
                     voirMainAdversaire = false;
@@ -249,7 +226,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
                     }
-                    changerTour(p);
+                    changerTour();
                 }
                 break;
             default:
@@ -275,14 +252,14 @@ public class ControleurMediateur implements CollecteurEvenements {
         jouerCoup(coup);
     }
 
-    private void changerTour(PlateauGraphique p) {
+    private void changerTour( ) {
         //Coup coup = jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, indiceParadoxe);
         //jouerCoup(coup);
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
         {
             //tourIA (jeu.joueurActif().joue());
-            tourIA (jeu.joueurActif().joueCoup(),p);
+            tourIA (jeu.joueurActif().joueCoup());
         }
         else
         {
@@ -335,7 +312,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     //joue le tour de l'IA
-    public void tourIA (ArrayList<Integer> coupIA, PlateauGraphique p)
+    public void tourIA (ArrayList<Integer> coupIA )
     {
         if(coupIA==null)
         {
@@ -344,36 +321,36 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
         if (etatJeu == EtatJeu.DEBUT_PARTIE)
         {
-            clicCarteContinuum(coupIA.get(0),p);
+            clicCarteContinuum(coupIA.get(0));
             System.out.println("sorcier du joueur "+ jeu.plateau().joueurActif +" a la position"+jeu.plateau().joueurActif().getPositionSorcier());
 
         }
         else
         {
             voirMainJoueurActif = false;
-            clicCarteMain(coupIA.get(0),p);
-            clicCarteContinuum(coupIA.get(1),p);
+            clicCarteMain(coupIA.get(0));
+            clicCarteContinuum(coupIA.get(1));
             if (coupIA.size()>2)
             {
-                clicCarteContinuum(coupIA.get(2),p);
+                clicCarteContinuum(coupIA.get(2));
             }
         }
     }
 
-    public void tourIA (Coup coupIA, PlateauGraphique p)
+    public void tourIA (Coup coupIA )
     {
         if (etatJeu == EtatJeu.DEBUT_PARTIE)
         {
-            clicCarteContinuum(coupIA.indiceCarteContinuum(),p);
+            clicCarteContinuum(coupIA.indiceCarteContinuum());
         }
         else
         {
             voirMainJoueurActif = false;
-            clicCarteMain(coupIA.indiceCarteJouee(),p);
-            clicCarteContinuum(coupIA.indiceCarteContinuum(),p);
+            clicCarteMain(coupIA.indiceCarteJouee());
+            clicCarteContinuum(coupIA.indiceCarteContinuum());
             if (coupIA.indiceParadoxe()!= -1)
             {
-                clicCarteContinuum(coupIA.indiceParadoxe(),p);
+                clicCarteContinuum(coupIA.indiceParadoxe());
             }
         }
     }
