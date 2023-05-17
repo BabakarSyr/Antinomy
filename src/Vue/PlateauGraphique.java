@@ -241,8 +241,6 @@ public class PlateauGraphique extends JComponent {
 	// joueur : joueur1 si true
 	//			joueur2 si false
 	void tracerMainJoueur(boolean mainOuverte, boolean joueur){
-
-
 		int XDepart, YDepart;
 		int hauteurPrevisualisation;
 		ArrayList<Carte> main;
@@ -253,8 +251,8 @@ public class PlateauGraphique extends JComponent {
 			finMainJoueur1X = 6*largeurCarte;
 			debutMainJoueur1Y = height-hauteurCarte;
 			finMainJoueur1Y = height;
-			XDepart = debutMainJoueur1X;
-			YDepart = debutMainJoueur1Y;
+			XDepart = debutMainJoueur1X-20;
+			YDepart = debutMainJoueur1Y-20;
 
 			hauteurPrevisualisation = hauteurCarte/4;
 			main = jeu.plateau().getJoueur(1).getMain();
@@ -265,8 +263,8 @@ public class PlateauGraphique extends JComponent {
 
 			debutMainJoueur2Y = 0;
 			finMainJoueur2Y = hauteurCarte;
-			XDepart = debutMainJoueur2X;
-			YDepart = debutMainJoueur2Y;
+			XDepart = debutMainJoueur2X+20;
+			YDepart = debutMainJoueur2Y+20;
 
 			hauteurPrevisualisation = -(hauteurCarte/4);
 			main = jeu.plateau().getJoueur(2).getMain();
@@ -275,29 +273,18 @@ public class PlateauGraphique extends JComponent {
 		carteSelectionne = c.carteSelectionnee();
 		
 		if(mainOuverte){
-			for(int i=0; i< main.size(); i++){
-				if (i == carteSelectionne && joueur){
+			for(int i =0; i< main.size(); i++){
+				if (i == carteSelectionne && joueur == joueurActif()){
 					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart-hauteurPrevisualisation, largeurCarte, hauteurCarte, null);
 				}
-				if (i !=carteSelectionne && joueur) {
-					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart-20, largeurCarte, hauteurCarte, null);
-				}
-				if (i == carteSelectionne && !joueur){
-					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart-hauteurPrevisualisation, largeurCarte, hauteurCarte, null);
-				}
-				if (i !=carteSelectionne && !joueur) {
-					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart+20, largeurCarte, hauteurCarte, null);
+				else {
+					drawable.drawImage(imageCarte(main.get(i)), XDepart+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
 				}
 			}
 		}
 		else{
 			for(int i =0; i< main.size(); i++){
-				if (joueur){
-					drawable.drawImage(aspects.carte_dos.image(), XDepart+largeurCarte*i, YDepart-20, largeurCarte, hauteurCarte, null);
-				}
-				else {
-					drawable.drawImage(aspects.carte_dos.image(), XDepart+largeurCarte*i, YDepart+20, largeurCarte, hauteurCarte, null);
-				}
+				drawable.drawImage(aspects.carte_dos.image(), XDepart+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
 			}
 		}
 	}
