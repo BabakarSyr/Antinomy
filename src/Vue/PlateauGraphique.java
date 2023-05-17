@@ -159,11 +159,11 @@ public class PlateauGraphique extends JComponent {
 
 	void tracerFleche(ArrayList<Carte> continuum){
 		if (joueurActif()){
-			//J1
-			drawable.drawImage(aspects.fleche2.image(), -40, hauteurCarte/4*11, finContinuumX, hauteurCarte+5, null);
+
+			drawable.drawImage(aspects.fleche2.image(), debutContinuumX+10, hauteurCarte/4*11, finContinuumX-largeurCarte, hauteurCarte+5, null);
 		}
 		else{
-			drawable.drawImage(aspects.fleche1.image(), -40, hauteurCarte/4*6, finContinuumX, hauteurCarte+5, null);
+			drawable.drawImage(aspects.fleche1.image(), debutContinuumX+10, hauteurCarte/4*6, finContinuumX-largeurCarte, hauteurCarte+5, null);
 		}
 	}
 
@@ -187,16 +187,16 @@ public class PlateauGraphique extends JComponent {
 	void tracerCodex(ArrayList<Carte> continuum){
 		switch (jeu.couleurInterdite()){
 			case ROUGE :
-				drawable.drawImage(aspects.codex_rouge.image(), largeurCarte*continuum.size()+50, debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_rouge.image(), largeurCarte*continuum.size()+8, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
 				break;
 			case VERT :
-				drawable.drawImage(aspects.codex_vert.image(), largeurCarte*continuum.size()+50, debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_vert.image(), largeurCarte*continuum.size()+8, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
 				break;
 			case VIOLET:
-				drawable.drawImage(aspects.codex_violet.image(), largeurCarte*continuum.size()+50, debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_violet.image(), largeurCarte*continuum.size()+8, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
 				break;
 			case BLEU :
-				drawable.drawImage(aspects.codex_bleu.image(), largeurCarte*continuum.size()+50, debutContinuumY, largeurCarte, hauteurCarte, null);
+				drawable.drawImage(aspects.codex_bleu.image(), largeurCarte*continuum.size()+8, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
 				break;
 			default:
 				break;
@@ -226,7 +226,6 @@ public class PlateauGraphique extends JComponent {
 		}
 		else{
 			int hauteurPrevisualisation = hauteurCarte/4;
-			//4 hauteur cartes
 			int hauteur=getHeight()/3-hauteurPrevisualisation;
 			int longueur=3*largeurCarte;
 			Font fonte = new Font("Serif", Font.BOLD, getHeight()/40);
@@ -344,16 +343,15 @@ public class PlateauGraphique extends JComponent {
 		if (indiceCarteContinuum >= 0 && indiceCarteContinuum < jeu.plateau().getContinuum().size()) {
 			// Dessiner le halo de surbrillance autour de la carte
 			Graphics2D g2d = (Graphics2D) getGraphics();
-			g2d.setStroke(new BasicStroke(3));
+			g2d.setStroke(new BasicStroke(5));
 			g2d.setColor(Color.YELLOW);
 	
-			int x = indiceCarteContinuum * largeurCarte;
+			int x = indiceCarteContinuum * (largeurCarte)+6;
 			int y = debutContinuumY;
-			g2d.drawRect(x, y, largeurCarte, hauteurCarte);
+			g2d.drawRect(x, y, largeurCarte, hauteurCarte-3);
 		}
 	
     }
-
 
 
 

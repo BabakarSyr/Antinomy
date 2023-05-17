@@ -11,7 +11,6 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	Jeu jeu;
 	CollecteurEvenements controleur;
 	PlateauGraphique plateau;
-
 	JButton boutonOptionsJeu, boutonHistoriqueArriere, boutonHistoriqueAvant;
 
 	public InterfaceGraphique(Jeu j, CollecteurEvenements c){
@@ -33,6 +32,21 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		PlateauGraphique plateauGraphique = new PlateauGraphique(jeu, controleur);
 
 		// Parametre des boutons 
+		//MODIFIE
+        boutonOptionsJeu = new JButton("Menu");
+		JMenuBar menubar = new JMenuBar();
+		JMenu menu = new JMenu("Menu");
+		JMenuItem boutonReprendre = new JMenuItem("Reprendre");
+		JMenuItem boutonRecommencer = new JMenuItem("Recommencer");
+		JMenuItem boutonSauvegarder = new JMenuItem("Sauvegarder");
+		JMenuItem boutonQuitter = new JMenuItem("Quitter la partie");
+
+		menu.add(boutonReprendre);
+		menu.add(boutonRecommencer);
+		menu.add(boutonSauvegarder);
+		menu.add(boutonQuitter);
+		menubar.add(menu);
+
 		plateauGraphique.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -41,9 +55,10 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.NORTHEAST;
-        boutonOptionsJeu = new JButton("Menu");
+		
+
         //boutonOptionsJeu.addActionListener(new AdaptateurCommande(controleur, "OptionsJeu"));
-        plateauGraphique.add(boutonOptionsJeu, gbc);
+        plateauGraphique.add(menubar, gbc);
 		gbc.gridy++;
         gbc.anchor = GridBagConstraints.SOUTHWEST;
         gbc.insets = new Insets(0, 0, 0, 0);
@@ -62,6 +77,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         historiqueBox.add(historiqueAvantArriere);
         plateauGraphique.add(historiqueBox, gbc);
 
+		
 		frame.add(plateauGraphique);
 
 		// Ecoute des évènements liés à la souris dans l'AireDeDessin
@@ -74,5 +90,16 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		frame.setVisible(true);
 
 	}
+
+	public void menuPrincipal(){
+        JFrame frame = new JFrame("Mon Manu à moi");
+        frame.setSize(1280, 720);
+
+        // Un clic sur le bouton de fermeture clos l'application
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // On fixe la taille et on demarre
+        frame.setVisible(true);
+    }
 
 }
