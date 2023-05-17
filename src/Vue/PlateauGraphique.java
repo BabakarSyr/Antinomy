@@ -149,7 +149,7 @@ public class PlateauGraphique extends JComponent {
 		tracerSorcier(continuum, true);
 		tracerSorcier(continuum, false);
 		tracerScore();
-		tracerMessage();
+		//tracerMessage();
 		
 	}
 
@@ -179,24 +179,26 @@ public class PlateauGraphique extends JComponent {
 		}else{
 			int posSorcier=jeu.plateau().getPositionSorcier(2);
 			if (posSorcier!=-1){
-				drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2, largeurCarte/2 , hauteurCarte/3, null);
+				drawable.drawImage(aspects.sorcier2.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2-18, largeurCarte/2 , hauteurCarte/2, null);
 			}
+			
 		}
 	}
+	
 
 	void tracerCodex(ArrayList<Carte> continuum){
 		switch (jeu.couleurInterdite()){
 			case ROUGE :
-				drawable.drawImage(aspects.codex_rouge.image(), largeurCarte*continuum.size()+8, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
+				drawable.drawImage(aspects.codex_rouge.image(), largeurCarte*continuum.size()+5, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
 				break;
 			case VERT :
-				drawable.drawImage(aspects.codex_vert.image(), largeurCarte*continuum.size()+8, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
+				drawable.drawImage(aspects.codex_vert.image(), largeurCarte*continuum.size()+5, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
 				break;
 			case VIOLET:
-				drawable.drawImage(aspects.codex_violet.image(), largeurCarte*continuum.size()+8, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
+				drawable.drawImage(aspects.codex_violet.image(), largeurCarte*continuum.size()+5, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
 				break;
 			case BLEU :
-				drawable.drawImage(aspects.codex_bleu.image(), largeurCarte*continuum.size()+8, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
+				drawable.drawImage(aspects.codex_bleu.image(), largeurCarte*continuum.size()+5, debutContinuumY, largeurCarte-5, hauteurCarte-8, null);
 				break;
 			default:
 				break;
@@ -214,7 +216,7 @@ public class PlateauGraphique extends JComponent {
 		drawable.drawString("Joueur 1 : " + cristaux, longueur, hauteur*9);
 	}
 
-	void tracerMessage(){
+	/*void tracerMessage(){
 		String msg = c.infoPlateau();
 		if (joueurActif()){
 			int hauteurPrevisualisation = hauteurCarte/4;
@@ -232,7 +234,7 @@ public class PlateauGraphique extends JComponent {
 			drawable.setFont(fonte);
 			drawable.drawString(msg, longueur, hauteur);
 		}
-	}
+	}*/
 
 	// Trace les cartes d'un joueur
 	// mainOuverte : True si on veut voir le jeu du joueur
@@ -250,7 +252,7 @@ public class PlateauGraphique extends JComponent {
 			finMainJoueur1X = 6*largeurCarte;
 			debutMainJoueur1Y = height-hauteurCarte;
 			finMainJoueur1Y = height;
-			XDepart = debutMainJoueur1X-20;
+			XDepart = debutMainJoueur1X;
 			YDepart = debutMainJoueur1Y-20;
 
 			hauteurPrevisualisation = hauteurCarte/4;
@@ -262,7 +264,7 @@ public class PlateauGraphique extends JComponent {
 
 			debutMainJoueur2Y = 0;
 			finMainJoueur2Y = hauteurCarte;
-			XDepart = debutMainJoueur2X+20;
+			XDepart = debutMainJoueur2X;
 			YDepart = debutMainJoueur2Y+20;
 
 			hauteurPrevisualisation = -(hauteurCarte/4);
