@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Jeu
 {
-    Plateau plateau;
+    public Plateau plateau;
     
     
     public Jeu()

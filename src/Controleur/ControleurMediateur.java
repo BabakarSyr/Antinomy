@@ -4,12 +4,14 @@ package Controleur;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Modele.Carte;
 import Modele.Coup;
 import Modele.EtatJeu;
 import Modele.Jeu;
 import Modele.Joueur;
 import Modele.ZoneClic;
 import Vue.CollecteurEvenements;
+import Vue.PlateauGraphique;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
@@ -21,6 +23,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     int carteSelectionnee;
     boolean voirMainAdversaire, voirMainJoueurActif;
     Coup coup;
+    PlateauGraphique p;
     
     public ControleurMediateur(Jeu j) {
         this.jeu = j;
@@ -109,6 +112,23 @@ public class ControleurMediateur implements CollecteurEvenements {
             case CARTE_SELECTIONNEE:
                 if(indiceCarte != carteSelectionnee){
                     carteSelectionnee = indiceCarte;
+                   //Recuperer les cartes accessibles
+                   Carte carte = jeu.plateau().joueurActif().getMain().get(carteSelectionnee);
+                   ArrayList<Integer> cartesAccessibles = jeu.plateau().cartesAccessibles(carte);
+                   //Mettre en surbrillance les cartes accessibles
+                   for(int i = 0; i < cartesAccessibles.size(); i++){
+                       p.surbrillanceCarte(cartesAccessibles.get(i));
+                   }
+
+
+
+
+
+
+
+
+
+
                     previsualisationDeplacement();
                 }else{
                     carteSelectionnee = -1;

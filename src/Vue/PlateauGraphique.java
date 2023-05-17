@@ -351,6 +351,26 @@ public class PlateauGraphique extends JComponent {
 		}
 		
 	}
+
+	public void surbrillanceCarte(int indiceCarteContinuum){
+       
+		if (indiceCarteContinuum >= 0 && indiceCarteContinuum < jeu.plateau().getContinuum().size()) {
+			// Dessiner le halo de surbrillance autour de la carte
+			Graphics2D g2d = (Graphics2D) getGraphics();
+			g2d.setStroke(new BasicStroke(3));
+			g2d.setColor(Color.YELLOW);
+	
+			int x = indiceCarteContinuum * largeurCarte;
+			int y = debutContinuumY;
+			g2d.drawRect(x, y, largeurCarte, hauteurCarte);
+		}
+	
+    }
+
+
+
+
+
 	boolean joueurActif(){
 		return jeu.joueurActif()==jeu.plateau().joueur1;
 	}
