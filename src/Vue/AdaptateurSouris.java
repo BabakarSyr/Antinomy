@@ -26,7 +26,7 @@ public class AdaptateurSouris extends MouseAdapter {
 				System.out.println("clic CONTINUUM");
 				indiceCarte = plateauGraphique.getCarte(ZoneClic.CONTINUUM);
 				System.out.println("carte " + indiceCarte);
-				c.clicCarteContinuum(indiceCarte);
+				c.clicCarteContinuum(indiceCarte,plateauGraphique);
 				plateauGraphique.setCarteSelectionne(-1);
 				plateauGraphique.repaint();
 				break;
@@ -53,9 +53,9 @@ public class AdaptateurSouris extends MouseAdapter {
 		if(actif){
 			indiceCarte = plateauGraphique.getCarte(zone);
 			System.out.println("carte " + indiceCarte);
-			c.clicCarteMain(indiceCarte);
+			c.clicCarteMain(indiceCarte,plateauGraphique);
 		}else{
-			c.clicCarteMainAdverse();
+			c.clicCarteMainAdverse(plateauGraphique);
 		}
 	}
 }

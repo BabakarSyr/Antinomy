@@ -343,16 +343,15 @@ public class PlateauGraphique extends JComponent {
 		if (indiceCarteContinuum >= 0 && indiceCarteContinuum < jeu.plateau().getContinuum().size()) {
 			// Dessiner le halo de surbrillance autour de la carte
 			Graphics2D g2d = (Graphics2D) getGraphics();
-			g2d.setStroke(new BasicStroke(3));
+			g2d.setStroke(new BasicStroke(5));
 			g2d.setColor(Color.YELLOW);
 	
-			int x = indiceCarteContinuum * largeurCarte;
+			int x = indiceCarteContinuum * (largeurCarte)+6;
 			int y = debutContinuumY;
-			g2d.drawRect(x, y, largeurCarte, hauteurCarte);
+			g2d.drawRect(x, y, largeurCarte, hauteurCarte-3);
 		}
 	
     }
-
 
 
 
