@@ -12,6 +12,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	CollecteurEvenements controleur;
 	PlateauGraphique plateau;
 	JButton boutonOptionsJeu, boutonHistoriqueArriere, boutonHistoriqueAvant;
+	Aspects aspects;
 
 	public InterfaceGraphique(Jeu j, CollecteurEvenements c){
 		jeu = j;
@@ -24,6 +25,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	}	
 
 	public void run() {
+		menuPrincipal();
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("Ma fenetre a moi");
 		frame.setSize(1280, 720);
@@ -92,14 +94,24 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	}
 
 	public void menuPrincipal(){
-        JFrame frame = new JFrame("Mon Manu à moi");
-        frame.setSize(1280, 720);
+		Aspects aspects;
+        JFrame frame_2 = new JFrame("Mon Manu à moi");
+        frame_2.setSize(1280, 720);
+		frame_2.setLocationRelativeTo(null);
+
+		aspects = new Aspects(2);
+		
+		Icon fond = new ImageIcon(aspects.fond.image());
+		//redefinir la taille
+		JLabel fond_l = new JLabel();
+		fond_l.setIcon(fond); 
+		frame_2.add(fond_l);
 
         // Un clic sur le bouton de fermeture clos l'application
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame_2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // On fixe la taille et on demarre
-        frame.setVisible(true);
+        frame_2.setVisible(true);
     }
 
 }
