@@ -5,19 +5,31 @@ import java.util.ArrayList;
 import Modele.Carte;
 import Modele.Plateau;
 
-public class Node
+public class Noeud
 {
+    private int Score;
     private Plateau etat;
     private Carte carteJoue;
     private int positionJoue;
-    private ArrayList<Node> fils;
+    private ArrayList<Noeud> fils;
 
-    public Node(Plateau p, Carte c, int position)
+    public Noeud(Plateau p, Carte c, int position, int score)
     {
         this.etat = p;
         this.carteJoue = c;
         this.positionJoue = position;
         this.fils = new ArrayList<>();
+        this.Score = score;
+    }
+
+    public int getScore()
+    {
+        return Score;
+    }
+
+    public void setScore(int score)
+    {
+        this.Score =  score;
     }
 
     public Plateau getEtatPlateau()
@@ -35,12 +47,12 @@ public class Node
         return positionJoue;
     }
 
-    public ArrayList<Node> getFils()
+    public ArrayList<Noeud> getFils()
     {
         return fils;
     }
 
-    public void ajouterFils(Node n)
+    public void ajouterFils(Noeud n)
     {
         fils.add(n);
     }
