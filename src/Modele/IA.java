@@ -196,7 +196,7 @@ public abstract class IA implements Joueur
     public boolean mainCouleurBannie(ArrayList<Carte> copieMain)
     {
         Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        return copieMain.get(0).getCouleur() !=  couleurInterdite && copieMain.get(1).getCouleur() != couleurInterdite && copieMain.get(3).getCouleur() != couleurInterdite;
+        return copieMain.get(0).getCouleur() !=  couleurInterdite && copieMain.get(1).getCouleur() != couleurInterdite && copieMain.get(2).getCouleur() != couleurInterdite;
     }
 
     public int valeurMain()
