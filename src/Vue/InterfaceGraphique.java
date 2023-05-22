@@ -22,6 +22,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	CardLayout layout;
 	JPanel panelCourant;
 	PlateauGraphique plateauGraphique;
+	ImageJeu menuBackground;
 
 	public InterfaceGraphique(Jeu j, CollecteurEvenements c){
 		jeu = j;
@@ -108,11 +109,12 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         int borderBottom = getSize().height / 8;
         int borderSides = getSize().width / 3;
 
-        panelMenuPrincipal = new JPanel();
+        panelMenuPrincipal = new MenuGraphique(controleur);
         panelMenuPrincipal.setLayout(new GridBagLayout());
         panelMenuPrincipal.setBorder(new EmptyBorder(borderTop, borderSides, borderBottom, borderSides));
         GridBagConstraints gbc = new GridBagConstraints();
 
+		//panelMenuPrincipal.getGraphics().drawImage(getIconImage(), borderSides, borderTop, borderBottom, borderSides, getForeground(), rootPane);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(20, 10, 10, 10);
 
@@ -127,6 +129,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         boutonQuitter.addActionListener(new AdaptateurCommande(controleur, "Quitter"));
         gbc.gridy++;
         panelMenuPrincipal.add(boutonQuitter, gbc);
+
     }
 
 	public void creerPlateauGraphique() throws IOException {
