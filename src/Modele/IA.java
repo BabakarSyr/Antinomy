@@ -1,12 +1,13 @@
 package Modele;
 
+import Global.Configuration;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import Structures.Noeud;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
 
 public abstract class IA implements Joueur
 {
@@ -383,5 +384,37 @@ public abstract class IA implements Joueur
 
         noeudCour.setFils(fils);
         return noeudCour;
+    }
+
+    @Override
+    public Joueur clone()
+    {
+        try
+        {
+            IA cloneIA = (IA) super.clone();
+            cloneIA.setNom(new String(this.nom));
+            cloneIA.setMain(new ArrayList<>());
+            for (Carte c : this.getMain())
+            {
+                cloneIA.main.add(c.clone());
+            }
+            cloneIA.setCristal(this.nombreCristaux);
+            cloneIA.setSensDuTemps(this.sensDuTemps);
+            cloneIA.setPositionSorcier(this.positionSorcier);
+            cloneIA.r = new Random();
+            cloneIA.plateau = this.plateau.clone();
+            cloneIA.jeu = new Jeu(cloneIA.plateau);
+            cloneIA.emplacementsAccessibles = new ArrayList<>(this.emplacementsAccessibles);
+            cloneIA.paradoxPositions = new ArrayList<>(this.paradoxPositions);
+            cloneIA.ordreIA = this.ordreIA;
+            cloneIA.ordreAdversaire = this.ordreAdversaire;
+            cloneIA.treeConfig = this.treeConfig.clone();
+            return cloneIA;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            Configuration.erreur("Bug interne, joueur pc non clonable");
+        }
+        return null;
     }
 }

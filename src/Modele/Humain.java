@@ -176,9 +176,9 @@ public class Humain implements Joueur, Cloneable{
     {
         try
         {
-            Joueur cloneJoueur = (Joueur) super.clone();
-            cloneJoueur.setNom(this.nom);
-            cloneJoueur.setMain(this.main);
+            Humain cloneJoueur = (Humain) super.clone();
+            cloneJoueur.setNom(new String(this.nom));
+            cloneJoueur.setMain(new ArrayList<>(this.main));
             cloneJoueur.setCristal(this.nombreCristaux);
             cloneJoueur.setSensDuTemps(this.sensDuTemps);
             cloneJoueur.setPositionSorcier(this.positionSorcier);

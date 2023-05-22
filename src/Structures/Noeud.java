@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import Modele.Carte;
 import Modele.Plateau;
 
-public class Noeud
+import Global.Configuration;
+
+public class Noeud implements Cloneable
 {
     private int Score;
     private Plateau etat;
@@ -70,5 +72,29 @@ public class Noeud
     public void setFils (ArrayList<Noeud> a)
     {
         this.fils = a;
+    }
+
+    @Override
+    public Noeud clone()
+    {
+        try
+        {
+            Noeud cloneNoeud = (Noeud) super.clone();
+            cloneNoeud.Score = this.Score;
+            cloneNoeud.etat = this.etat.clone();
+            cloneNoeud.carteJoue = this.carteJoue.clone();
+            cloneNoeud.positionJoue = this.positionJoue;
+            cloneNoeud.fils = new ArrayList<>();
+            for (Noeud n : this.fils)
+            {
+                cloneNoeud.fils.add(n.clone());
+            }
+            return cloneNoeud;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            Configuration.erreur("Bug interne, noeud non clonable");
+            return null;
+        }
     }
 }
