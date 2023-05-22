@@ -96,7 +96,7 @@ public abstract class IA implements Joueur
         return this.nombreCristaux;
     }
    
-    public void ajouterCristaux(int nb)
+    public void ajouterCristal(int nb)
     {
         this.nombreCristaux += nb;
     }
