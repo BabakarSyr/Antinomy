@@ -94,31 +94,14 @@ public class Jeu
     }
 
     ////////
-
     public boolean estParadoxe() {
-        Couleur couleurInterdite = plateau.codex.getCouleurInterdite();
-        ArrayList<Carte> cartes = joueurActif().getMain();
-    
-        boolean memeCouleur = true;
-        boolean memeForme = true;
-        boolean memeValeur = true;
-
-        Carte carte = cartes.get(0);
-        if (carte.getCouleur() == couleurInterdite) {
-            return false;
-        }
-        for (int i = 1; i < cartes.size(); i++) {
-            if (cartes.get(i).getCouleur() == couleurInterdite) {
-                return false;
-            }
-            memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == carte.getCouleur());
-            memeForme = memeForme&(cartes.get(i).getForme() == carte.getForme());
-            memeValeur = memeValeur&(cartes.get(i).getValeur() == carte.getValeur());
-            
-        }
-        return memeCouleur || memeForme || memeValeur;
+        return plateau.estParadoxe();
     }
-    
+
+    public boolean estParadoxe(int indiceContinuum, int indiceMain) {
+        return plateau.estParadoxe(indiceContinuum, indiceMain);
+    }
+
     public void paradoxe(int indiceCarteContinuum)
     {
         if(indiceCarteContinuum>joueurActif().getPositionSorcier()){
@@ -127,7 +110,7 @@ public class Jeu
         else{
             echangerParadoxe(false);
         }
-        joueurActif().ajouterCristaux();
+        joueurActif().ajouterCristal(1);
         plateau.codex.changerCouleurInterdite();
     }
 
@@ -176,13 +159,7 @@ public class Jeu
         return false;
     }
     public boolean estPossibleEchangerParadoxe(boolean futur){
-        int sorcier=joueurActif().getPositionSorcier();
-        if(futur){
-            return sorcier<6;
-        }
-        else{
-            return sorcier>2;
-        }   
+        return plateau.estPossibleEchangerParadoxe(futur);
     }
 
     public void deplacerSorcier(int positionSorcier) {

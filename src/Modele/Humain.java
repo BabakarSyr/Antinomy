@@ -60,35 +60,33 @@ public class Humain implements Joueur{
     public int getNombreCristaux() {
         return nombreCristaux;
     }
-    public void ajouterCristaux() {
-        this.nombreCristaux ++;
-    }
-    public void ajouterCristaux(int nombreCristaux) {
+
+    public void ajouterCristal(int nombreCristaux) {
         this.nombreCristaux += nombreCristaux;
     }
-    public void retirerCristaux() {
-        this.nombreCristaux --;
+
+    public void setCristal(int nombreCristaux) {
+        this.nombreCristaux += nombreCristaux;
     }
-    public void retirerCristaux(int nombreCristaux) {
-        this.nombreCristaux -= nombreCristaux;
-    }
-    
+
     //Voler un cristal à un autre joueur
     public boolean volerCristal(Joueur autreJoueur) {
         if (autreJoueur.getNombreCristaux() > 0) {
             //On ajoute un cristal au joueur actuel 
-            this.ajouterCristaux();
+            this.ajouterCristal(1);
             //on en retire un à l'autre joueur
-            autreJoueur.retirerCristaux();
+            autreJoueur.ajouterCristal(-1);
             return true;
         }
         else {
             return false;
         }
     }
+
     public String getNom() {
         return nom;
     }
+    
     public void setNom(String nom) {
         this.nom = nom;
     }
@@ -164,6 +162,11 @@ public class Humain implements Joueur{
     public Coup joueCoup()
     {
         return null;
+    }
+
+    public void initIA(Plateau p)
+    {
+
     }
 
 

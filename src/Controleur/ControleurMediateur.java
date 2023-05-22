@@ -99,7 +99,24 @@ public class ControleurMediateur implements CollecteurEvenements {
             */
         }
     }
+    
+    public Coup creerCoup(int carteSelectionnee, int indiceCarteContinuum, int estFutur){
+        return jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, estFutur);
+    }
 
+    public void jouerCoup(Coup coup){
+        if(coup != null){
+            jeu.jouerCoup(coup);
+        }else{
+            System.out.println("Coup null fourni !");
+        }
+    }
+
+    public void joue(int carteSelectionnee, int indiceCarteContinuum, int estFutur){
+        Coup coup = creerCoup(carteSelectionnee, indiceCarteContinuum, estFutur);
+        System.out.println("JAI BIEN CREE MON COUP!");
+        jouerCoup(coup);
+    }
 
     @Override
     public void clicCarteMain(int indiceCarte) {
@@ -232,24 +249,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             default:
                 break;
         }
-    }
-
-    public Coup creerCoup(int carteSelectionnee, int indiceCarteContinuum, int indiceParadoxe){
-        return jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, indiceParadoxe);
-    }
-
-    public void jouerCoup(Coup coup){
-        if(coup != null){
-            jeu.jouerCoup(coup);
-        }else{
-            System.out.println("Coup null fourni !");
-        }
-    }
-
-    public void majPlateau(int carteSelectionnee, int indiceCarteContinuum, int indiceParadoxe){
-        Coup coup = creerCoup(carteSelectionnee, indiceCarteContinuum, indiceParadoxe);
-        System.out.println("JAI BIEN CREE MON COUP!");
-        jouerCoup(coup);
     }
 
     private void changerTour( ) {

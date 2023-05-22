@@ -26,8 +26,8 @@ public class Plateau extends Historique<Coup> implements Cloneable
     public Plateau() {
         
         
-        joueur1=new IAFacile();
-        joueur2=new IAFacile();
+        joueur1=new Humain();
+        joueur2=new Humain();
       
         joueurActif = 1;
         codex=new Codex(new Carte(null, null,0));
@@ -236,6 +236,82 @@ public class Plateau extends Historique<Coup> implements Cloneable
         }
     }
 
+    public void paradoxe(boolean estFutur){
+        echangerParadoxe(estFutur);
+        joueurActif().ajouterCristal(1);
+        codex.changerCouleurInterdite();
+    }
+
+    public boolean estParadoxe() {
+        Couleur couleurInterdite = codex.getCouleurInterdite();
+        ArrayList<Carte> cartes = joueurActif().getMain();
+    
+        boolean memeCouleur = true;
+        boolean memeForme = true;
+        boolean memeValeur = true;
+
+        Carte carte = cartes.get(0);
+        if (carte.getCouleur() == couleurInterdite) {
+            return false;
+        }
+        for (int i = 1; i < cartes.size(); i++) {
+            if (cartes.get(i).getCouleur() == couleurInterdite) {
+                return false;
+            }
+            memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == carte.getCouleur());
+            memeForme = memeForme&(cartes.get(i).getForme() == carte.getForme());
+            memeValeur = memeValeur&(cartes.get(i).getValeur() == carte.getValeur());
+            
+        }
+        return memeCouleur || memeForme || memeValeur;
+    }
+
+    public boolean estParadoxe(int indiceMain, int indiceContinuum) {
+
+        ArrayList<Carte> cartes =  new ArrayList<>();
+        for(int i =0; i<3; i++){
+            if(i == indiceMain){
+                cartes.add(continuum.get(indiceContinuum));
+            }else{
+                cartes.add(joueurActif().getMain().get(i));
+            }
+        }
+        Couleur couleurInterdite = codex.getCouleurInterdite();
+    
+        boolean memeCouleur = true;
+        boolean memeForme = true;
+        boolean memeValeur = true;
+
+        Carte carte = cartes.get(0);
+        if (carte.getCouleur() == couleurInterdite) {
+            return false;
+        }
+        for (int i = 1; i < cartes.size(); i++) {
+            if (cartes.get(i).getCouleur() == couleurInterdite) {
+                return false;
+            }
+            memeCouleur = memeCouleur&(cartes.get(i).getCouleur() == carte.getCouleur());
+            memeForme = memeForme&(cartes.get(i).getForme() == carte.getForme());
+            memeValeur = memeValeur&(cartes.get(i).getValeur() == carte.getValeur());
+            
+        }
+        return memeCouleur || memeForme || memeValeur;
+    }
+
+    public boolean estPossibleEchangerParadoxe(boolean futur){
+        int sorcier=joueurActif().getPositionSorcier();
+        if(futur){
+            return sorcier<6;
+        }
+        else{
+            return sorcier>2;
+        }   
+    }
+
+    public void deplacerSorcier(int positionSorcier) {
+        joueurActif().setPositionSorcier(positionSorcier);
+    }
+
     public ArrayList<Integer> cartesAccessibles(Carte carteChoisie) {
         ArrayList <Integer> positions = new ArrayList<Integer>();
         List <Integer> positionsPasse = deplacementPassePossible(carteChoisie);
@@ -380,9 +456,12 @@ public class Plateau extends Historique<Coup> implements Cloneable
         return coup;
 	}
 
-    public void majPlateau(Plateau p) {
-        this.joueurActif().setMain(p.joueurActif().getMain());
-        this.continuum = p.continuum;
+    public void majPlateau(Plateau plateau) {
+        plateau.joueurActif().setCristal(plateau.joueurActif().getNombreCristaux());
+        plateau.joueurInactif().setCristal(plateau.joueurInactif().getNombreCristaux());
+        deplacerSorcier(plateau.joueurActif().getPositionSorcier());
+        this.joueurActif().setMain(plateau.joueurActif().getMain());
+        this.continuum = plateau.continuum;
 	}
 
     @Override
