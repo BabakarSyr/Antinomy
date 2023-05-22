@@ -91,7 +91,7 @@ public class PlateauGraphique extends JComponent {
 				int y = debutContinuumY;
 				g2d.drawRect(x, y, largeurCarte, hauteurCarte-3);
 			}
-			repaint(); 
+		
 		}
 
 }
@@ -248,7 +248,7 @@ public class PlateauGraphique extends JComponent {
 		drawable.drawString("Joueur 1 : " + cristaux, longueur, hauteur*9);
 	}
 
-	/*void tracerMessage(){
+	void tracerMessage(){
 		String msg = c.infoPlateau();
 		if (joueurActif()){
 			int hauteurPrevisualisation = hauteurCarte/4;
@@ -266,7 +266,7 @@ public class PlateauGraphique extends JComponent {
 			drawable.setFont(fonte);
 			drawable.drawString(msg, longueur, hauteur);
 		}
-	}*/
+	}
 
 	// Trace les cartes d'un joueur
 	// mainOuverte : True si on veut voir le jeu du joueur
