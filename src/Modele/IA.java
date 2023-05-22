@@ -134,7 +134,7 @@ public abstract class IA implements Joueur
         return -1;
     }
 
-    public void initIA(Plateau p) throws CloneNotSupportedException
+    public void initIA(Plateau p)
     {
         this.r = new Random();
         this.jeu = new Jeu (p);
@@ -154,7 +154,7 @@ public abstract class IA implements Joueur
         calculPosInitiale();
     }
 
-    public int calculPosInitiale() throws CloneNotSupportedException
+    public int calculPosInitiale()
     {
         return this.plateau.positionsDepart().get(0);
     }
