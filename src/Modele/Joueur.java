@@ -29,5 +29,5 @@ public interface Joueur
     public ArrayList<Integer> joue();
     public Coup joueCoup();
     public boolean estIA();
-    public void initIA(Plateau p);
+    public void initIA(Plateau p) throws CloneNotSupportedException;
 }
