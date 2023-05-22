@@ -11,9 +11,9 @@ public class Plateau extends Historique<Coup> implements Cloneable
     //TODO remplacer joueur actif par un indice et creer une methode qui retourne le joueur actif: j1 ou j2
     public int joueurActif;
 
-    public Humain joueur1;
+    public Joueur joueur1;
     //public Humain joueur2;
-    public IAFacile joueur2;
+    public Joueur joueur2;
     ArrayList<Integer> positionsDepart;
 
     ArrayList<Carte> continuum=new ArrayList<>();
@@ -26,8 +26,21 @@ public class Plateau extends Historique<Coup> implements Cloneable
     public Plateau() {
         
         
-        joueur1=new Humain("manu");
-        //joueur2=new Humain();
+        joueur1=new IAFacile();
+        joueur2=new IAFacile();
+      
+        joueurActif = 1;
+        codex=new Codex(new Carte(null, null,0));
+    
+        initialiser();
+        joueur1.initIA(this);
+        joueur2.initIA(this);
+    }
+
+    public Plateau(String nomJoueur1) {
+        
+        
+        joueur1=new Humain(nomJoueur1);
         joueur2=new IAFacile();
       
         joueurActif = 1;
@@ -35,6 +48,18 @@ public class Plateau extends Historique<Coup> implements Cloneable
     
         initialiser();
         joueur2.initIA(this);
+    }
+
+    public Plateau(String nomJoueur1, String nomJoueur2) {
+        
+        
+        joueur1=new Humain(nomJoueur1);
+        joueur2=new Humain(nomJoueur2);
+      
+        joueurActif = 1;
+        codex=new Codex(new Carte(null, null,0));
+    
+        initialiser();
     }
    
 
@@ -80,8 +105,8 @@ public class Plateau extends Historique<Coup> implements Cloneable
             mainJoueur2.add(continuum.remove(0));
             
         }
-        joueur1.main=mainJoueur1;
-        joueur2.main=mainJoueur2;
+        joueur1.setMain(mainJoueur1);
+        joueur2.setMain(mainJoueur2);
         
         codex.setCarte(continuum.remove(continuum.size()-1));
         /*Couleur interdite au debut du jeu
