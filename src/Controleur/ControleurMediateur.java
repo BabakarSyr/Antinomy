@@ -99,6 +99,13 @@ public class ControleurMediateur implements CollecteurEvenements {
             */
         }
     }
+
+
+
+
+    public EtatJeu etatJeu(){
+        return etatJeu;
+    }
     
     public Coup creerCoup(int carteSelectionnee, int indiceCarteContinuum, int estFutur){
         return jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, estFutur);

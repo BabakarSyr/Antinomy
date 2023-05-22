@@ -1,6 +1,8 @@
 
 package Vue;
 
+import Modele.EtatJeu;
+
 public interface CollecteurEvenements {
     
     void clicSouris(int coupX, int coupY);
@@ -14,4 +16,5 @@ public interface CollecteurEvenements {
     String infoPlateau();
     void clicCarteMainAdverse();
     boolean joueurActif(int numJoueur);
+    public EtatJeu etatJeu();
 }

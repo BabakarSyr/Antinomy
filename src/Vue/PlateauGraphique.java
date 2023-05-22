@@ -12,6 +12,8 @@ import Modele.ZoneClic;
 import java.awt.*;
 import java.util.ArrayList;
 
+import Modele.EtatJeu;
+
 public class PlateauGraphique extends JComponent {
 	final boolean J1 = true;
 	final boolean J2 = false;
@@ -19,6 +21,7 @@ public class PlateauGraphique extends JComponent {
 	Point position;
 	ArrayList<Image> image;
 	Jeu jeu;
+	EtatJeu etatJeu;
 	int hauteurCarte, largeurCarte, 
 		debutContinuumX, debutContinuumY, finContinuumX, finContinuumY, hauteurContinuum, largeurContinuum,
 		debutMainJoueur1X, debutMainJoueur1Y, finMainJoueur1X, finMainJoueur1Y,
@@ -72,7 +75,7 @@ public class PlateauGraphique extends JComponent {
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
 	}
-	public void surbrillance(Graphics2D g2d ){
+	public void surbrillance(){
 
             
 		Carte carte = jeu.plateau().joueurActif().getMain().get(c.carteSelectionnee());
@@ -84,17 +87,38 @@ public class PlateauGraphique extends JComponent {
 			if (indiceCarteSurbrillance >= 0 && indiceCarteSurbrillance < jeu.plateau().getContinuum().size()) {
 				// Dessiner le halo de surbrillance autour de la carte
 			
-				g2d.setStroke(new BasicStroke(5));
-				g2d.setColor(Color.YELLOW);
+				drawable.setStroke(new BasicStroke(5));
+				drawable.setColor(Color.YELLOW);
 		
 				int x = indiceCarteSurbrillance * (largeurCarte)+6;
 				int y = debutContinuumY;
-				g2d.drawRect(x, y, largeurCarte, hauteurCarte-3);
+				drawable.drawRect(x, y, largeurCarte, hauteurCarte-3);
 			}
 		
 		}
 
-}
+	}
+
+	public void surbrillancePositionAccesibleSorcier(){
+		ArrayList <Integer>pos= jeu.plateau().positionsDepart();
+		for(int i = 0; i < pos.size(); i++){
+			indiceCarteSurbrillance = pos.get(i);
+			
+			if (indiceCarteSurbrillance >= 0 && indiceCarteSurbrillance < jeu.plateau().getContinuum().size()) {
+				// Dessiner le halo de surbrillance autour de la carte
+			
+				drawable.setStroke(new BasicStroke(5));
+				drawable.setColor(Color.YELLOW);
+		
+				int x = indiceCarteSurbrillance * (largeurCarte)+6;
+				int y = debutContinuumY;
+				drawable.drawRect(x, y, largeurCarte, hauteurCarte-3);
+			}
+			
+		}
+		
+
+	}
 
 
 	public void paintComponent(Graphics g) {
@@ -128,9 +152,15 @@ public class PlateauGraphique extends JComponent {
 			tracerMainJoueur(c.voirMainJoueurActif(), J2);
 		}
 
-		
+		//Si on est au debut du jeu, on affiche les cartes accessibles au sorcier
+		if(c.etatJeu() == EtatJeu.DEBUT_PARTIE){
+			surbrillancePositionAccesibleSorcier();
+		}
+	
+				
+	
 		if(c.carteSelectionnee() != -1){
-			surbrillance(drawable);
+			surbrillance();
 			
 		}
 	}
@@ -371,24 +401,6 @@ public class PlateauGraphique extends JComponent {
 		}
 		
 	}
-
-	public void surbrillanceCarte(int indiceCarteContinuum){
-       
-		if (indiceCarteContinuum >= 0 && indiceCarteContinuum < jeu.plateau().getContinuum().size()) {
-			// Dessiner le halo de surbrillance autour de la carte
-			Graphics2D g2d = (Graphics2D) getGraphics();
-			g2d.setStroke(new BasicStroke(5));
-			g2d.setColor(Color.YELLOW);
-	
-			int x = indiceCarteContinuum * (largeurCarte)+6;
-			int y = debutContinuumY;
-			g2d.drawRect(x, y, largeurCarte, hauteurCarte-3);
-		}
-	
-    }
-
-
-
 
 	boolean joueurActif(){
 		return jeu.joueurActif()==jeu.plateau().joueur1;
