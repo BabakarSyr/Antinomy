@@ -443,16 +443,15 @@ public class Plateau extends Historique<Coup> implements Cloneable
         return s;
     }
 
-    public Coup creerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
+    public Coup creerCoup(Plateau plateau) {
 
 		Coup coup = new Coup();
         System.out.println("ALLONS CREER NOTRE COUP !");
-        coup.creerCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe); 
+        coup.creerCoup(plateau); 
         return coup;
 	}
 
-    public Coup jouerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe) {
-        Coup coup = creerCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
+    public Coup jouerCoup(Coup coup) {
         if(coup != null){
             faire(coup);
         }
@@ -460,11 +459,12 @@ public class Plateau extends Historique<Coup> implements Cloneable
 	}
 
     public void majPlateau(Plateau plateau) {
-        plateau.joueurActif().setCristal(plateau.joueurActif().getNombreCristaux());
-        plateau.joueurInactif().setCristal(plateau.joueurInactif().getNombreCristaux());
-        deplacerSorcier(plateau.joueurActif().getPositionSorcier());
+        setJoueurActif(plateau.joueurActif);
+        joueurActif().setCristal(plateau.joueurActif().getNombreCristaux());
+        joueurInactif().setCristal(plateau.joueurInactif().getNombreCristaux());
+        joueurActif().setPositionSorcier(plateau.joueurActif().getPositionSorcier());
         this.joueurActif().setMain(plateau.joueurActif().getMain());
-        this.continuum = plateau.continuum;
+        this.continuum = plateau.getContinuum();
 	}
 
     @Override
@@ -504,6 +504,13 @@ public class Plateau extends Historique<Coup> implements Cloneable
         }
         System.out.println("valeur de la main :" + valeurMain);
         return valeurMain;
+    }
+    public boolean estVidePasse(){
+        return passe.estVide();
+    }
+
+    public boolean estVideFutur(){
+        return futur.estVide();
     }
 
 }

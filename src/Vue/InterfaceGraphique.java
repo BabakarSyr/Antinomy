@@ -25,7 +25,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	}	
 
 	public void run() {
-		menuPrincipal();
+		//menuPrincipal();
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("Ma fenetre a moi");
 		frame.setSize(1280, 720);
@@ -66,11 +66,11 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         gbc.insets = new Insets(0, 0, 0, 0);
 
         boutonHistoriqueArriere = new JButton("←");
-        //boutonHistoriqueArriere.addActionListener(new AdaptateurCommande(controleur, "Annuler"));
-        boutonHistoriqueArriere.setEnabled(false);
+        boutonHistoriqueArriere.addActionListener(new AdaptateurCommande(controleur, "Annuler"));
+        boutonHistoriqueArriere.setEnabled(true);
         boutonHistoriqueAvant = new JButton("→");
-        //boutonHistoriqueAvant.addActionListener(new AdaptateurCommande(controleur, "Refaire"));
-        boutonHistoriqueAvant.setEnabled(false);
+        boutonHistoriqueAvant.addActionListener(new AdaptateurCommande(controleur, "Refaire"));
+        boutonHistoriqueAvant.setEnabled(true);
         Container historiqueAvantArriere = Box.createHorizontalBox();
         historiqueAvantArriere.add(boutonHistoriqueArriere);
         historiqueAvantArriere.add(boutonHistoriqueAvant);
@@ -84,6 +84,9 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
 		// Ecoute des évènements liés à la souris dans l'AireDeDessin
 		plateauGraphique.addMouseListener(new AdaptateurSouris(plateauGraphique, controleur));
+
+		// Garde à jour l'interface graphique du controleur
+        controleur.interfaceGraphique(this);
 
 		// Un clic sur le bouton de fermeture clos l'application
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

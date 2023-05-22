@@ -215,7 +215,7 @@ public class PlateauGraphique extends JComponent {
 		tracerSorcier(continuum, true);
 		tracerSorcier(continuum, false);
 		tracerScore();
-		//tracerMessage();
+		tracerMessage();
 		
 	}
 

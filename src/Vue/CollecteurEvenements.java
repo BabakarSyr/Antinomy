@@ -17,4 +17,5 @@ public interface CollecteurEvenements {
     void clicCarteMainAdverse();
     boolean joueurActif(int numJoueur);
     public EtatJeu etatJeu();
+    void interfaceGraphique(InterfaceGraphique interfaceGraphique);
 }

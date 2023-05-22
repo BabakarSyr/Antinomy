@@ -354,11 +354,11 @@ public class Jeu
     }
 
     public void jouerCoup(Coup coup){
-        plateau.faire(coup);
+        plateau.jouerCoup(coup);
     }
 
-    public Coup creerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe){
-        return plateau.creerCoup(indiceCarteJouee, indiceContinuum, indiceParadoxe);
+    public Coup creerCoup(Plateau plateau){
+        return plateau.creerCoup(plateau);
     }
 
     public boolean peutAnnuler() {

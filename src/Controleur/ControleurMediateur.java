@@ -8,8 +8,9 @@ import Modele.Coup;
 import Modele.EtatJeu;
 import Modele.Jeu;
 import Modele.Joueur;
-
+import Modele.Plateau;
 import Vue.CollecteurEvenements;
+import Vue.InterfaceGraphique;
 
 
 public class ControleurMediateur implements CollecteurEvenements {
@@ -22,6 +23,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     int carteSelectionnee;
     boolean voirMainAdversaire, voirMainJoueurActif;
     Coup coup;
+    InterfaceGraphique interfaceGraphique;
  
     
     public ControleurMediateur(Jeu j) {
@@ -69,6 +71,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     void annule() {
         if(etatJeu != EtatJeu.DEBUT_PARTIE) {
             jeu.annuler();
+            interfaceGraphique.repaint();
             /*if(jeu.plateau().peutAnnuler()){
                 interfaceUtilisateur.setBoutonHistoriqueArriere(true);
             }else{
@@ -85,6 +88,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     void refaire() {
         if(etatJeu != EtatJeu.DEBUT_PARTIE) {
             jeu.refaire();
+            interfaceGraphique.repaint();
             /* 
             if(jeu.plateau().peutAnnuler()){
                 interfaceUtilisateur.setBoutonHistoriqueArriere(true);
@@ -107,8 +111,11 @@ public class ControleurMediateur implements CollecteurEvenements {
         return etatJeu;
     }
     
-    public Coup creerCoup(int carteSelectionnee, int indiceCarteContinuum, int estFutur){
-        return jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, estFutur);
+    public void interfaceGraphique(InterfaceGraphique i){
+        this.interfaceGraphique = i;
+    }
+    public Coup creerCoup(Plateau plateau){
+        return jeu.creerCoup(plateau);
     }
 
     public void jouerCoup(Coup coup){
@@ -119,8 +126,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
-    public void joue(int carteSelectionnee, int indiceCarteContinuum, int estFutur){
-        Coup coup = creerCoup(carteSelectionnee, indiceCarteContinuum, estFutur);
+    public void joue(Plateau plateau){
+        Coup coup = creerCoup(plateau);
         System.out.println("JAI BIEN CREE MON COUP!");
         jouerCoup(coup);
     }

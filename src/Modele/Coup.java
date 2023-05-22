@@ -38,12 +38,13 @@ public class Coup extends Commande{
         this.plateau = p;
     }
 
-    public void creerCoup(int indiceCarteJouee, int indiceContinuum, int indiceParadoxe){
-        this.indiceCarteJouee = indiceCarteJouee;
-        this.indiceCarteContinuum = indiceContinuum;
-        this.indiceParadoxe = indiceParadoxe;
-        //mainJoueur = plateau.joueurActif().getMain();
-        //continuum = plateau.getContinuum();
+    public void creerCoup(Plateau p){
+        try{
+            Plateau plateau = p.clone();
+            sequencePlateau.insereQueue(plateau);
+        }catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     @Override
