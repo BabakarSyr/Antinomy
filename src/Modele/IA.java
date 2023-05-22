@@ -311,37 +311,87 @@ public abstract class IA implements Joueur
         return score;
     }
 
-    public Noeud minimax(int profondeur, boolean maxJoueur, int alpha, int beta)
+    public Noeud minimax(Plateau p, int profondeur, int alpha, int beta, boolean maxJoueur) throws CloneNotSupportedException
     {
-        if (profondeur == 0)
+        if (profondeur == 0 || jeu.partieTerminee())
         {
-            return new Noeud(plateau, )
-                calculScore(), )
+            int score = calculScore();
+            return new Noeud(p.clone(), null, -1, score);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        if (profondeur == 0)
-        {
-            return;
-        }
+        ArrayList<ArrayList<Integer>> actionsPossibles = new ArrayList<>();
         for (Carte c : plateau.joueurActif().getMain())
         {
-            for (int pos : plateau.cartesAccessibles(c))
-            {
-                Plateau plateauClone = plateau.clone();
-                Joueur joueurClone = plateauClone.getJoueurParNom(jou)
-            }
+            actionsPossibles.add(p.cartesAccessibles(c));
         }
+
+        if (actionsPossibles.isEmpty())
+        {
+            int score = calculScore();
+            return new Noeud(p.clone(), null, -1, score);
+        }
+
+        Noeud noeudCour = new Noeud(p.clone(), null, -1, 0);
+        ArrayList<Noeud> fils = new ArrayList<>();
+        
+        if (maxJoueur)
+        {
+            int maxScore = Integer.MIN_VALUE;
+            for (ArrayList<Integer> e : actionsPossibles)
+            {
+                for (Integer i : e)
+                {
+                    Plateau nouvPlateau = p.clone();
+                    nouvPlateau.echangerCarte(actionsPossibles.indexOf(e), i);
+
+                    Noeud filsNoeud = minimax(nouvPlateau, profondeur - 1, alpha, beta, false);
+                    
+                    filsNoeud.setCarte(p.joueurActif().getMain().get(actionsPossibles.indexOf(e)));
+                    filsNoeud.setPositionJouee(i);
+                    
+                    fils.add(filsNoeud);
+
+                    maxScore = Math.max(maxScore, filsNoeud.getScore());
+                    alpha = Math.max(alpha, maxScore);
+                    
+                    if (beta <= alpha)
+                    {
+                        break;
+                    }
+                }
+            }
+            noeudCour.setScore(maxScore);
+        }
+        else
+        {
+            int minScore = Integer.MAX_VALUE;
+            for (ArrayList<Integer> e : actionsPossibles)
+            {
+                for (Integer i : e)
+                {
+                    Plateau nouvPlateau = p.clone();
+                    nouvPlateau.echangerCarte(actionsPossibles.indexOf(e), i);
+
+                    Noeud filsNoeud = minimax(nouvPlateau, profondeur - 1, alpha, beta, true);
+
+                    filsNoeud.setCarte(p.joueurActif().getMain().get(actionsPossibles.indexOf(e)));
+                    filsNoeud.setPositionJouee(i);
+
+                    fils.add(filsNoeud);
+
+                    minScore = Math.min(minScore, filsNoeud.getScore());
+                    beta = Math.min(beta, minScore);
+
+                    if (beta <= alpha)
+                    {
+                        break;
+                    }
+                }
+            }
+            noeudCour.setScore(minScore);
+        }
+
+        noeudCour.setFils(fils);
+        return noeudCour;
     }
 }
