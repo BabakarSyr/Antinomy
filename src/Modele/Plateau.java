@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import Global.Configuration;
+
 
 
 public class Plateau extends Historique<Coup> implements Cloneable
@@ -471,17 +473,24 @@ public class Plateau extends Historique<Coup> implements Cloneable
 	}
 
     @Override
-    public Plateau clone() throws CloneNotSupportedException
+    public Plateau clone()
     {
-        Plateau obj = new Plateau();//super.clone();
-        obj.setJoueurActif(this.joueurActif);
-        obj.joueur1 = new Humain(this.joueur1);
-        //obj.joueur2 = new Humain(this.joueur2);
-        obj.joueur2 = new IAFacile();
-        obj.positionsDepart = new ArrayList<>(this.positionsDepart);
-        obj.continuum = new ArrayList<>(this.getContinuum());
-        obj.codex = new Codex(this.codex.carte);
-        return obj;
+        try
+        {
+            Plateau res = (Plateau) super.clone();
+            res.setJoueurActif(this.joueurActif);
+            res.joueur1 = this.joueur1.clone();
+            res.joueur2 = this.joueur2.clone();
+            res.positionsDepart = new ArrayList<>(this.positionsDepart);
+            res.continuum = new ArrayList<>(this.continuum);
+            res.codex = this.codex.clone();
+            return res;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            Configuration.erreur("Bug interne, plateau non clonable");
+            return null;
+        }
     }
 
     public int valeurMain(Joueur j)

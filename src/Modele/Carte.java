@@ -1,4 +1,7 @@
 package Modele;
+
+import Global.Configuration;
+
 enum Forme {
    PLUME,
    ANNEAU,
@@ -7,7 +10,7 @@ enum Forme {
 }
 
 
-public class Carte {
+public class Carte implements Cloneable{
 
      Forme forme;
      Couleur couleur;
@@ -48,6 +51,23 @@ public class Carte {
         ", valeur=" + valeur +
         ", couleur=" + couleur.getCode( )  +
         '}';
+    }
+
+    public Carte clone()
+    {
+        try
+        {
+            Carte cloneCarte = (Carte) super.clone();
+            cloneCarte.forme = this.forme;
+            cloneCarte.couleur = this.couleur;
+            cloneCarte.valeur = this.valeur;
+            return cloneCarte;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            Configuration.erreur("Bug interne, carte non clonable");
+            return null;
+        }
     }
 
 }

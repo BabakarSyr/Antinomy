@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Humain implements Joueur{
+import Global.Configuration;
+
+public class Humain implements Joueur, Cloneable{
     String nom;
     ArrayList<Carte> main;
     int nombreCristaux;
@@ -167,6 +169,26 @@ public class Humain implements Joueur{
     public void initIA(Plateau p)
     {
 
+    }
+
+    @Override
+    public Joueur clone()
+    {
+        try
+        {
+            Joueur cloneJoueur = (Joueur) super.clone();
+            cloneJoueur.setNom(this.nom);
+            cloneJoueur.setMain(this.main);
+            cloneJoueur.setCristal(this.nombreCristaux);
+            cloneJoueur.setSensDuTemps(this.sensDuTemps);
+            cloneJoueur.setPositionSorcier(this.positionSorcier);
+            return cloneJoueur;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            Configuration.erreur("Bug interne, joueur humain non clonable");
+        }
+        return null;
     }
 
 

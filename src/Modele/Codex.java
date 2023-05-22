@@ -1,6 +1,9 @@
 package Modele;
 
-public class Codex {
+import Global.Configuration;
+
+public class Codex implements Cloneable
+{
      Couleur couleurInterdite;
      Carte carte;
 
@@ -60,6 +63,22 @@ public class Codex {
             case VIOLET:
                 this.couleurInterdite = Couleur.ROUGE;
                 break;
+        }
+    }
+
+    public Codex clone()
+    {
+        try
+        {
+            Codex cloneCodex = (Codex) super.clone();
+            cloneCodex.couleurInterdite = this.couleurInterdite;
+            cloneCodex.carte = this.carte.clone();
+            return cloneCodex;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            Configuration.erreur("Bug interne, codex non clonable");
+            return null;
         }
     }
 
