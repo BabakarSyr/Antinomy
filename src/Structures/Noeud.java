@@ -32,6 +32,16 @@ public class Noeud
         this.Score =  score;
     }
 
+    public void setCarte(Carte c)
+    {
+        this.carteJoue = c;
+    }
+
+    public void setPositionJouee(int pos)
+    {
+        this.positionJoue = pos;
+    }
+
     public Plateau getEtatPlateau()
     {
         return etat;
@@ -55,5 +65,10 @@ public class Noeud
     public void ajouterFils(Noeud n)
     {
         fils.add(n);
+    }
+
+    public void setFils (ArrayList<Noeud> a)
+    {
+        this.fils = a;
     }
 }
