@@ -6,11 +6,9 @@ import java.util.List;
 public interface Joueur
 {
     public int getNombreCristaux();
-    public void ajouterCristaux();
-   
-    public void ajouterCristaux(int nombreCristaux);
-    public void retirerCristaux();
-    public void retirerCristaux(int nombreCristaux);
+    
+    public void setCristal(int nb);
+    public void ajouterCristal(int nb);
     public boolean volerCristal(Joueur autreJoueur);
     public String getNom();
     public void setNom(String nom);

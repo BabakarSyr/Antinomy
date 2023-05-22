@@ -95,25 +95,15 @@ public abstract class IA implements Joueur
     {
         return this.nombreCristaux;
     }
-
-    public void ajouterCristaux()
-    {
-        this.nombreCristaux++;
-    }
    
-    public void ajouterCristaux(int nombreCristaux)
+    public void ajouterCristaux(int nb)
     {
-        this.nombreCristaux += nombreCristaux;
+        this.nombreCristaux += nb;
     }
 
-    public void retirerCristaux()
+    public void setCristal(int nb)
     {
-        this.nombreCristaux--;
-    }
-
-    public void retirerCristaux(int nombreCristaux)
-    {
-        this.nombreCristaux -= nombreCristaux;
+        this.nombreCristaux = nb;
     }
 
     public boolean volerCristal(Joueur autreJoueur)
@@ -121,9 +111,9 @@ public abstract class IA implements Joueur
         if (autreJoueur.getNombreCristaux() > 0)
         {
             //On ajoute un cristal au joueur actuel 
-            this.ajouterCristaux();
+            this.ajouterCristal(1);
             //on en retire un à l'autre joueur
-            autreJoueur.retirerCristaux();
+            autreJoueur.ajouterCristal(-1);
             return true;
         }
         else
