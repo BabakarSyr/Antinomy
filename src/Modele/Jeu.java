@@ -148,6 +148,26 @@ public class Jeu
         return plateau.cartesAccessibles(joueurActif().getMain().get(indiceCarteMain)).contains(indiceContinuum);
     }
 
+
+
+
+    //Stocker toutes les positions des cartes ou il est possible de placer son paradoxe
+    public ArrayList<Integer> positionsParadoxe(){
+        ArrayList<Integer> positionsParadoxe=new ArrayList<Integer>();
+       
+            if(estPossibleEchangerParadoxe(true)){
+                positionsParadoxe.add(joueurActif().getPositionSorcier()+1);
+                positionsParadoxe.add(joueurActif().getPositionSorcier()+2);
+                positionsParadoxe.add(joueurActif().getPositionSorcier()+3);
+            }
+            if(estPossibleEchangerParadoxe(false)){
+                positionsParadoxe.add(joueurActif().getPositionSorcier()-1);
+                positionsParadoxe.add(joueurActif().getPositionSorcier()-2);
+                positionsParadoxe.add(joueurActif().getPositionSorcier()-3);
+            }
+        return positionsParadoxe;
+  
+    }
     public boolean estPossibleEchangerParadoxe(int indiceContinuum){
         int sorcier=joueurActif().getPositionSorcier();
             if(indiceContinuum>sorcier){

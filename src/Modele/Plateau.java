@@ -300,6 +300,7 @@ public class Plateau extends Historique<Coup> implements Cloneable
         return memeCouleur || memeForme || memeValeur;
     }
 
+        //le futur est a droite du sorcier et le passé a gauche
     public boolean estPossibleEchangerParadoxe(boolean futur){
         int sorcier=joueurActif().getPositionSorcier();
         if(futur){

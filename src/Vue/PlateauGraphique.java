@@ -75,25 +75,28 @@ public class PlateauGraphique extends JComponent {
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
 	}
-	public void surbrillance(){
 
-            
+	public void haloJaune(){
+		if (indiceCarteSurbrillance >= 0 && indiceCarteSurbrillance < jeu.plateau().getContinuum().size()) {
+			// Dessiner le halo de surbrillance autour de la carte
+		
+			drawable.setStroke(new BasicStroke(5));
+			drawable.setColor(Color.YELLOW);
+	
+			int x = indiceCarteSurbrillance * (largeurCarte)+6;
+			int y = debutContinuumY;
+			drawable.drawRect(x, y, largeurCarte, hauteurCarte-3);
+		}
+	}
+
+
+	public void surbrillance(){
 		Carte carte = jeu.plateau().joueurActif().getMain().get(c.carteSelectionnee());
 		ArrayList<Integer> cartesAccessibles = jeu.plateau().cartesAccessibles(carte);
 		//Mettre en surbrillance les cartes accessibles
 		for(int i = 0; i < cartesAccessibles.size(); i++){
 			indiceCarteSurbrillance = cartesAccessibles.get(i);
-			
-			if (indiceCarteSurbrillance >= 0 && indiceCarteSurbrillance < jeu.plateau().getContinuum().size()) {
-				// Dessiner le halo de surbrillance autour de la carte
-			
-				drawable.setStroke(new BasicStroke(5));
-				drawable.setColor(Color.YELLOW);
-		
-				int x = indiceCarteSurbrillance * (largeurCarte)+6;
-				int y = debutContinuumY;
-				drawable.drawRect(x, y, largeurCarte, hauteurCarte-3);
-			}
+			haloJaune();
 		
 		}
 
@@ -103,21 +106,19 @@ public class PlateauGraphique extends JComponent {
 		ArrayList <Integer>pos= jeu.plateau().positionsDepart();
 		for(int i = 0; i < pos.size(); i++){
 			indiceCarteSurbrillance = pos.get(i);
-			
-			if (indiceCarteSurbrillance >= 0 && indiceCarteSurbrillance < jeu.plateau().getContinuum().size()) {
-				// Dessiner le halo de surbrillance autour de la carte
-			
-				drawable.setStroke(new BasicStroke(5));
-				drawable.setColor(Color.YELLOW);
-		
-				int x = indiceCarteSurbrillance * (largeurCarte)+6;
-				int y = debutContinuumY;
-				drawable.drawRect(x, y, largeurCarte, hauteurCarte-3);
-			}
+			haloJaune();
 			
 		}
 		
+	}
 
+	//Mettre en surbrillance  la carte selectionnée lorsque l'on fait un paradoxe
+	public void surbrillanceParadoxe(){
+		ArrayList<Integer>pos=jeu.positionsParadoxe();
+		for(int i = 0; i < pos.size(); i++){
+			indiceCarteSurbrillance = pos.get(i);
+			haloJaune();
+		}
 	}
 
 
@@ -155,6 +156,9 @@ public class PlateauGraphique extends JComponent {
 		//Si on est au debut du jeu, on affiche les cartes accessibles au sorcier
 		if(c.etatJeu() == EtatJeu.DEBUT_PARTIE){
 			surbrillancePositionAccesibleSorcier();
+		}
+		if(c.etatJeu()==EtatJeu.PARADOXE){
+			surbrillanceParadoxe();	
 		}
 	
 				
