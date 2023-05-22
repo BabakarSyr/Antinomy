@@ -52,6 +52,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public boolean commande(String commande) {
         switch (commande) {
+            
             case "Quitter":
                 System.exit(0);
                 break;
@@ -62,6 +63,10 @@ public class ControleurMediateur implements CollecteurEvenements {
                 refaire();
                 break;
             case "MenuPrincipal":
+                interfaceGraphique.afficherPanel("MenuPrincipal");
+            case "Plateau":
+                interfaceGraphique.afficherPanel("Plateau");
+                break;
             default:
                 return false;
         }
