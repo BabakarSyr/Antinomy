@@ -114,6 +114,25 @@ public class PlateauGraphique extends JComponent {
 		}
 	}
 
+	public void tracerMessageParadoxe(){
+		surbrillanceMain();
+	}
+
+	public void surbrillanceMain(){
+		int x,y;
+		if(joueurActif()){
+			x = debutMainJoueur1X;
+			y = debutMainJoueur1Y;
+		}else{
+			x = debutMainJoueur2X;
+			y = debutMainJoueur2Y;
+		}
+		// Dessiner le halo de surbrillance autour de la carte
+		drawable.setStroke(new BasicStroke(5));
+		drawable.setColor(Color.YELLOW);
+		drawable.drawRect(x, y, largeurCarte*3, hauteurCarte);
+	}
+
 	public void surbrillancePositionAccesibleSorcier(){
 		ArrayList <Integer>pos= jeu.plateau().positionsDepart();
 		for(int i = 0; i < pos.size(); i++){
@@ -157,6 +176,12 @@ public class PlateauGraphique extends JComponent {
 
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
+
+		if(c.etatJeu()==EtatJeu.PARADOXE){
+			tracerMessageParadoxe();
+			surbrillanceParadoxe();	
+		}
+
 		if (duelEgaliteJ1 != -1 && duelEgaliteJ2 != -1)
 		{
 			tracerDuelEgalite(duelEgaliteJ1, duelEgaliteJ2);
@@ -175,12 +200,7 @@ public class PlateauGraphique extends JComponent {
 		//Si on est au debut du jeu, on affiche les cartes accessibles au sorcier
 		if(c.etatJeu() == EtatJeu.DEBUT_PARTIE){
 			surbrillancePositionAccesibleSorcier();
-		}
-		if(c.etatJeu()==EtatJeu.PARADOXE){
-			surbrillanceParadoxe();	
-		}
-	
-				
+		}		
 	
 		if(c.carteSelectionnee() != -1){
 			surbrillance();
@@ -379,10 +399,10 @@ public class PlateauGraphique extends JComponent {
 
 			debutMainJoueur1X = 3*largeurCarte;
 			finMainJoueur1X = 6*largeurCarte;
-			debutMainJoueur1Y = height-hauteurCarte;
+			debutMainJoueur1Y = (height*98/100)-hauteurCarte;
 			finMainJoueur1Y = height;
 			XDepart = debutMainJoueur1X;
-			YDepart = debutMainJoueur1Y-20;
+			YDepart = debutMainJoueur1Y;
 
 			hauteurPrevisualisation = hauteurCarte/4;
 			main = jeu.plateau().getJoueur(1).getMain();
@@ -391,10 +411,10 @@ public class PlateauGraphique extends JComponent {
 			debutMainJoueur2X = 3*largeurCarte;
 			finMainJoueur2X = 6*largeurCarte;
 
-			debutMainJoueur2Y = 0;
+			debutMainJoueur2Y = height*2/100;
 			finMainJoueur2Y = hauteurCarte;
 			XDepart = debutMainJoueur2X;
-			YDepart = debutMainJoueur2Y+20;
+			YDepart = debutMainJoueur2Y;
 
 			hauteurPrevisualisation = -(hauteurCarte/4);
 			main = jeu.plateau().getJoueur(2).getMain();
