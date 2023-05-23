@@ -275,12 +275,14 @@ public class PlateauGraphique extends JComponent {
 	void tracerScore() {
 		int cristaux = jeu.plateau().joueur1.getNombreCristaux();
 		int cristaux2 = jeu.plateau().joueur2.getNombreCristaux();
+		String nomJ1 = jeu.plateau().joueur1.getNom();
+		String nomJ2 = jeu.plateau().joueur2.getNom();
 		int hauteur=getHeight()/10;
 		int longueur=getWidth()/8*5;
 		Font fonte = new Font("Serif", Font.BOLD, getHeight()/35);
         drawable.setFont(fonte);
-		drawable.drawString("Joueur 2 : " + cristaux2, longueur, hauteur);
-		drawable.drawString("Joueur 1 : " + cristaux, longueur, hauteur*9);
+		drawable.drawString(nomJ1+" : " + cristaux2, longueur, hauteur);
+		drawable.drawString(nomJ2+" : " + cristaux, longueur, hauteur*9);
 	}
 
 	void tracerMessage(){

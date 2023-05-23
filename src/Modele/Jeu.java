@@ -8,7 +8,7 @@ public class Jeu{
     
     public Jeu()
     {
-		this.plateau = new Plateau("bob");
+		this.plateau = new Plateau("bob", "marley");
     }
 
     public Jeu(Plateau p)
@@ -304,9 +304,6 @@ public class Jeu{
         Joueur j1 = plateau.joueurActif();
         Joueur j2 = plateau.joueurInactif();
         // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
-                        
-        j1.melangerMain();
-        j2.melangerMain();
 
         Carte carteJoueur1 = j1.getMain().get(indiceCarteJ1);
         Carte carteJoueur2 = j2.getMain().get(indicieCarteJ2);

@@ -3,6 +3,8 @@ package Controleur;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Modele.Coup;
 import Modele.EtatJeu;
@@ -24,6 +26,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     boolean voirMainAdversaire, voirMainJoueurActif;
     InterfaceGraphique interfaceGraphique;
     Plateau plateauDebutTour;
+    Timer timer;
  
     
     public ControleurMediateur(Jeu j) {
@@ -35,6 +38,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         voirMainJoueurActif = true;
         random = new Random();
         plateauDebutTour = jeu.plateau().clone();
+        timer = new Timer();
 	}
 
     public void init(){
@@ -179,16 +183,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             case DUEL:
                 break;
             case DUEL_EGALITE:
-                int indiceAdversaire = random.nextInt(3);
-                Joueur joueur = jeu.duelEgalite(indiceCarte, indiceAdversaire);
-                if(joueur!= null){
-                    infoPlateau = joueur.getNom() + " à remporté le duel !";
-                }
-                else{
-                    infoPlateau = "Egalité le jeu continue !";
-                }
-                changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                changerTour();
                 break;
             case DEBUT_PARTIE:
                 break;
@@ -200,19 +194,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void clicCarteMainAdverse( ) {
         switch(etatJeu){
             case DUEL:
-                voirMainAdversaire = true;
-                Joueur joueur = jeu.duel();
-                if(joueur != null){
-                    infoPlateau = joueur.getNom() + " à remporté le duel !";
-                    changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                    changerTour();
-                }
-                else{
-                    infoPlateau = "Egalité selectionnez une carte pour départager !";
-                    changerEtatJeu(EtatJeu.DUEL_EGALITE);
-                    voirMainJoueurActif = false;
-                    voirMainAdversaire = false;
-                }
                 break;
             case DUEL_EGALITE:
                 break;
@@ -238,10 +219,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteSelectionnee = -1;
                     }
                     else if(jeu.estDuel()){
-                        changerEtatJeu(EtatJeu.DUEL);
-                        infoPlateau = "";
                         carteSelectionnee = -1;
-                        voirMainAdversaire = false;
+                        infoPlateau = "duel!";
+                        duel();
                     }else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
@@ -259,7 +239,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jeu.paradoxe(indiceCarteContinuum);
                     if(jeu.estDuel()){
                         changerEtatJeu(EtatJeu.DUEL);
-                        infoPlateau = "Duel ! Cliquez pour voir la main de l'adversaire.";
+                        carteSelectionnee = -1;
+                        infoPlateau = "duel!";
+                        duel();
                     }
                     else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
@@ -289,19 +271,27 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     private void changerTour( ) {
-        joue(plateauDebutTour);
-        jeu.plateau().changerJoueurActif();
-        if (estTourIA())
+        if(!jeu.partieTerminee())
         {
-            //tourIA (jeu.joueurActif().joue());
-            tourIA (jeu.joueurActif().joueCoup());
+            joue(plateauDebutTour);
+            jeu.plateau().changerJoueurActif();
+            if (estTourIA())
+            {
+                tourIA (jeu.joueurActif().joueCoup());
+            }
+            else
+            {
+                voirMainJoueurActif=true;
+                voirMainAdversaire=false;
+            }
+            plateauDebutTour = jeu.plateau().clone();
         }
         else
         {
-            voirMainJoueurActif=true;
-            //voirMainAdversaire=false;
+            changerEtatJeu(EtatJeu.FIN_PARTIE);
+            infoPlateau = "VICTOIRE !!!!!!";
         }
-        plateauDebutTour = jeu.plateau().clone();
+
     }
 
     public int carteSelectionnee(){
@@ -347,32 +337,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         
     }
 
-    //joue le tour de l'IA
-    public void tourIA (ArrayList<Integer> coupIA )
-    {
-        if(coupIA==null)
-        {
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\nla liste de coups est vide grosse banane\n\n\n\n\n\n\n\n\n\n\n\n");
-            return;
-        }
-        if (etatJeu == EtatJeu.DEBUT_PARTIE)
-        {
-            clicCarteContinuum(coupIA.get(0));
-            System.out.println("sorcier du joueur "+ jeu.plateau().joueurActif +" a la position"+jeu.plateau().joueurActif().getPositionSorcier());
-
-        }
-        else
-        {
-            voirMainJoueurActif = false;
-            clicCarteMain(coupIA.get(0));
-            clicCarteContinuum(coupIA.get(1));
-            if (coupIA.size()>2)
-            {
-                clicCarteContinuum(coupIA.get(2));
-            }
-        }
-    }
-
     public void tourIA (Coup coupIA )
     {
         if (etatJeu == EtatJeu.DEBUT_PARTIE)
@@ -396,4 +360,52 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.joueurActif().estIA();
     }
 
+    public void duel()
+    {
+        TimerTask finTour = new TimerTask() {
+            @Override
+            public void run()
+            {
+                changerEtatJeu(EtatJeu.DEBUT_TOUR);
+                changerTour();
+                voirMainJoueurActif = true;
+                voirMainAdversaire = false;
+                interfaceGraphique.miseAjour();
+            }
+        };
+
+        voirMainJoueurActif = true;
+        voirMainAdversaire = true;
+        Joueur joueur = jeu.duel();
+        if(joueur != null){
+            String resultatDuel;
+            if (joueur==jeu.plateau.joueur1)
+            {
+                resultatDuel = "vainqueur: "+joueur.getNom()+" "+jeu.plateau.valeurMain(joueur)+"points / perdant: "+jeu.plateau.joueur2.getNom()+" "+jeu.plateau.valeurMain(jeu.plateau.joueur2)+"points";
+            }
+            else
+            {
+                resultatDuel = "vainqueur: "+joueur.getNom()+" "+jeu.plateau.valeurMain(joueur)+"points / perdant: "+jeu.plateau.joueur1.getNom()+" "+jeu.plateau.valeurMain(jeu.plateau.joueur1)+"points";
+            }
+            infoPlateau = resultatDuel;
+            timer.schedule(finTour, 3000);
+        }
+        else{
+            infoPlateau = "Egalité une carte va etre tiree au hasard";
+            changerEtatJeu(EtatJeu.DUEL_EGALITE);
+
+            int indiceAdversaire = random.nextInt(3);
+            int indiceJoueurActif = random.nextInt(3);
+            //TODO ajouter une methode pour afficher duel egalite
+            //interfaceGraphique.duelEgalite(indiceJoueurActif, indiceAdversaire);
+            joueur = jeu.duelEgalite(indiceJoueurActif, indiceAdversaire);
+            if(joueur!= null){
+                infoPlateau = joueur.getNom() + " à remporté le duel !";
+            }
+            else{
+                infoPlateau = "Egalité le jeu continue !";
+            }
+            timer.schedule(finTour, 4000);
+        }
+    }
 }
