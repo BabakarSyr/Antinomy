@@ -41,20 +41,15 @@ public class AdaptateurSourisMouvement implements MouseMotionListener {
 			case CONTINUUM:
 				break;
 			case MAIN_JOUEUR_1:
-				//Jouer une carte
-				System.out.println("clic MAIN_JOUEUR_1");
+				System.out.println("MAIN_JOUEUR_1");
                 survolMain(c.joueurActif(1), ZoneClic.MAIN_JOUEUR_1);
-				//plateauGraphique.repaint();
 				break;
 			case MAIN_JOUEUR_2:
-				//Jouer une carte
-				System.out.println("clic MAIN_JOUEUR_2");
+				System.out.println("MAIN_JOUEUR_2");
                 survolMain(c.joueurActif(2), ZoneClic.MAIN_JOUEUR_2);
-				//plateauGraphique.repaint();
 				break;
 			default:
                 plateauGraphique.setEstZoneMainAdverse(false);
-				System.out.println("X=" + positionSourisX + " Y=" +positionSourisY);
 				break;
 		};
     }
@@ -65,7 +60,6 @@ public class AdaptateurSourisMouvement implements MouseMotionListener {
             plateauGraphique.setEstZoneMainAdverse(false);
 			indiceCarte = plateauGraphique.getCarte(zone);
 			System.out.println("carte " + indiceCarte);
-			//c.clicCarteMain(indiceCarte);
 		}else{
             plateauGraphique.setEstZoneMainAdverse(true);
 		}
@@ -78,3 +72,4 @@ public class AdaptateurSourisMouvement implements MouseMotionListener {
         
     }
 }
+

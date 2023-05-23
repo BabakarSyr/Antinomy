@@ -87,6 +87,9 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "Plateau":
                 interfaceGraphique.afficherPanel("Plateau");
                 break;
+            case "ParametrePartie":
+                interfaceGraphique.afficherPanel("ParametrePartie");
+                break;
             default:
                 return false;
         }
@@ -98,16 +101,9 @@ public class ControleurMediateur implements CollecteurEvenements {
             jeu.annuler();
             interfaceGraphique.miseAjour();
             plateauDebutTour = jeu.plateau().clone();
-            /*if(jeu.plateau().peutAnnuler()){
-                interfaceUtilisateur.setBoutonHistoriqueArriere(true);
-            }else{
-                interfaceUtilisateur.setBoutonHistoriqueArriere(false);
-            }
-            if(jeu.plateau().peutRefaire()){
-                interfaceUtilisateur.setBoutonHistoriqueAvant(true);
-            }else{
-                interfaceUtilisateur.setBoutonHistoriqueAvant(false);
-            }*/
+
+            interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
+            interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
         }
     }
 
@@ -116,18 +112,9 @@ public class ControleurMediateur implements CollecteurEvenements {
             jeu.refaire();
             interfaceGraphique.miseAjour();
             plateauDebutTour = jeu.plateau().clone();
-            /* 
-            if(jeu.plateau().peutAnnuler()){
-                interfaceUtilisateur.setBoutonHistoriqueArriere(true);
-            }else{
-                interfaceUtilisateur.setBoutonHistoriqueArriere(false);
-            }
-            if(jeu.plateau().peutRefaire()){
-                interfaceUtilisateur.setBoutonHistoriqueAvant(true);
-            }else{
-                interfaceUtilisateur.setBoutonHistoriqueAvant(false);
-            }
-            */
+            
+            interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
+            interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
         }
     }
 
@@ -237,7 +224,11 @@ public class ControleurMediateur implements CollecteurEvenements {
             case PARADOXE:
                 if(jeu.estPossibleEchangerParadoxe(indiceCarteContinuum)){
                     jeu.paradoxe(indiceCarteContinuum);
-                    if(jeu.estDuel()){
+                    if(jeu.partieTerminee()){
+                        changerEtatJeu(EtatJeu.FIN_PARTIE);
+                        infoPlateau = jeu.nomVainqueur()+ " REMPORTE LA PARTIE !";
+                    }
+                    else if(jeu.estDuel()){
                         changerEtatJeu(EtatJeu.DUEL);
                         carteSelectionnee = -1;
                         infoPlateau = "duel!";
@@ -271,27 +262,18 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     private void changerTour( ) {
-        if(!jeu.partieTerminee())
+        joue(plateauDebutTour);
+        jeu.plateau().changerJoueurActif();
+        if (estTourIA())
         {
-            joue(plateauDebutTour);
-            jeu.plateau().changerJoueurActif();
-            if (estTourIA())
-            {
-                tourIA (jeu.joueurActif().joueCoup());
-            }
-            else
-            {
-                voirMainJoueurActif=true;
-                voirMainAdversaire=false;
-            }
-            plateauDebutTour = jeu.plateau().clone();
+            tourIA (jeu.joueurActif().joueCoup());
         }
         else
         {
-            changerEtatJeu(EtatJeu.FIN_PARTIE);
-            infoPlateau = "VICTOIRE !!!!!!";
+            voirMainJoueurActif=true;
+            voirMainAdversaire=false;
         }
-
+        plateauDebutTour = jeu.plateau().clone();
     }
 
     public int carteSelectionnee(){

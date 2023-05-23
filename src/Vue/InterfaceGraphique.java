@@ -25,6 +25,12 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	ImageJeu menuBackground;
 	JFrame frame;
 
+	MenuGraphique panelParametrePartie;
+	JTextField nomJoueur1Defaut, nomJoueur2Defaut;
+	JComboBox comboBoxJoueur1, comboBoxJoueur2;
+	JRadioButton radioJoueur1, radioJoueur2, radioAleatoire;
+	JButton boutonValiderParametre, boutonAnnulerParametre;
+
 	public InterfaceGraphique(Jeu j, CollecteurEvenements c){
 		jeu = j;
 		controleur = c;
@@ -49,6 +55,8 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 			panelCourant.add(panelMenuPrincipal, "MenuPrincipal");
 			creerPlateauGraphique();
 			panelCourant.add(plateauGraphique, "Plateau");
+			creerParametrePartie();
+			panelCourant.add(panelParametrePartie, "ParametrePartie");
 		}catch (IOException e) {
             Configuration.instance().logger().severe("Erreur d'affichage des menus !!!");
             e.printStackTrace();
@@ -88,7 +96,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	
 		JButton boutonPersonnalise= new JButton("Partie personnalise");
 		boutonPersonnalise.setPreferredSize(new Dimension(250, 60));
-		boutonPersonnalise.addActionListener(new AdaptateurCommande(controleur, "Plateau"));
+		boutonPersonnalise.addActionListener(new AdaptateurCommande(controleur, "ParametrePartie"));
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		panelMenuPrincipal.add(boutonPersonnalise, gbc);
@@ -167,6 +175,134 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		plateauGraphique.addMouseMotionListener(new AdaptateurSourisMouvement(plateauGraphique, controleur));
 	}
 
+	public void creerParametrePartie() throws IOException{
+
+        int borderTop = getSize().height / 3;
+        int borderBottom = getSize().height / 3;
+        int borderSides = getSize().width / 3;
+
+        panelParametrePartie = new MenuGraphique(controleur);
+        panelParametrePartie.setLayout(new GridBagLayout());
+        panelParametrePartie.setBorder(new EmptyBorder(borderTop, borderSides, borderBottom, borderSides));
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        String[] choixComboBox = {
+            "Humain",
+            "IA facile",
+            "IA normale",
+            "IA difficile"
+        };
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.33;
+        gbc.insets = new Insets(10,0,0,10);  //top padding
+
+        JLabel nomJoueur1 = new JLabel("Joueur Gauche");
+        gbc.gridx = 0;
+        gbc.gridy = 0;  
+        panelParametrePartie.add(nomJoueur1, gbc);
+
+        gbc.ipady = 10;
+        nomJoueur1Defaut = new JTextField(20);
+        gbc.gridx = 0;
+        gbc.gridy = 1;  
+        nomJoueur1Defaut.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 15));
+        nomJoueur1Defaut.setText("Joueur 1");
+        panelParametrePartie.add(nomJoueur1Defaut, gbc);
+
+        comboBoxJoueur1 = new JComboBox<>();
+        for(int i = 0; i < choixComboBox.length; i++){
+            comboBoxJoueur1.addItem(choixComboBox[i]);
+        }
+        comboBoxJoueur1.setFocusable(false);
+        comboBoxJoueur1.addActionListener(new AdaptateurCommande(controleur, comboBoxJoueur1.getSelectedItem().toString()));
+        
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panelParametrePartie.add(comboBoxJoueur1, gbc);
+
+        gbc.gridwidth = 2;
+
+        ButtonGroup G1 = new ButtonGroup();
+
+        radioJoueur1 = new JRadioButton("Joueur gauche commence", false);
+        radioJoueur1.setContentAreaFilled(false);
+        radioJoueur1.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 12));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        G1.add(radioJoueur1);
+        panelParametrePartie.add(radioJoueur1, gbc);
+
+        radioJoueur2 = new JRadioButton("Joueur droit commence", false);
+        radioJoueur2.setContentAreaFilled(false);
+        radioJoueur2.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 12));
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        G1.add(radioJoueur2);
+        panelParametrePartie.add(radioJoueur2, gbc);
+
+        radioAleatoire = new JRadioButton("Choix aléatoire", true);
+        radioAleatoire.setContentAreaFilled(false);
+        radioAleatoire.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 12));
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        G1.add(radioAleatoire);
+        panelParametrePartie.add(radioAleatoire, gbc);
+
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(10,30,0,0);  //padding elements Joueur2
+
+        gbc.ipady = 0;
+        JLabel nomJoueurDroite = new JLabel("Joueur Droite");
+        gbc.gridx = 1;
+        gbc.gridy = 0; 
+        panelParametrePartie.add(nomJoueurDroite, gbc);
+
+        gbc.ipady = 10;
+        nomJoueur2Defaut = new JTextField();
+        gbc.gridx = 1;
+        gbc.gridy = 1;  
+        nomJoueur2Defaut.setText("Joueur 2");
+        nomJoueur2Defaut.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 15));
+        panelParametrePartie.add(nomJoueur2Defaut, gbc);
+
+
+        comboBoxJoueur2 = new JComboBox<>();
+        for(int i = 0; i < choixComboBox.length; i++){
+            comboBoxJoueur2.addItem(choixComboBox[i]);
+        }
+        comboBoxJoueur2.setFocusable(false);
+        comboBoxJoueur2.setSelectedIndex(3);
+        comboBoxJoueur2.addActionListener(new AdaptateurCommande(controleur, comboBoxJoueur2.getSelectedItem().toString()));
+        
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        panelParametrePartie.add(comboBoxJoueur2, gbc);
+
+        gbc.insets = new Insets(30,0,0,0); 
+        gbc.gridx = 0;
+        gbc.gridy = 6; 
+
+        gbc.gridx = 1;
+        boutonAnnulerParametre = new JButton("Annuler");
+        boutonAnnulerParametre.addActionListener(new AdaptateurCommande(controleur, "MenuPrincipal"));
+        boutonAnnulerParametre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelParametrePartie.add(boutonAnnulerParametre, gbc);
+
+		boutonValiderParametre = new JButton("Valider");
+        boutonValiderParametre.addActionListener(new AdaptateurCommande(controleur, "Valider"));
+        boutonValiderParametre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelParametrePartie.add(boutonValiderParametre, gbc);
+    }
+
+    public void setBoutonHistoriqueAnnuler(boolean peutAnnuler) {
+        boutonHistoriqueArriere.setEnabled(peutAnnuler);
+    }
+
+    public void setBoutonHistoriqueRefaire(boolean peutRefaire) {
+        boutonHistoriqueAvant.setEnabled(peutRefaire);
+    }
+	
     public void afficherPanel(String nom) {
 		layout.show(panelCourant, nom);
     }
