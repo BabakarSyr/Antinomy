@@ -44,7 +44,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	public void run() {
 		//menuPrincipal();
 		// Creation d'une fenetre
-		frame = new JFrame("Ma fenetre a moi");
+		frame = new JFrame("Antinomy");
 		frame.setSize(1280, 720);
 
 		layout = new CardLayout();
@@ -134,6 +134,13 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		JMenuItem boutonMenuPrincipal = new JMenuItem("Menu principal");
 		boutonMenuPrincipal.addActionListener(new AdaptateurCommande(controleur, "MenuPrincipal"));
 
+
+        // Ajout bouton paramètre
+		Icon icon = new ImageIcon("res/Images/rouage.png");
+		JButton opt = new JButton(icon);
+		opt.setPreferredSize(new Dimension(50, 50)); 
+
+
 		//menu.add(boutonReprendre);
 		menu.add(boutonRecommencer);
 		//menu.add(boutonSauvegarder);
@@ -152,9 +159,20 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
         //boutonOptionsJeu.addActionListener(new AdaptateurCommande(controleur, "OptionsJeu"));
         plateauGraphique.add(menubar, gbc);
+
+        Container parametreMenu = Box.createHorizontalBox();
+		parametreMenu.add(opt);
+        parametreMenu.add(menubar);
+        
+        Container paramBox = Box.createVerticalBox();
+        paramBox.add(parametreMenu);
+        plateauGraphique.add(paramBox, gbc);
+
 		gbc.gridy++;
         gbc.anchor = GridBagConstraints.SOUTHWEST;
         gbc.insets = new Insets(0, 0, 0, 0);
+
+
 
         boutonHistoriqueArriere = new JButton("←");
         boutonHistoriqueArriere.addActionListener(new AdaptateurCommande(controleur, "Annuler"));
