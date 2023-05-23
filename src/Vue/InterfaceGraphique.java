@@ -66,31 +66,48 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
 	public void creerMenuPrincipal() throws IOException {
 
-        int borderTop = getSize().height / 6;
-        int borderBottom = getSize().height / 8;
-        int borderSides = getSize().width / 3;
-
-        panelMenuPrincipal = new MenuGraphique(controleur);
-        panelMenuPrincipal.setLayout(new GridBagLayout());
-        panelMenuPrincipal.setBorder(new EmptyBorder(borderTop, borderSides, borderBottom, borderSides));
-        GridBagConstraints gbc = new GridBagConstraints();
-
-		//panelMenuPrincipal.getGraphics().drawImage(getIconImage(), borderSides, borderTop, borderBottom, borderSides, getForeground(), rootPane);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(20, 10, 10, 10);
-
-        gbc.weighty = 0.2;
-        JButton boutonJouer = new JButton("Jouer");
-        boutonJouer.addActionListener(new AdaptateurCommande(controleur, "Plateau"));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panelMenuPrincipal.add(boutonJouer, gbc);
-
-        JButton boutonQuitter = new JButton("Quitter");
-        boutonQuitter.addActionListener(new AdaptateurCommande(controleur, "Quitter"));
-        gbc.gridy++;
-        panelMenuPrincipal.add(boutonQuitter, gbc);
-
+		panelMenuPrincipal = new MenuGraphique(controleur);
+		panelMenuPrincipal.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+	
+		//panelMenuPrincipal.setLayout(new GridLayout(9,3));
+		
+		gbc.insets = new Insets(20, 10, 10, 10);
+	
+		gbc.weightx=2;
+		gbc.weighty=8;
+	
+		//gbc.weighty = 0.2;
+		JButton boutonRapide = new JButton("Partie rapide");
+		//gbc.gridwidth = 3;
+		boutonRapide.setPreferredSize(new Dimension(250, 60));
+		boutonRapide.addActionListener(new AdaptateurCommande(controleur, "Plateau"));
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		panelMenuPrincipal.add(boutonRapide, gbc);
+	
+		JButton boutonPersonnalise= new JButton("Partie personnalise");
+		boutonPersonnalise.setPreferredSize(new Dimension(250, 60));
+		boutonPersonnalise.addActionListener(new AdaptateurCommande(controleur, "Plateau"));
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		panelMenuPrincipal.add(boutonPersonnalise, gbc);
+	
+		JButton boutonParametre = new JButton("Regles");
+		boutonParametre.setPreferredSize(new Dimension(250, 60));
+		boutonParametre.addActionListener(new AdaptateurCommande(controleur, "Regles"));
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		panelMenuPrincipal.add(boutonParametre, gbc);
+	
+		JButton boutonQuitter = new JButton("Quitter");
+		boutonQuitter.setPreferredSize(new Dimension(250, 60));
+		boutonQuitter.addActionListener(new AdaptateurCommande(controleur, "Quitter"));
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		panelMenuPrincipal.add(boutonQuitter, gbc);
+	
+		//panelMenuPrincipal.setLayout(new GridLayout(9,3));*/
     }
 
 	public void creerPlateauGraphique() throws IOException {

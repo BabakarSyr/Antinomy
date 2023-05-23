@@ -25,7 +25,7 @@ public class MenuGraphique extends JPanel {
 
 
 	public MenuGraphique(CollecteurEvenements c) {
-		menuBackground = new ImageJeu("background_menu");
+		menuBackground = new ImageJeu("fond3");
 	}
 
 	public void paintComponent(Graphics g) {
@@ -42,8 +42,9 @@ public class MenuGraphique extends JPanel {
 
 		// On efface tout
 		drawable.clearRect(0, 0, width, height);
-		
-		drawable.drawImage(menuBackground.image(), 0, 0, width, height, null);
+
+		Aspects aspects = new Aspects(2);
+		drawable.drawImage(aspects.fond.image(), 0, 0, width, height, null);
 
 	}
 }
