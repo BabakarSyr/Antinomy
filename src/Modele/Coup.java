@@ -40,7 +40,7 @@ public class Coup extends Commande{
 
     public void creerCoup(Plateau p){
         try{
-            Plateau plateau = p.clone();
+            Plateau plateau = new Plateau(p);
             sequencePlateau.insereQueue(plateau);
         }catch (Exception e) {
             // TODO: handle exception

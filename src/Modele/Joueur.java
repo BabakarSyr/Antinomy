@@ -30,6 +30,4 @@ public interface Joueur
     public Coup joueCoup();
     public boolean estIA();
     public void initIA(Plateau p);
-
-    public Joueur clone();
 }

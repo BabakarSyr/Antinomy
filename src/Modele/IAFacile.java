@@ -5,8 +5,13 @@ public class IAFacile extends IA
 {
     public IAFacile() 
     {
-        super();
+        super("IA Facile");
 	}
+
+    public IAFacile(Joueur j)
+    {
+        super(j);
+    }
 
     @Override
     public int calculPosInitiale()

@@ -11,6 +11,11 @@ public class Jeu{
 		this.plateau = new Plateau("bob", "marley");
     }
 
+    public Jeu (String joueur1, String joueur2)
+    {
+        this.plateau = new Plateau(joueur1, joueur2);
+    }
+
     public Jeu(Plateau p)
     {
         this.plateau = p;
