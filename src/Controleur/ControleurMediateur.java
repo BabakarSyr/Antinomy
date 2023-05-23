@@ -118,7 +118,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    public void regle(){
 
+    }
 
 
     public EtatJeu etatJeu(){

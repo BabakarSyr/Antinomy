@@ -86,33 +86,47 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		gbc.weighty=8;
 	
 		//gbc.weighty = 0.2;
-		JButton boutonRapide = new JButton("Partie rapide");
+		Aspects aspects;
+		aspects = new Aspects(2);
+		Icon icon2 = new ImageIcon(aspects.fondBouton2.image());
+		JButton boutonRapide = new JButton("Partie rapide",icon2);
+		boutonRapide.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
 		//gbc.gridwidth = 3;
 		boutonRapide.setPreferredSize(new Dimension(250, 60));
 		boutonRapide.addActionListener(new AdaptateurCommande(controleur, "Plateau"));
 		gbc.gridx = 1;
 		gbc.gridy = 0;
+		boutonRapide.setBackground(Color.WHITE);
+		boutonRapide.setForeground(Color.BLACK);
 		panelMenuPrincipal.add(boutonRapide, gbc);
-	
-		JButton boutonPersonnalise= new JButton("Partie personnalise");
+
+		JButton boutonPersonnalise= new JButton("Partie personnalise",icon2);
 		boutonPersonnalise.setPreferredSize(new Dimension(250, 60));
 		boutonPersonnalise.addActionListener(new AdaptateurCommande(controleur, "ParametrePartie"));
 		gbc.gridx = 1;
 		gbc.gridy = 1;
+		boutonPersonnalise.setBackground(Color.yellow);
+		boutonPersonnalise.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+		boutonPersonnalise.setForeground(Color.WHITE);
 		panelMenuPrincipal.add(boutonPersonnalise, gbc);
 	
-		JButton boutonParametre = new JButton("Regles");
+		JButton boutonParametre = new JButton("Regles",icon2);
 		boutonParametre.setPreferredSize(new Dimension(250, 60));
 		boutonParametre.addActionListener(new AdaptateurCommande(controleur, "Regles"));
-		gbc.gridx = 1;
 		gbc.gridy = 2;
+		boutonParametre.setBackground(Color.WHITE);
+		boutonParametre.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+		boutonParametre.setForeground(Color.BLACK);
 		panelMenuPrincipal.add(boutonParametre, gbc);
-	
-		JButton boutonQuitter = new JButton("Quitter");
+
+		JButton boutonQuitter = new JButton("Quitter",icon2);
 		boutonQuitter.setPreferredSize(new Dimension(250, 60));
 		boutonQuitter.addActionListener(new AdaptateurCommande(controleur, "Quitter"));
 		gbc.gridx = 1;
 		gbc.gridy = 3;
+		boutonQuitter.setBackground(Color.WHITE);
+		boutonQuitter.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+		boutonQuitter.setForeground(Color.BLACK);
 		panelMenuPrincipal.add(boutonQuitter, gbc);
 	
 		//panelMenuPrincipal.setLayout(new GridLayout(9,3));*/
@@ -126,7 +140,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		//MODIFIE
         //boutonOptionsJeu = new JButton("Menu");
 		JMenuBar menubar = new JMenuBar();
-		JMenu menu = new JMenu("            Menu           ");
+		JMenu menu = new JMenu("          Menu         ");
 		//JMenuItem boutonReprendre = new JMenuItem("Reprendre");
 		JMenuItem boutonRecommencer = new JMenuItem("Recommencer");
 		boutonRecommencer.addActionListener(new AdaptateurCommande(controleur, "Recommencer"));
@@ -139,6 +153,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		Icon icon = new ImageIcon("res/Images/rouage.png");
 		JButton opt = new JButton(icon);
 		opt.setPreferredSize(new Dimension(50, 50)); 
+		opt.addActionListener(new AdaptateurCommande(controleur, "ParametrePartie"));
 
 
 		//menu.add(boutonReprendre);
@@ -167,6 +182,8 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         Container paramBox = Box.createVerticalBox();
         paramBox.add(parametreMenu);
         plateauGraphique.add(paramBox, gbc);
+
+
 
 		gbc.gridy++;
         gbc.anchor = GridBagConstraints.SOUTHWEST;
@@ -213,7 +230,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.33;
-        gbc.insets = new Insets(10,0,0,10);  //top padding
+        gbc.insets = new Insets(10,10,10,10);  //top padding
 
         JLabel nomJoueur1 = new JLabel("Joueur Gauche");
         gbc.gridx = 0;
@@ -272,6 +289,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
         gbc.ipady = 0;
         JLabel nomJoueurDroite = new JLabel("Joueur Droite");
+		gbc.insets = new Insets(10,10,10,10);
         gbc.gridx = 1;
         gbc.gridy = 0; 
         panelParametrePartie.add(nomJoueurDroite, gbc);
@@ -297,19 +315,20 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         gbc.gridy = 2;
         panelParametrePartie.add(comboBoxJoueur2, gbc);
 
-        gbc.insets = new Insets(30,0,0,0); 
-        gbc.gridx = 0;
+        gbc.insets = new Insets(30,10,10,10); 
+        gbc.gridx = 2;
         gbc.gridy = 6; 
 
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         boutonAnnulerParametre = new JButton("Annuler");
         boutonAnnulerParametre.addActionListener(new AdaptateurCommande(controleur, "MenuPrincipal"));
-        boutonAnnulerParametre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //boutonAnnulerParametre.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelParametrePartie.add(boutonAnnulerParametre, gbc);
 
+		gbc.gridx ++;
 		boutonValiderParametre = new JButton("Valider");
         boutonValiderParametre.addActionListener(new AdaptateurCommande(controleur, "Valider"));
-        boutonValiderParametre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //boutonValiderParametre.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelParametrePartie.add(boutonValiderParametre, gbc);
     }
 

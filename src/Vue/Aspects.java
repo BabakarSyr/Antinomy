@@ -10,7 +10,8 @@ public class Aspects
     carte_dos, carte_dos2,
     sorcier1, sorcier2,
 	fleche1, fleche2,
-	fond, oeil;
+	fond, oeil,
+	fondBouton, fondBouton2;
 
 
 	public Aspects()
@@ -150,6 +151,8 @@ public class Aspects
 		fleche1 = new ImageJeu("fleche_J1_2");
 		fleche2 = new ImageJeu("fleche_J2_2");
 		fond = new ImageJeu("fond3");
+		fondBouton = new ImageJeu("fondBouton");
+		fondBouton2 = new ImageJeu("fondBouton2");
 
 		oeil= new ImageJeu("oeil");
 
