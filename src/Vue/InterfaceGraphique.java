@@ -64,44 +64,6 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		frame.setVisible(true);
 	}
 
-	public void menuPrincipal(){
-		Aspects aspects;
-        JFrame frame_2 = new JFrame("Mon Manu à moi");
-		aspects = new Aspects(2);
-		Icon fond = new ImageIcon(aspects.fond.image());
-		JLabel fond_l = new JLabel();
-
-		// On fixe la taille et on demarre
-        frame_2.setVisible(true);
-
-        frame_2.setSize(1280, 720);
-		frame_2.setLocationRelativeTo(null);
-		
-		
-		fond_l.setSize(1280,720);
-		fond_l.setIcon(fond); 
-		frame_2.add(fond_l);
-
-		frame_2.setLayout(new GridBagLayout());
-		//fond_l.setPreferredSize(new Dimension(w,h));
-		frame_2.add(fond_l);
-        /*GridBagConstraints gbc = new GridBagConstraints();
-
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.33;
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.NORTH;
-
-		JButton boutonJeu =  new JButton("Jouer");
-		frame_2.add(boutonJeu);*/
-
-        // Un clic sur le bouton de fermeture clos l'application
-        frame_2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        
-    }
-
 	public void creerMenuPrincipal() throws IOException {
 
         int borderTop = getSize().height / 6;
@@ -140,16 +102,16 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         //boutonOptionsJeu = new JButton("Menu");
 		JMenuBar menubar = new JMenuBar();
 		JMenu menu = new JMenu("            Menu           ");
-		JMenuItem boutonReprendre = new JMenuItem("Reprendre");
+		//JMenuItem boutonReprendre = new JMenuItem("Reprendre");
 		JMenuItem boutonRecommencer = new JMenuItem("Recommencer");
 		boutonRecommencer.addActionListener(new AdaptateurCommande(controleur, "Recommencer"));
-		JMenuItem boutonSauvegarder = new JMenuItem("Sauvegarder");
+		//JMenuItem boutonSauvegarder = new JMenuItem("Sauvegarder");
 		JMenuItem boutonMenuPrincipal = new JMenuItem("Menu principal");
 		boutonMenuPrincipal.addActionListener(new AdaptateurCommande(controleur, "MenuPrincipal"));
 
-		menu.add(boutonReprendre);
+		//menu.add(boutonReprendre);
 		menu.add(boutonRecommencer);
-		menu.add(boutonSauvegarder);
+		//menu.add(boutonSauvegarder);
 		menu.add(boutonMenuPrincipal);
 		menubar.add(menu);
 
