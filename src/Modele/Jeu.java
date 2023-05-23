@@ -137,6 +137,10 @@ public class Jeu{
         return plateau.joueur1.getPositionSorcier() == plateau.joueur2.getPositionSorcier();
     }
 
+    public boolean estDuel(int i) {
+        return i == plateau.joueurInactif().getPositionSorcier();
+    }
+
     public void jouerCarte(int indiceCarteMain, int indiceContinuum){
         deplacerSorcier(indiceContinuum);
         echangerCarte(indiceCarteMain, indiceContinuum);

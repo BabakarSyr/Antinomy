@@ -11,7 +11,8 @@ public class Aspects
     sorcier1, sorcier2,
 	fleche1, fleche2, fleche3, fleche4, fleche5, fleche6,
 	fond, oeil, lumiere, halo,
-	fondBouton, fondBouton2;
+	fondBouton, fondBouton2,
+	epees;
 
 
 	public Aspects()
@@ -73,6 +74,7 @@ public class Aspects
 		sorcier2= new ImageJeu("sorcier_2");
 
 		oeil= new ImageJeu("oeil");
+		epees= new ImageJeu("epees");
 		
     }
 
@@ -156,6 +158,7 @@ public class Aspects
 		lumiere = new ImageJeu("lumiere");
 		//halo = new ImageJeu("circle2");
 		oeil= new ImageJeu("oeil");
+		epees= new ImageJeu("epees");
 
     }
 

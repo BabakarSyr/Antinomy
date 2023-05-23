@@ -99,13 +99,19 @@ public class PlateauGraphique extends JComponent {
 	public void surbrillance(){
 		Carte carte = jeu.plateau().joueurActif().getMain().get(c.carteSelectionnee());
 		ArrayList<Integer> cartesAccessibles = jeu.plateau().cartesAccessibles(carte);
+		
 		//Mettre en surbrillance les cartes accessibles
 		for(int i = 0; i < cartesAccessibles.size(); i++){
 			indiceCarteSurbrillance = cartesAccessibles.get(i);
 			haloJaune();
-		
+			if(jeu.estDuel(cartesAccessibles.get(i))){
+				if(joueurActif()){
+					drawable.drawImage(aspects.epees.image(), cartesAccessibles.get(i)*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte+15, largeurCarte/2 , hauteurCarte/2, null);
+				}else{
+					drawable.drawImage(aspects.epees.image(), cartesAccessibles.get(i)*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2-18, largeurCarte/2 , hauteurCarte/2, null);
+				}
+			}
 		}
-
 	}
 
 	public void surbrillancePositionAccesibleSorcier(){
