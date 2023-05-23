@@ -281,8 +281,9 @@ public class PlateauGraphique extends JComponent {
 		int longueur=getWidth()/8*5;
 		Font fonte = new Font("Serif", Font.BOLD, getHeight()/35);
         drawable.setFont(fonte);
-		drawable.drawString(nomJ1+" : " + cristaux2, longueur, hauteur);
-		drawable.drawString(nomJ2+" : " + cristaux, longueur, hauteur*9);
+
+		drawable.drawString(nomJ1+" : " + cristaux, longueur, hauteur*9);
+		drawable.drawString(nomJ2+" : " + cristaux2, longueur, hauteur);
 	}
 
 	void tracerMessage(){
