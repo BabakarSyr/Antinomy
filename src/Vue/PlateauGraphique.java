@@ -27,7 +27,7 @@ public class PlateauGraphique extends JComponent {
 		debutMainJoueur1X, debutMainJoueur1Y, finMainJoueur1X, finMainJoueur1Y,
 		debutMainJoueur2X, debutMainJoueur2Y, finMainJoueur2X, finMainJoueur2Y;
 	int width, height;
-	boolean voirMainAdversaire;
+	boolean voirMainAdversaire, estZoneMainAdverse;
 	Aspects aspects;
 	Graphics2D drawable;
 	CollecteurEvenements c;
@@ -71,6 +71,7 @@ public class PlateauGraphique extends JComponent {
 		indiceCarteSurbrillance=-1;
 
 		voirMainAdversaire = false;
+		estZoneMainAdverse = false;
 	}
 	void fixePosition(int x, int y) {
 		position = new Point(x, y);
@@ -353,6 +354,9 @@ public class PlateauGraphique extends JComponent {
 			for(int i =0; i< main.size(); i++){
 				drawable.drawImage(aspects.carte_dos.image(), XDepart+largeurCarte*i, YDepart, largeurCarte, hauteurCarte, null);
 			}
+			if(estZoneMainAdverse){
+				drawable.drawImage(aspects.oeil.image(), XDepart+largeurCarte, YDepart, largeurCarte, hauteurCarte, null);
+			}
 		}
 	}
 
@@ -402,6 +406,14 @@ public class PlateauGraphique extends JComponent {
 		}
 		else{
 			this.carteSelectionne=-1;
+		}
+		
+	}
+
+	void setEstZoneMainAdverse(boolean bool){
+		if(estZoneMainAdverse != bool){
+			estZoneMainAdverse = bool;
+			this.repaint();
 		}
 		
 	}

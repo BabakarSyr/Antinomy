@@ -147,6 +147,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
 		// Ecoute des évènements liés à la souris dans l'AireDeDessin
 		plateauGraphique.addMouseListener(new AdaptateurSouris(plateauGraphique, controleur));
+		plateauGraphique.addMouseMotionListener(new AdaptateurSourisMouvement(plateauGraphique, controleur));
 	}
 
     public void afficherPanel(String nom) {

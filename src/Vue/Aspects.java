@@ -10,7 +10,7 @@ public class Aspects
     carte_dos, carte_dos2,
     sorcier1, sorcier2,
 	fleche1, fleche2,
-	fond;
+	fond, oeil;
 
 
 	public Aspects()
@@ -70,6 +70,8 @@ public class Aspects
 		carte_dos= new ImageJeu("codex");
 		sorcier1= new ImageJeu("sorcier_1");
 		sorcier2= new ImageJeu("sorcier_2");
+
+		oeil= new ImageJeu("oeil");
 		
     }
 
@@ -96,6 +98,7 @@ public class Aspects
 		codex_violet = new ImageJeu("codex");
 		codex_vert= new ImageJeu("codex");
 		carte_dos= new ImageJeu("codex");
+
 		
     }
 
@@ -147,6 +150,9 @@ public class Aspects
 		fleche1 = new ImageJeu("fleche_J1_2");
 		fleche2 = new ImageJeu("fleche_J2_2");
 		fond = new ImageJeu("fond3");
+
+		oeil= new ImageJeu("oeil");
+
     }
 
     public void chargerCarte2()
