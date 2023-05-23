@@ -1,7 +1,5 @@
 package Modele;
 
-import Global.Configuration;
-
 enum Forme {
    PLUME,
    ANNEAU,
@@ -10,19 +8,27 @@ enum Forme {
 }
 
 
-public class Carte implements Cloneable{
+public class Carte
+{
 
-     Forme forme;
-     Couleur couleur;
-     int valeur;
+    Forme forme;
+    Couleur couleur;
+    final int valeur;
 
+    public Carte (Carte c)
+    {
+        this.forme = c.forme;
+        this.couleur = c.couleur;
+        this.valeur = c.valeur;
+    }    
+
+    public Carte(Forme forme, Couleur couleur, int valeur)
+    {
+        this.forme = forme;
+        this.couleur = couleur;
+        this.valeur = valeur;
+    }
     
-
-     public Carte(Forme forme, Couleur couleur, int valeur) {
-         this.forme = forme;
-         this.couleur = couleur;
-         this.valeur = valeur;
-     }
 
     
      public Couleur getCouleur() {
@@ -52,23 +58,5 @@ public class Carte implements Cloneable{
         ", couleur=" + couleur.getCode( )  +
         '}';
     }
-
-    public Carte clone()
-    {
-        try
-        {
-            Carte cloneCarte = (Carte) super.clone();
-            cloneCarte.forme = this.forme;
-            cloneCarte.couleur = this.couleur;
-            cloneCarte.valeur = this.valeur;
-            return cloneCarte;
-        }
-        catch (CloneNotSupportedException e)
-        {
-            Configuration.erreur("Bug interne, carte non clonable");
-            return null;
-        }
-    }
-
 }
      

@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import Global.Configuration;
-
-
-
 public class Plateau extends Historique<Coup> implements Cloneable
 {
     //TODO remplacer joueur actif par un indice et creer une methode qui retourne le joueur actif: j1 ou j2
@@ -51,16 +47,81 @@ public class Plateau extends Historique<Coup> implements Cloneable
         joueur2.initIA(this);
     }
 
-    public Plateau(String nomJoueur1, String nomJoueur2) {
-        
-        
-        joueur1=new Humain(nomJoueur1);
-        joueur2=new Humain(nomJoueur2);
+    public Plateau(String nomJoueur1, String nomJoueur2)
+    {
+        switch (nomJoueur1)
+        {
+            case "IA Facile":
+                this.joueur1 = new IAFacile();
+                break;
+            case "IA Difficile":
+                this.joueur1 = new IADifficileV1();
+                break;
+            default:
+                this.joueur1 = new Humain(nomJoueur1);
+                break;
+        }
+        switch (nomJoueur2)
+        {
+            case "IA Facile":
+                this.joueur2 = new IAFacile();
+                break;
+            case "IA Difficile":
+                this.joueur2 = new IADifficileV1();
+                break;
+            default:
+                this.joueur2 = new Humain(nomJoueur2);
+                break;
+        }
       
         joueurActif = 1;
         codex=new Codex(new Carte(null, null,0));
     
         initialiser();
+    }
+
+    public Plateau(Plateau p)
+    {
+        this.joueurActif = p.joueurActif;
+        if (p.joueur1.estIA())
+        {
+            switch (p.joueur1.getNom())
+            {
+                case "IA Facile":
+                    this.joueur1 = new IAFacile(p.joueur1);
+                    break;
+                case "IA Difficile":
+                    this.joueur1 = new IADifficileV1(p.joueur1);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            this.joueur1 = new Humain(p.joueur1);
+        }
+        if (p.joueur2.estIA())
+        {
+            switch (p.joueur2.getNom())
+            {
+                case "IA Facile":
+                    this.joueur2 = new IAFacile(p.joueur2);
+                    break;
+                case "IA Difficile":
+                    this.joueur2 = new IADifficileV1(p.joueur2);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            this.joueur2 = new Humain(p.joueur2);
+        }
+        this.positionsDepart = new ArrayList<>(p.positionsDepart);
+        this.continuum = new ArrayList<>(p.continuum);
+        this.codex = new Codex(p.codex);
     }
    
 
@@ -472,26 +533,6 @@ public class Plateau extends Historique<Coup> implements Cloneable
 		super.faire(nouveau);
 	}
 
-    @Override
-    public Plateau clone()
-    {
-        try
-        {
-            Plateau res = (Plateau) super.clone();
-            //res.setJoueurActif(this.joueurActif);
-            res.joueur1 = this.joueur1.clone();
-            //res.joueur2 = this.joueur2.clone();
-            res.positionsDepart = new ArrayList<>(this.positionsDepart);
-            res.continuum = new ArrayList<>(this.continuum);
-            res.codex = this.codex.clone();
-            return res;
-        }
-        catch (CloneNotSupportedException e) {
-            Configuration.erreur("Bug interne, plateau non clonable");
-            return null;
-        }
-    }
-
     public int valeurMain(Joueur j)
     {
         int valeurMain = 0;
@@ -511,4 +552,9 @@ public class Plateau extends Historique<Coup> implements Cloneable
         return futur.estVide();
     }
 
+    @Override
+    public Plateau clone()
+    {
+        return new Plateau(this);
+    }
 }

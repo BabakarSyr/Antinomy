@@ -1,16 +1,21 @@
 package Modele;
 
-import Global.Configuration;
-
-public class Codex implements Cloneable
+public class Codex
 {
-     Couleur couleurInterdite;
-     Carte carte;
+    Couleur couleurInterdite;
+    Carte carte;
 
-    public Codex(Carte carte) {
+    public Codex(Carte carte)
+    {
         // initialisation de la couleur interdite à Rouge par défaut
         this.couleurInterdite = Couleur.ROUGE;
         this.carte = carte;
+    }
+
+    public Codex (Codex codex)
+    {
+        this.couleurInterdite = codex.getCouleurInterdite();
+        this.carte = new Carte(codex.carte);
     }
 
     public void setCarte(Carte carte) {
@@ -65,22 +70,4 @@ public class Codex implements Cloneable
                 break;
         }
     }
-
-    public Codex clone()
-    {
-        try
-        {
-            Codex cloneCodex = (Codex) super.clone();
-            cloneCodex.couleurInterdite = this.couleurInterdite;
-            cloneCodex.carte = this.carte.clone();
-            return cloneCodex;
-        }
-        catch (CloneNotSupportedException e)
-        {
-            Configuration.erreur("Bug interne, codex non clonable");
-            return null;
-        }
-    }
-
-
 }

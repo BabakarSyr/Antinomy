@@ -1,7 +1,5 @@
 package Modele;
 
-import Global.Configuration;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,27 +26,36 @@ public abstract class IA implements Joueur{
     Noeud treeConfig;
 
 
-    public IA()
+    public IA(String nom)
     {
-        setNom("IA");
+        setNom(nom);
         this.nombreCristaux = 0;
         this.main = new ArrayList<>();
         this.sensDuTemps = true;
         this.positionSorcier = -1;
     }
 
-    public IA(boolean sensDuTemps)
+    public IA(String nom, boolean sensDuTemps)
     {
-        setNom("IA");
+        setNom(nom);
         this.nombreCristaux = 0;
         this.main = new ArrayList<>();
         this.sensDuTemps = sensDuTemps;
         this.positionSorcier = -1;
     }
 
+    public IA(Joueur j)
+    {
+        setNom(j.getNom());
+        this.nombreCristaux = j.getNombreCristaux();
+        this.main = new ArrayList<>(j.getMain());
+        this.sensDuTemps = j.getSensDuTemps();
+        this.positionSorcier = j.getPositionSorcier();
+    }
+
     public void setNom(String nom)
     {
-        this.nom = nom;
+        this.nom = new String(nom);
     }
 
     public String getNom()
@@ -306,7 +313,7 @@ public abstract class IA implements Joueur{
         if (profondeur == 0 || jeu.partieTerminee())
         {
             int score = calculScore();
-            return new Noeud(p.clone(), null, -1, score);
+            return new Noeud(new Plateau(p), null, -1, score);
         }
 
         ArrayList<ArrayList<Integer>> actionsPossibles = new ArrayList<>();
@@ -318,10 +325,10 @@ public abstract class IA implements Joueur{
         if (actionsPossibles.isEmpty())
         {
             int score = calculScore();
-            return new Noeud(p.clone(), null, -1, score);
+            return new Noeud(new Plateau(p), null, -1, score);
         }
 
-        Noeud noeudCour = new Noeud(p.clone(), null, -1, 0);
+        Noeud noeudCour = new Noeud(new Plateau(p), null, -1, 0);
         ArrayList<Noeud> fils = new ArrayList<>();
         
         if (maxJoueur)
@@ -331,7 +338,7 @@ public abstract class IA implements Joueur{
             {
                 for (Integer i : e)
                 {
-                    Plateau nouvPlateau = p.clone();
+                    Plateau nouvPlateau = new Plateau(p);
                     nouvPlateau.echangerCarte(actionsPossibles.indexOf(e), i);
 
                     Noeud filsNoeud = minimax(nouvPlateau, profondeur - 1, alpha, beta, false);
@@ -359,7 +366,7 @@ public abstract class IA implements Joueur{
             {
                 for (Integer i : e)
                 {
-                    Plateau nouvPlateau = p.clone();
+                    Plateau nouvPlateau = new Plateau(p);
                     nouvPlateau.echangerCarte(actionsPossibles.indexOf(e), i);
 
                     Noeud filsNoeud = minimax(nouvPlateau, profondeur - 1, alpha, beta, true);
@@ -383,37 +390,5 @@ public abstract class IA implements Joueur{
 
         noeudCour.setFils(fils);
         return noeudCour;
-    }
-
-    @Override
-    public Joueur clone()
-    {
-        try
-        {
-            IA cloneIA = (IA) super.clone();
-            cloneIA.setNom(new String(this.nom));
-            cloneIA.setMain(new ArrayList<>());
-            for (Carte c : this.getMain())
-            {
-                cloneIA.main.add(c.clone());
-            }
-            cloneIA.setCristal(this.nombreCristaux);
-            cloneIA.setSensDuTemps(this.sensDuTemps);
-            cloneIA.setPositionSorcier(this.positionSorcier);
-            cloneIA.r = new Random();
-            cloneIA.plateau = this.plateau.clone();
-            cloneIA.jeu = new Jeu(cloneIA.plateau);
-            cloneIA.emplacementsAccessibles = new ArrayList<>(this.emplacementsAccessibles);
-            cloneIA.paradoxPositions = new ArrayList<>(this.paradoxPositions);
-            cloneIA.ordreIA = this.ordreIA;
-            cloneIA.ordreAdversaire = this.ordreAdversaire;
-            cloneIA.treeConfig = this.treeConfig.clone();
-            return cloneIA;
-        }
-        catch (CloneNotSupportedException e)
-        {
-            Configuration.erreur("Bug interne, joueur pc non clonable");
-        }
-        return null;
     }
 }
