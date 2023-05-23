@@ -17,7 +17,7 @@ import Vue.InterfaceGraphique;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
-    String infoPlateau;
+    String infoPlateau, nomJ1, nomJ2, typeJ1, typeJ2;
     Random random;
     boolean IAActive;
     Jeu jeu;
@@ -42,6 +42,17 @@ public class ControleurMediateur implements CollecteurEvenements {
 	}
 
     public void init(){
+        this.jeu.plateau = new Plateau();
+        this.jeu.definirJoueur1(jeu.plateau.joueur1);
+        changerEtatJeu(EtatJeu.DEBUT_PARTIE);
+        carteSelectionnee = -1;
+        infoPlateau = "Placez votre sorcier !";
+        voirMainAdversaire = false;
+        voirMainJoueurActif = true;
+        plateauDebutTour = jeu.plateau();
+    }
+
+    public void init(String nomJ1, String nomJ2, String typeJ1, String typeJ2){
         this.jeu.plateau = new Plateau();
         this.jeu.definirJoueur1(jeu.plateau.joueur1);
         changerEtatJeu(EtatJeu.DEBUT_PARTIE);
@@ -89,6 +100,29 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "ParametrePartie":
                 interfaceGraphique.afficherPanel("ParametrePartie");
+                break;
+            case "Valider":
+                init("Joueur 1", "Joueur 2", typeJ1, typeJ2);
+                interfaceGraphique.afficherPanel("Plateau");
+                interfaceGraphique.miseAjour();
+                break;
+            case "Humain1":
+                typeJ1 = "Humain";
+                break;
+            case "IAFacile1":
+                typeJ1 = "IAFacile";
+                break;
+            case "IADifficile1":
+                typeJ1 = "IADifficileV1";
+                break;
+            case "Humain2":
+                typeJ2 = "Humain";
+                break;
+            case "IAFacile2":
+                typeJ2 = "IAFacile";
+                break;
+            case "IADifficile2":
+                typeJ2 = "IADifficileV1";
                 break;
             default:
                 return false;
