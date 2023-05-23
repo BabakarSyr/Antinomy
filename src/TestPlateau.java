@@ -189,7 +189,7 @@ public class TestPlateau {
                     jeu.afficher_cartes_main();
                     
                     //Le joueur actif gagne 1 cristal
-                    plateau.joueurActif().ajouterCristaux(1);
+                    //plateau.joueurActif().ajouterCristaux(1);
                                 
                     System.out.println("Récapitulatif :");
                     System.out.println("Le joueur "+plateau.joueur1.getNom()+" a en sa possession "+plateau.joueur1.getNombreCristaux()+" cristaux");
