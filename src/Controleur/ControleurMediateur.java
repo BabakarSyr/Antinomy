@@ -22,8 +22,8 @@ public class ControleurMediateur implements CollecteurEvenements {
     EtatJeu etatJeu;
     int carteSelectionnee;
     boolean voirMainAdversaire, voirMainJoueurActif;
-    Coup coup;
     InterfaceGraphique interfaceGraphique;
+    Plateau plateauDebutTour;
  
     
     public ControleurMediateur(Jeu j) {
@@ -34,6 +34,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         voirMainAdversaire = false;
         voirMainJoueurActif = true;
         random = new Random();
+        plateauDebutTour = jeu.plateau().clone();
 	}
 
     public void init(){
@@ -44,6 +45,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         infoPlateau = "Placez votre sorcier !";
         voirMainAdversaire = false;
         voirMainJoueurActif = true;
+        plateauDebutTour = jeu.plateau();
     }
 
     // ============ Clic Souris ================
@@ -91,6 +93,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if(etatJeu != EtatJeu.DEBUT_PARTIE) {
             jeu.annuler();
             interfaceGraphique.miseAjour();
+            plateauDebutTour = jeu.plateau().clone();
             /*if(jeu.plateau().peutAnnuler()){
                 interfaceUtilisateur.setBoutonHistoriqueArriere(true);
             }else{
@@ -108,6 +111,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if(etatJeu != EtatJeu.DEBUT_PARTIE) {
             jeu.refaire();
             interfaceGraphique.miseAjour();
+            plateauDebutTour = jeu.plateau().clone();
             /* 
             if(jeu.plateau().peutAnnuler()){
                 interfaceUtilisateur.setBoutonHistoriqueArriere(true);
@@ -285,8 +289,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     private void changerTour( ) {
-        //Coup coup = jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, indiceParadoxe);
-        joue(jeu.plateau());
+        joue(plateauDebutTour);
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
         {
@@ -298,6 +301,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             voirMainJoueurActif=true;
             //voirMainAdversaire=false;
         }
+        plateauDebutTour = jeu.plateau().clone();
     }
 
     public int carteSelectionnee(){

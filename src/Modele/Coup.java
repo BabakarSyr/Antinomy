@@ -60,8 +60,8 @@ public class Coup extends Commande{
     private void jouerCoup() {
         Iterateur<Plateau> iterateur = sequencePlateau.iterateur();
         while (iterateur.aProchain()) {
-            Plateau plateau = iterateur.prochain();
-            this.plateau.majPlateau(plateau);
+            Plateau p = iterateur.prochain();
+            this.plateau.majPlateau(p);
         }
     }
 

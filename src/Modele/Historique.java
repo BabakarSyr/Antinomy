@@ -44,21 +44,10 @@ public class Historique<E extends Commande> {
 	}
 
 	public void faire(E nouveau) {
-		nouveau.execute();
+		//nouveau.execute();
 		passe.insereTete(nouveau);
 		while (!futur.estVide()) {
 			futur.extraitTete();
 		}
-	}
-
-	@Override
-	protected Historique clone() throws CloneNotSupportedException {
-		// Pour simplifier, on décide de ne pas cloner l'historique :
-		// notre seul cas d'utilisation est pour le niveau de l'IA qui
-		// n'a pas besoin de l'historique utilisateur. Par contre il faut
-		// que le clone ait son propre historique (initialement vide)
-		Historique resultat = (Historique) super.clone();
-		resultat.reinitialise();
-		return resultat;
 	}
 }
