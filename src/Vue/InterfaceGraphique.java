@@ -348,4 +348,14 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		frame.repaint();
 	}
 
+    public void setDuelEgalite(int indiceJ1, int indiceJ2)
+    {
+        plateauGraphique.setDuelEgalite(indiceJ1, indiceJ2);
+    }
+    
+    public void clearDuelEgalite()
+    {
+        plateauGraphique.setDuelEgalite(-1, -1);
+    }
+
 }

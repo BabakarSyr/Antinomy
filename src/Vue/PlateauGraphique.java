@@ -11,6 +11,7 @@ import Modele.ZoneClic;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 import Modele.EtatJeu;
 
@@ -34,6 +35,8 @@ public class PlateauGraphique extends JComponent {
 
 	int carteSelectionne;
 	int indiceCarteSurbrillance;
+	int duelEgaliteJ1;
+	int duelEgaliteJ2;
 
 	public PlateauGraphique(Jeu j, CollecteurEvenements c) {
 		jeu = j;
@@ -42,6 +45,8 @@ public class PlateauGraphique extends JComponent {
 		//chargerImages2();
 		aspects = new Aspects(2);
 		initialisationCoordonnées();
+		duelEgaliteJ1=-1;
+		duelEgaliteJ2=-1;
 	}
 
 	private void initialisationCoordonnées() {
@@ -146,12 +151,19 @@ public class PlateauGraphique extends JComponent {
 
 		// Tracer Continuum au milieu du plateau
 		tracerContinuum();
-		if(jeu.joueurActif() == jeu.plateau().joueur1){
-			tracerMainJoueur(c.voirMainJoueurActif(), J1);
-			tracerMainJoueur(c.voirMainAdversaire(), J2);
-		}else{
-			tracerMainJoueur(c.voirMainAdversaire(), J1);
-			tracerMainJoueur(c.voirMainJoueurActif(), J2);
+		if (duelEgaliteJ1 != -1 && duelEgaliteJ2 != -1)
+		{
+			tracerDuelEgalite(duelEgaliteJ1, duelEgaliteJ2);
+		}
+		else
+		{
+			if(jeu.joueurActif() == jeu.plateau().joueur1){
+				tracerMainJoueur(c.voirMainJoueurActif(), J1);
+				tracerMainJoueur(c.voirMainAdversaire(), J2);
+			}else{
+				tracerMainJoueur(c.voirMainAdversaire(), J1);
+				tracerMainJoueur(c.voirMainJoueurActif(), J2);
+			}
 		}
 
 		//Si on est au debut du jeu, on affiche les cartes accessibles au sorcier
@@ -176,10 +188,10 @@ public class PlateauGraphique extends JComponent {
         if(((x >= debutContinuumX) && (x <= largeurContinuum) && (y >= debutContinuumY) && (y <= finContinuumY))){
             return ZoneClic.CONTINUUM;
         }
-        if(((x >= debutMainJoueur1X) && (x <= finMainJoueur1X) && (y >= debutMainJoueur1Y) && (y <= finMainJoueur1Y))){
+        if(((x >= debutMainJoueur1X) && (x <= finMainJoueur1X) && (y >= debutMainJoueur1Y-20) && (y <= finMainJoueur1Y-20))){
             return ZoneClic.MAIN_JOUEUR_1;
         }
-        if(((x >= debutMainJoueur2X) && (x <= finMainJoueur2X) && (y >= debutMainJoueur2Y) && (y <= finMainJoueur2Y))){
+        if(((x >= debutMainJoueur2X) && (x <= finMainJoueur2X) && (y >= debutMainJoueur2Y+20) && (y <= finMainJoueur2Y+20))){
             return ZoneClic.MAIN_JOUEUR_2;
         }
         return ZoneClic.HORS_ZONE;
@@ -435,4 +447,28 @@ public class PlateauGraphique extends JComponent {
 	public void voirMainAdversaire(boolean bool){
         voirMainAdversaire = bool;
     }
+
+	public void setDuelEgalite(int indiceJ1, int indiceJ2)
+	{
+		this.duelEgaliteJ1=indiceJ1;
+		this.duelEgaliteJ2=indiceJ2;
+	}
+
+
+	public void tracerDuelEgalite(int indiceJ1, int indiceJ2)
+	{
+		int XCarteJ1, YCarteJ1, XCarteJ2, YCarteJ2;
+		Joueur J1= jeu.plateau.joueur1;
+		Joueur J2= jeu.plateau.joueur2;
+
+		//coordonees J1
+		XCarteJ1 = 4*largeurCarte;
+		YCarteJ1 = height-hauteurCarte-20;
+		//coordonees J2
+		XCarteJ2 = 4*largeurCarte;
+		YCarteJ2 = 20;
+
+		drawable.drawImage(imageCarte(J1.getMain().get(indiceJ1)), XCarteJ1, YCarteJ1, largeurCarte, hauteurCarte, null);
+		drawable.drawImage(imageCarte(J2.getMain().get(indiceJ2)), XCarteJ2, YCarteJ2, largeurCarte, hauteurCarte, null);
+	}
 }

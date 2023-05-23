@@ -211,6 +211,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteSelectionnee = -1;
                         infoPlateau = "duel!";
                         duel();
+                        interfaceGraphique.setDuelEgalite(random.nextInt(3), random.nextInt(3));
                     }else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
@@ -235,6 +236,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteSelectionnee = -1;
                         infoPlateau = "duel!";
                         duel();
+                        interfaceGraphique.setDuelEgalite(random.nextInt(3), random.nextInt(3));
                     }
                     else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
@@ -355,8 +357,11 @@ public class ControleurMediateur implements CollecteurEvenements {
                 voirMainJoueurActif = true;
                 voirMainAdversaire = false;
                 interfaceGraphique.miseAjour();
+                interfaceGraphique.clearDuelEgalite();
             }
         };
+
+
 
         voirMainJoueurActif = true;
         voirMainAdversaire = true;
@@ -372,6 +377,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 resultatDuel = "vainqueur: "+joueur.getNom()+" "+jeu.plateau.valeurMain(joueur)+"points / perdant: "+jeu.plateau.joueur1.getNom()+" "+jeu.plateau.valeurMain(jeu.plateau.joueur1)+"points";
             }
             infoPlateau = resultatDuel;
+            interfaceGraphique.miseAjour();
             timer.schedule(finTour, 3000);
         }
         else{
@@ -381,10 +387,11 @@ public class ControleurMediateur implements CollecteurEvenements {
             int indiceAdversaire = random.nextInt(3);
             int indiceJoueurActif = random.nextInt(3);
             //TODO ajouter une methode pour afficher duel egalite
-            //interfaceGraphique.duelEgalite(indiceJoueurActif, indiceAdversaire);
+            interfaceGraphique.setDuelEgalite(indiceJoueurActif, indiceAdversaire);
+            interfaceGraphique.miseAjour();
             joueur = jeu.duelEgalite(indiceJoueurActif, indiceAdversaire);
             if(joueur!= null){
-                infoPlateau = joueur.getNom() + " à remporté le duel !";
+                infoPlateau = joueur.getNom() + " à remporté le duel apres egalité!";
             }
             else{
                 infoPlateau = "Egalité le jeu continue !";
