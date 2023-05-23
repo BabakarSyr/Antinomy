@@ -225,6 +225,7 @@ public class PlateauGraphique extends JComponent {
 		}
 		tracerCodex(continuum);
 		tracerFleche(continuum);
+		tracerLumiere();
 		tracerSorcier(continuum, true);
 		tracerSorcier(continuum, false);
 		tracerScore();
@@ -238,11 +239,37 @@ public class PlateauGraphique extends JComponent {
 
 	void tracerFleche(ArrayList<Carte> continuum){
 		if (joueurActif()){
-
-			drawable.drawImage(aspects.fleche2.image(), debutContinuumX+10, hauteurCarte/4*11, finContinuumX-largeurCarte, hauteurCarte+5, null);
+			if (joueurActif()){
+				int pos = jeu.joueurActif().getPositionSorcier();
+				System.out.println(pos);
+				if(pos == 0){
+					drawable.drawImage(aspects.fleche6.image(), debutContinuumX+10, hauteurCarte/4*11, finContinuumX-largeurCarte, hauteurCarte+5, null);
+				}
+				else {
+					if(pos == 8){
+						drawable.drawImage(aspects.fleche5.image(), debutContinuumX+10, hauteurCarte/4*11, finContinuumX-largeurCarte, hauteurCarte+5, null);
+					}
+					else {
+						drawable.drawImage(aspects.fleche2.image(), debutContinuumX+10, hauteurCarte/4*11, finContinuumX-largeurCarte, hauteurCarte+5, null);
+					}
+				}
+			}
 		}
 		else{
-			drawable.drawImage(aspects.fleche1.image(), debutContinuumX+10, hauteurCarte/4*6, finContinuumX-largeurCarte, hauteurCarte+5, null);
+			//drawable.drawImage(aspects.fleche1.image(), debutContinuumX+10, hauteurCarte/4*6, finContinuumX-largeurCarte, hauteurCarte+5, null);
+			//int pos2 = jeu.plateau.joueurInactif().getPositionSorcier();
+			int pos2 = jeu.joueurActif().getPositionSorcier();
+			if(pos2 == 0){
+				drawable.drawImage(aspects.fleche3.image(), debutContinuumX+10, hauteurCarte/4*6, finContinuumX-largeurCarte, hauteurCarte+5, null);
+			}
+			else {
+				if(pos2 == 8){
+					drawable.drawImage(aspects.fleche4.image(), debutContinuumX+10, hauteurCarte/4*6, finContinuumX-largeurCarte, hauteurCarte+5, null);
+				}
+				else {
+					drawable.drawImage(aspects.fleche1.image(), debutContinuumX+10, hauteurCarte/4*6, finContinuumX-largeurCarte, hauteurCarte+5, null);
+				}
+			}
 		}
 	}
 
@@ -264,6 +291,20 @@ public class PlateauGraphique extends JComponent {
 		}
 	}
 	
+	void tracerLumiere(){
+		if (joueurActif()){
+			int posSorcier=jeu.plateau().getPositionSorcier(1);
+			if (posSorcier!=-1){
+				drawable.drawImage(aspects.lumiere.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY+hauteurCarte+15, largeurCarte*3/5 , hauteurCarte*3/5, null);
+			}
+		}
+		else{
+			int posSorcier=jeu.plateau().getPositionSorcier(2);
+			if (posSorcier!=-1){
+				drawable.drawImage(aspects.lumiere.image(), posSorcier*largeurCarte+largeurCarte/4, debutContinuumY-hauteurCarte/2-18, largeurCarte*3/5 , hauteurCarte*3/5, null);
+			}
+		}
+	}
 
 	void tracerCodex(ArrayList<Carte> continuum){
 		switch (jeu.couleurInterdite()){
