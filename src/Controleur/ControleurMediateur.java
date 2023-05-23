@@ -36,6 +36,16 @@ public class ControleurMediateur implements CollecteurEvenements {
         random = new Random();
 	}
 
+    public void init(){
+        this.jeu.plateau = new Plateau();
+        this.jeu.definirJoueur1(jeu.plateau.joueur1);
+        changerEtatJeu(EtatJeu.DEBUT_PARTIE);
+        carteSelectionnee = -1;
+        infoPlateau = "Placez votre sorcier !";
+        voirMainAdversaire = false;
+        voirMainJoueurActif = true;
+    }
+
     // ============ Clic Souris ================
     @Override
     public void clicSouris(int coupX, int coupY) {
@@ -52,7 +62,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public boolean commande(String commande) {
         switch (commande) {
-            
             case "Quitter":
                 System.exit(0);
                 break;
@@ -62,8 +71,13 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "Refaire":
                 refaire();
                 break;
+            case "Recommencer":
+                init();
+                interfaceGraphique.miseAjour();
+                break;
             case "MenuPrincipal":
                 interfaceGraphique.afficherPanel("MenuPrincipal");
+                break;
             case "Plateau":
                 interfaceGraphique.afficherPanel("Plateau");
                 break;
@@ -76,7 +90,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     void annule() {
         if(etatJeu != EtatJeu.DEBUT_PARTIE) {
             jeu.annuler();
-            interfaceGraphique.repaint();
+            interfaceGraphique.miseAjour();
             /*if(jeu.plateau().peutAnnuler()){
                 interfaceUtilisateur.setBoutonHistoriqueArriere(true);
             }else{
@@ -93,7 +107,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     void refaire() {
         if(etatJeu != EtatJeu.DEBUT_PARTIE) {
             jeu.refaire();
-            interfaceGraphique.repaint();
+            interfaceGraphique.miseAjour();
             /* 
             if(jeu.plateau().peutAnnuler()){
                 interfaceUtilisateur.setBoutonHistoriqueArriere(true);
@@ -272,7 +286,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     private void changerTour( ) {
         //Coup coup = jeu.creerCoup(carteSelectionnee, indiceCarteContinuum, indiceParadoxe);
-        //jouerCoup(coup);
+        joue(jeu.plateau());
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
         {

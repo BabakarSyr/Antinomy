@@ -23,6 +23,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	JPanel panelCourant;
 	PlateauGraphique plateauGraphique;
 	ImageJeu menuBackground;
+	JFrame frame;
 
 	public InterfaceGraphique(Jeu j, CollecteurEvenements c){
 		jeu = j;
@@ -37,7 +38,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	public void run() {
 		//menuPrincipal();
 		// Creation d'une fenetre
-		JFrame frame = new JFrame("Ma fenetre a moi");
+		frame = new JFrame("Ma fenetre a moi");
 		frame.setSize(1280, 720);
 
 		layout = new CardLayout();
@@ -61,8 +62,6 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
 		// On fixe la taille et on demarre
 		frame.setVisible(true);
-
-
 	}
 
 	public void menuPrincipal(){
@@ -143,13 +142,15 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		JMenu menu = new JMenu("            Menu           ");
 		JMenuItem boutonReprendre = new JMenuItem("Reprendre");
 		JMenuItem boutonRecommencer = new JMenuItem("Recommencer");
+		boutonRecommencer.addActionListener(new AdaptateurCommande(controleur, "Recommencer"));
 		JMenuItem boutonSauvegarder = new JMenuItem("Sauvegarder");
-		JMenuItem boutonQuitter = new JMenuItem("Quitter la partie");
+		JMenuItem boutonMenuPrincipal = new JMenuItem("Menu principal");
+		boutonMenuPrincipal.addActionListener(new AdaptateurCommande(controleur, "MenuPrincipal"));
 
 		menu.add(boutonReprendre);
 		menu.add(boutonRecommencer);
 		menu.add(boutonSauvegarder);
-		menu.add(boutonQuitter);
+		menu.add(boutonMenuPrincipal);
 		menubar.add(menu);
 
 		plateauGraphique.setLayout(new GridBagLayout());
@@ -189,5 +190,9 @@ public class InterfaceGraphique extends JFrame implements Runnable {
     public void afficherPanel(String nom) {
 		layout.show(panelCourant, nom);
     }
+
+	public void miseAjour(){
+		frame.repaint();
+	}
 
 }
