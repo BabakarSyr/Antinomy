@@ -113,7 +113,7 @@ public class PlateauGraphique extends JComponent {
 			}
 		}
 	}
-
+	//TODO completer la methode pour afficher une image adaptée
 	public void tracerMessageParadoxe(){
 		surbrillanceMain();
 	}
