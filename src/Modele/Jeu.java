@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Jeu{
     public Plateau plateau;
+    int nbPointsVictoire = 5;
     
     public Jeu()
     {
@@ -113,16 +114,16 @@ public class Jeu{
     }
 
     public boolean partieTerminee() {
-        return plateau.joueur1.getNombreCristaux() == 5 || plateau.joueur2.getNombreCristaux() == 5;
+        return plateau.joueur1.getNombreCristaux() == nbPointsVictoire || plateau.joueur2.getNombreCristaux() == nbPointsVictoire;
     }
 
     public String nomVainqueur()
     {
-        if (partieTerminee() && plateau.joueur1.getNombreCristaux() == 5)
+        if (partieTerminee() && plateau.joueur1.getNombreCristaux() == nbPointsVictoire)
         {
             return plateau.joueur1.getNom();
         }
-        else if (partieTerminee() && plateau.joueur2.getNombreCristaux() == 5){
+        else if (partieTerminee() && plateau.joueur2.getNombreCristaux() == nbPointsVictoire){
             return plateau.joueur2.getNom();
         }
         else

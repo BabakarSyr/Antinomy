@@ -388,6 +388,11 @@ public class ControleurMediateur implements CollecteurEvenements {
                 infoPlateau = "Egalité le jeu continue !";
             }
             timer.schedule(finTour, 4000);
+            if(jeu.partieTerminee())
+            {
+                changerEtatJeu(EtatJeu.FIN_PARTIE);
+                infoPlateau = jeu.nomVainqueur()+ " REMPORTE LA PARTIE !";
+            }
         }
     }
 }
