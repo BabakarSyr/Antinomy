@@ -9,8 +9,7 @@ import java.util.Random;
 
 import Structures.Noeud;
 
-public abstract class IA implements Joueur
-{
+public abstract class IA implements Joueur{
     //Attributs liées au joueur de l'IA
     String nom;
     ArrayList<Carte> main;

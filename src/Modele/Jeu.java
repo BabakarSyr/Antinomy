@@ -3,19 +3,12 @@ package Modele;
 import java.util.ArrayList;
 import java.util.Random;
 
-
-
-
-
-
-public class Jeu
-{
+public class Jeu{
     public Plateau plateau;
-    
     
     public Jeu()
     {
-		this.plateau = new Plateau();
+		this.plateau = new Plateau("bob");
     }
 
     public Jeu(Plateau p)
@@ -124,8 +117,7 @@ public class Jeu
         {
             return plateau.joueur1.getNom();
         }
-        else if (partieTerminee() && plateau.joueur2.getNombreCristaux() == 5)
-        {
+        else if (partieTerminee() && plateau.joueur2.getNombreCristaux() == 5){
             return plateau.joueur2.getNom();
         }
         else

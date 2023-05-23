@@ -64,11 +64,11 @@ public class Humain implements Joueur, Cloneable{
     }
 
     public void ajouterCristal(int nombreCristaux) {
-        this.nombreCristaux += nombreCristaux;
+        this.nombreCristaux += 1;
     }
 
     public void setCristal(int nombreCristaux) {
-        this.nombreCristaux += nombreCristaux;
+        this.nombreCristaux = nombreCristaux;
     }
 
     //Voler un cristal à un autre joueur

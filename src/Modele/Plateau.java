@@ -35,8 +35,7 @@ public class Plateau extends Historique<Coup> implements Cloneable
         codex=new Codex(new Carte(null, null,0));
     
         initialiser();
-        joueur1.initIA(this);
-        joueur2.initIA(this);
+       
     }
 
     public Plateau(String nomJoueur1) {
@@ -479,16 +478,15 @@ public class Plateau extends Historique<Coup> implements Cloneable
         try
         {
             Plateau res = (Plateau) super.clone();
-            res.setJoueurActif(this.joueurActif);
+            //res.setJoueurActif(this.joueurActif);
             res.joueur1 = this.joueur1.clone();
-            res.joueur2 = this.joueur2.clone();
+            //res.joueur2 = this.joueur2.clone();
             res.positionsDepart = new ArrayList<>(this.positionsDepart);
             res.continuum = new ArrayList<>(this.continuum);
             res.codex = this.codex.clone();
             return res;
         }
-        catch (CloneNotSupportedException e)
-        {
+        catch (CloneNotSupportedException e) {
             Configuration.erreur("Bug interne, plateau non clonable");
             return null;
         }
