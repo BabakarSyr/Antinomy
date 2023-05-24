@@ -19,4 +19,5 @@ public interface CollecteurEvenements {
     public EtatJeu etatJeu();
     void interfaceGraphique(InterfaceGraphique interfaceGraphique);
     void tictac();
+    int getImageRegle();
 }

@@ -21,7 +21,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	JPanel panelMenuPrincipal;
 	CardLayout layout;
 	JPanel panelCourant;
-	JPanel panelRegle;
+	RegleGraphique panelRegle;
 	PlateauGraphique plateauGraphique;
 	ImageJeu menuBackground;
 	JFrame frame;
@@ -79,15 +79,14 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		frame.setVisible(true);
 	}
 
-	public void creerRegle(){
-		panelRegle = new MenuGraphique(controleur);
-		
-		Aspects aspects = new Aspects(2);
+	public void creerRegle() {
+        panelRegle = new RegleGraphique(controleur);
+        JButton BoutonAvance = new JButton("→");
 
-		JLabel reg1 = new JLabel(new ImageIcon(aspects.fondBoutonPR.image()));
-		panelRegle.add(reg1);
-	}
-
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.SOUTHWEST;
+        panelRegle.add(BoutonAvance,gbc);
+    }
 	public void creerMenuPrincipal() throws IOException {
 
 		panelMenuPrincipal = new MenuGraphique(controleur);
@@ -131,6 +130,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		JButton boutonParametre = new JButton("Regles",icon3);
 		boutonParametre.setPreferredSize(new Dimension(250, 60));
 		boutonParametre.addActionListener(new AdaptateurCommande(controleur, "Regles"));
+		boutonParametre.setEnabled(false);
 		gbc.gridy = 2;
 		boutonParametre.setBackground(Color.WHITE);
 		boutonParametre.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));

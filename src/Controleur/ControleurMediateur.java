@@ -31,6 +31,8 @@ public class ControleurMediateur implements CollecteurEvenements {
     Plateau plateauDebutTour;
     Timer timer;
     ScheduledExecutorService timerV2;
+    int imageRegle;
+
  
     
     public ControleurMediateur(Jeu j) {
@@ -132,6 +134,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "IADifficile2":
                 typeJ2 = "IADifficileV1";
                 break;
+            case "next":
+                imageRegle+=1;
+            case "previous":
+                if(imageRegle>0){
+                    imageRegle-=1;
+                }
             default:
                 return false;
         }
@@ -496,7 +504,9 @@ public class ControleurMediateur implements CollecteurEvenements {
             }
         }
     }
-
+    public int getImageRegle(){
+        return imageRegle;
+    }
     @Override
     public void tictac() 
     {
