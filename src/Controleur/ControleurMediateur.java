@@ -111,6 +111,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                 interfaceGraphique.afficherPanel("Plateau");
                 interfaceGraphique.miseAjour();
                 break;
+            case "Regles":
+                interfaceGraphique.afficherPanel("Regles");
+                break;
             case "Humain1":
                 typeJ1 = "Humain";
                 break;
