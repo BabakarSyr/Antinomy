@@ -60,7 +60,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void init(String nomJ1, String nomJ2, String typeJ1, String typeJ2){
-        this.jeu.plateau = new Plateau();
+        this.jeu.plateau = new Plateau(nomJ1, nomJ2, typeJ1, typeJ2);
         this.jeu.definirJoueur1(jeu.plateau.joueur1);
         changerEtatJeu(EtatJeu.DEBUT_PARTIE);
         carteSelectionnee = -1;
@@ -85,6 +85,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public boolean commande(String commande) {
+        System.out.println(commande);
         switch (commande) {
             case "Quitter":
                 System.exit(0);
@@ -147,25 +148,29 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     void annule() {
-        if(etatJeu != EtatJeu.DEBUT_PARTIE) {
-            jeu.annuler();
-            interfaceGraphique.miseAjour();
-            plateauDebutTour = jeu.plateau().clone();
-
-            interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
-            interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
+        jeu.annuler();
+        interfaceGraphique.miseAjour();
+        plateauDebutTour = jeu.plateau().clone();
+        if(jeu.joueurActif().getPositionSorcier() == -1){
+            changerEtatJeu(EtatJeu.DEBUT_PARTIE);
+        }else{
+            changerEtatJeu(EtatJeu.DEBUT_TOUR);
         }
+        interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
+        interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
     }
 
     void refaire() {
-        if(etatJeu != EtatJeu.DEBUT_PARTIE) {
-            jeu.refaire();
-            interfaceGraphique.miseAjour();
-            plateauDebutTour = jeu.plateau().clone();
-            
-            interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
-            interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
+        jeu.refaire();
+        interfaceGraphique.miseAjour();
+        plateauDebutTour = jeu.plateau().clone();
+        if(jeu.joueurActif().getPositionSorcier() == -1){
+            changerEtatJeu(EtatJeu.DEBUT_PARTIE);
+        }else{
+            changerEtatJeu(EtatJeu.DEBUT_TOUR);
         }
+        interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
+        interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
     }
 
     public void regle(){
@@ -325,6 +330,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
         {
+            voirMainJoueurActif=false;
+            voirMainAdversaire=true;
             infoPlateau = "au tour de l'IA de jouer";
             timerV2.schedule(tourIA, 2000 , TimeUnit.MILLISECONDS);
             tourIA (jeu.joueurActif().joue());
@@ -429,8 +436,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     {
         changerEtatJeu(EtatJeu.DEBUT_TOUR);
         changerTour();
-        voirMainJoueurActif = true;
-        voirMainAdversaire = false;
+
         interfaceGraphique.miseAjour();
         interfaceGraphique.clearDuelEgalite();
     };
@@ -443,7 +449,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     Runnable tourIA = () ->
     {
-        voirMainJoueurActif = false;
         System.out.println("on demare le tour de l'IA");
     };
 
@@ -504,6 +509,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             }
         }
     }
+<<<<<<< HEAD
     public int getImageRegle(){
         return imageRegle;
     }
@@ -511,5 +517,25 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void tictac() 
     {
 
+=======
+
+    public void getParametrePartie(){
+        nomJ1=interfaceGraphique.getNomJ1();
+        nomJ2= interfaceGraphique.getNomJ2();
+>>>>>>> refs/remotes/origin/master
     }
+    public void setTypeJ1(String type){
+        typeJ1 = type;
+    }
+    public void setTypeJ2(String type){
+        typeJ2 = type;
+    }
+
+    @Override
+    public void tictac() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'tictac'");
+    }
+
+    
 }

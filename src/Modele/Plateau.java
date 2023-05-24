@@ -24,8 +24,8 @@ public class Plateau extends Historique<Coup> implements Cloneable
     public Plateau() {
         
         
-        joueur1=new Humain();
-        joueur2=new Humain();
+        joueur1=new Humain("Joueur 1");
+        joueur2=new Humain("Joueur 2");
       
         joueurActif = 1;
         codex=new Codex(new Carte(null, null,0));
@@ -47,9 +47,9 @@ public class Plateau extends Historique<Coup> implements Cloneable
         joueur2.initIA(this);
     }
 
-    public Plateau(String nomJoueur1, String nomJoueur2)
+    public Plateau(String nomJoueur1, String nomJoueur2, String typeJ1, String typeJ2)
     {
-        switch (nomJoueur1)
+        switch (typeJ1)
         {
             case "IA Facile":
                 this.joueur1 = new IAFacile();
@@ -61,7 +61,7 @@ public class Plateau extends Historique<Coup> implements Cloneable
                 this.joueur1 = new Humain(nomJoueur1);
                 break;
         }
-        switch (nomJoueur2)
+        switch (typeJ2)
         {
             case "IA Facile":
                 this.joueur2 = new IAFacile();

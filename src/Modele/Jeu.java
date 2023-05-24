@@ -9,12 +9,12 @@ public class Jeu{
     
     public Jeu()
     {
-		this.plateau = new Plateau("bob", "marley");
+		this.plateau = new Plateau();
     }
 
-    public Jeu (String joueur1, String joueur2)
+    public Jeu (String joueur1, String joueur2, String typeJ1, String typeJ2)
     {
-        this.plateau = new Plateau(joueur1, joueur2);
+        this.plateau = new Plateau(joueur1, joueur2, typeJ1, typeJ2);
     }
 
     public Jeu(Plateau p)
