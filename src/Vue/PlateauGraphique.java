@@ -116,31 +116,46 @@ public class PlateauGraphique extends JComponent {
 	}
 	//TODO completer la methode pour afficher une image adaptée
 	public void tracerMessageParadoxe(Joueur j){
-		int xDep, yDep, xFin, yFin;
+		int xDep, yDep, largeur, hauteur;
 		//au niveau du sorcier
-		/*if (j==jeu.plateau.joueur1)
+		if (j==jeu.plateau.joueur1)
 		{
 			xDep = 3*largeurCarte;
-			xFin = 3*largeurCarte;
-			yDep = 3*hauteurCarte+10;
-			yFin = yDep-2*hauteurCarte-(2*20);
+			largeur = 3*largeurCarte;
+			yDep = 3*hauteurCarte+20;
+			hauteur = hauteurCarte/2;
 		}
 		else
 		{
 			xDep = 3*largeurCarte;
-			xFin = 30*largeurCarte;
-			yDep = 1*hauteurCarte;
-			yFin = yDep;
-		}*/
+			largeur = 3*largeurCarte;
+			yDep = 1*hauteurCarte+20;
+			hauteur = hauteurCarte/2;
+		}
 
-		//milieu terrain
-		xDep = largeurCarte;
-		xFin = width-xDep-largeurCarte;
-		yDep = 20+hauteurCarte;
-		yFin = height-(yDep+hauteurCarte);
-		drawable.drawImage(aspects.paradoxe.image(), xDep, yDep, xFin, yFin, null);
+		drawable.drawImage(aspects.paradoxe.image(), xDep, yDep, largeur, hauteur, null);
 		surbrillanceMain();
 	}
+
+	public void tracerMessageDuel(Joueur j){
+		int xDep, yDep, largeur, hauteur;
+		if (j==jeu.plateau.joueur1)
+		{
+			xDep = 4*largeurCarte;
+			largeur = largeurCarte;
+			yDep = 3*hauteurCarte+20;
+			hauteur = hauteurCarte/2;
+		}
+		else
+		{
+			xDep = 4*largeurCarte;
+			largeur = largeurCarte;
+			yDep = 1*hauteurCarte+20;
+			hauteur = hauteurCarte/2;
+		}
+		drawable.drawImage(aspects.duel.image(), xDep, yDep, largeur, hauteur, null);
+	}
+
 
 	public void surbrillanceMain(){
 		int x,y;
@@ -203,9 +218,13 @@ public class PlateauGraphique extends JComponent {
 
 		if(c.etatJeu()==EtatJeu.PARADOXE){
 			tracerMessageParadoxe(jeu.joueurActif());
+			surbrillanceParadoxe();	
 		}
 		if(c.etatJeu()==EtatJeu.PARADOXE2){
 			surbrillanceParadoxe();	
+		}
+		if(c.etatJeu()==EtatJeu.DUEL || c.etatJeu()==EtatJeu.DUEL_EGALITE){
+			tracerMessageDuel(jeu.joueurActif());
 		}
 
 		if (duelEgaliteJ1 != -1 && duelEgaliteJ2 != -1)
