@@ -6,6 +6,7 @@ public enum EtatJeu {
     FIN_PARTIE,
     CARTE_SELECTIONNEE,
     PARADOXE,
+    PARADOXE2,
     DUEL,
     DUEL_EGALITE;
 }

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import Modele.Coup;
 import Modele.EtatJeu;
@@ -27,6 +30,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     InterfaceGraphique interfaceGraphique;
     Plateau plateauDebutTour;
     Timer timer;
+    ScheduledExecutorService timerV2;
  
     
     public ControleurMediateur(Jeu j) {
@@ -38,7 +42,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         voirMainJoueurActif = true;
         random = new Random();
         plateauDebutTour = jeu.plateau().clone();
-        timer = new Timer();
+        this.timer = new Timer();
+        timerV2 = Executors.newSingleThreadScheduledExecutor();
 	}
 
     public void init(){
@@ -240,12 +245,15 @@ public class ControleurMediateur implements CollecteurEvenements {
                         changerEtatJeu(EtatJeu.PARADOXE);
                         infoPlateau = "Placez votre paradoxe sur le plateau !";
                         carteSelectionnee = -1;
+                        //timer.schedule(paradoxe, 2500);
+                        timerV2.schedule(paradoxe, 2500, TimeUnit.MILLISECONDS);
+                        
                     }
                     else if(jeu.estDuel()){
                         carteSelectionnee = -1;
                         infoPlateau = "duel!";
                         duel();
-                        interfaceGraphique.setDuelEgalite(random.nextInt(3), random.nextInt(3));
+                        //interfaceGraphique.setDuelEgalite(random.nextInt(3), random.nextInt(3));
                     }else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
@@ -259,6 +267,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }
                 break;
             case PARADOXE:
+            case PARADOXE2:
                 if(jeu.estPossibleEchangerParadoxe(indiceCarteContinuum)){
                     jeu.paradoxe(indiceCarteContinuum);
                     if(jeu.partieTerminee()){
@@ -270,7 +279,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteSelectionnee = -1;
                         infoPlateau = "duel!";
                         duel();
-                        interfaceGraphique.setDuelEgalite(random.nextInt(3), random.nextInt(3));
+                        //interfaceGraphique.setDuelEgalite(random.nextInt(3), random.nextInt(3));
                     }
                     else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
@@ -298,8 +307,19 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
         }
     }
+    public void nouveauTimer()
+    {
+        if (this.timer != null)
+        {
+            this.timer.cancel();
+            this.timer=null;
+        }
+        this.timer = new Timer();
+        System.out.println("\n\n\n\n\n\n\n\n nouveau timer initialise \n\n\n\n\n\n\n\n");
+    }
 
     private void changerTour( ) {
+        //nouveauTimer();
         joue(plateauDebutTour);
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
@@ -380,39 +400,69 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.joueurActif().estIA();
     }
 
+    /*TimerTask finTour = new TimerTask() {
+        @Override
+        public void run()
+        {
+            changerEtatJeu(EtatJeu.DEBUT_TOUR);
+            changerTour();
+            voirMainJoueurActif = true;
+            voirMainAdversaire = false;
+            interfaceGraphique.miseAjour();
+            interfaceGraphique.clearDuelEgalite();
+        }
+    };
+
+    TimerTask paradoxe = new TimerTask() {
+        @Override
+        public void run()
+        {
+            changerEtatJeu(EtatJeu.PARADOXE2);
+            interfaceGraphique.miseAjour();
+        }
+    };*/
+
+    Runnable paradoxe = () -> 
+    {
+        changerEtatJeu(EtatJeu.PARADOXE2);
+        interfaceGraphique.miseAjour();
+    };
+
+    Runnable finTour = () -> 
+    {
+        changerEtatJeu(EtatJeu.DEBUT_TOUR);
+        changerTour();
+        voirMainJoueurActif = true;
+        voirMainAdversaire = false;
+        interfaceGraphique.miseAjour();
+        interfaceGraphique.clearDuelEgalite();
+    };
+
+
     public void duel()
     {
-        TimerTask finTour = new TimerTask() {
-            @Override
-            public void run()
-            {
-                changerEtatJeu(EtatJeu.DEBUT_TOUR);
-                changerTour();
-                voirMainJoueurActif = true;
-                voirMainAdversaire = false;
-                interfaceGraphique.miseAjour();
-                interfaceGraphique.clearDuelEgalite();
-            }
-        };
-
-
-
         voirMainJoueurActif = true;
         voirMainAdversaire = true;
+        Joueur J1= jeu.plateau.joueur1;
+        Joueur J2= jeu.plateau.joueur2;
+        int valeurMainJ1 = jeu.plateau.valeurMain(J1);
+        int valeurMainJ2 = jeu.plateau.valeurMain(J2);
         Joueur joueur = jeu.duel();
         if(joueur != null){
             String resultatDuel;
-            if (joueur==jeu.plateau.joueur1)
+            if (joueur==J1)
             {
-                resultatDuel = "vainqueur: "+joueur.getNom()+" "+jeu.plateau.valeurMain(joueur)+"points / perdant: "+jeu.plateau.joueur2.getNom()+" "+jeu.plateau.valeurMain(jeu.plateau.joueur2)+"points";
+                resultatDuel = "vainqueur: "+J1.getNom()+" "+valeurMainJ1+"points / perdant: "+J2.getNom()+" "+valeurMainJ2+"points";
             }
             else
             {
-                resultatDuel = "vainqueur: "+joueur.getNom()+" "+jeu.plateau.valeurMain(joueur)+"points / perdant: "+jeu.plateau.joueur1.getNom()+" "+jeu.plateau.valeurMain(jeu.plateau.joueur1)+"points";
+                resultatDuel = "vainqueur: "+J2.getNom()+" "+valeurMainJ2+"points / perdant: "+J1.getNom()+" "+valeurMainJ1+"points";
             }
             infoPlateau = resultatDuel;
             interfaceGraphique.miseAjour();
-            timer.schedule(finTour, 3000);
+            //timer.schedule(finTour, 3000);
+            timerV2.schedule(finTour, 3000, TimeUnit.MILLISECONDS);
+
         }
         else{
             infoPlateau = "Egalité une carte va etre tiree au hasard";
@@ -420,7 +470,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
             int indiceAdversaire = random.nextInt(3);
             int indiceJoueurActif = random.nextInt(3);
-            //TODO ajouter une methode pour afficher duel egalite
             interfaceGraphique.setDuelEgalite(indiceJoueurActif, indiceAdversaire);
             interfaceGraphique.miseAjour();
             joueur = jeu.duelEgalite(indiceJoueurActif, indiceAdversaire);
@@ -430,7 +479,8 @@ public class ControleurMediateur implements CollecteurEvenements {
             else{
                 infoPlateau = "Egalité le jeu continue !";
             }
-            timer.schedule(finTour, 4000);
+            //timer.schedule(finTour, 3000);
+            timerV2.schedule(finTour, 2500, TimeUnit.MILLISECONDS);
             if(jeu.partieTerminee())
             {
                 changerEtatJeu(EtatJeu.FIN_PARTIE);

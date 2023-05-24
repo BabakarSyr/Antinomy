@@ -267,9 +267,6 @@ public class Jeu{
         Joueur j1 = plateau.joueurActif();
         Joueur j2 = plateau.joueurInactif();
         // Égalité, procédez au tirage de cartes pour départager les joueurs, sinon annulez le duel
-                        
-        j1.melangerMain();
-        j2.melangerMain();
 
         Carte carteJoueur1 = j1.getMain().get(0);
         Carte carteJoueur2 = j2.getMain().get(0);

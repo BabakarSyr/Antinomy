@@ -96,6 +96,7 @@ public class PlateauGraphique extends JComponent {
 	}
 
 
+
 	public void surbrillance(){
 		Carte carte = jeu.plateau().joueurActif().getMain().get(c.carteSelectionnee());
 		ArrayList<Integer> cartesAccessibles = jeu.plateau().cartesAccessibles(carte);
@@ -114,7 +115,30 @@ public class PlateauGraphique extends JComponent {
 		}
 	}
 	//TODO completer la methode pour afficher une image adaptée
-	public void tracerMessageParadoxe(){
+	public void tracerMessageParadoxe(Joueur j){
+		int xDep, yDep, xFin, yFin;
+		//au niveau du sorcier
+		/*if (j==jeu.plateau.joueur1)
+		{
+			xDep = 3*largeurCarte;
+			xFin = 3*largeurCarte;
+			yDep = 3*hauteurCarte+10;
+			yFin = yDep-2*hauteurCarte-(2*20);
+		}
+		else
+		{
+			xDep = 3*largeurCarte;
+			xFin = 30*largeurCarte;
+			yDep = 1*hauteurCarte;
+			yFin = yDep;
+		}*/
+
+		//milieu terrain
+		xDep = largeurCarte;
+		xFin = width-xDep-largeurCarte;
+		yDep = 20+hauteurCarte;
+		yFin = height-(yDep+hauteurCarte);
+		drawable.drawImage(aspects.paradoxe.image(), xDep, yDep, xFin, yFin, null);
 		surbrillanceMain();
 	}
 
@@ -178,7 +202,9 @@ public class PlateauGraphique extends JComponent {
 		tracerContinuum();
 
 		if(c.etatJeu()==EtatJeu.PARADOXE){
-			tracerMessageParadoxe();
+			tracerMessageParadoxe(jeu.joueurActif());
+		}
+		if(c.etatJeu()==EtatJeu.PARADOXE2){
 			surbrillanceParadoxe();	
 		}
 
