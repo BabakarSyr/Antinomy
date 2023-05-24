@@ -63,7 +63,15 @@ public class Humain implements Joueur
     }
 
     public void ajouterCristal(int nombreCristaux) {
-        this.nombreCristaux += 1;
+        this.nombreCristaux += nombreCristaux;
+        if (nombreCristaux>0)
+        {
+            System.out.println(this.nom+" gagne "+nombreCristaux+" points!");
+        }
+        else
+        {
+            System.out.println(this.nom+" perd "+(-nombreCristaux)+" points!");
+        }
     }
 
     public void setCristal(int nombreCristaux) {

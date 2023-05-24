@@ -106,6 +106,14 @@ public abstract class IA implements Joueur{
     public void ajouterCristal(int nb)
     {
         this.nombreCristaux += nb;
+        if (nb>0)
+        {
+            System.out.println(this.nom+" gagne "+nombreCristaux+" points!");
+        }
+        else
+        {
+            System.out.println(this.nom+" perd "+(-nombreCristaux)+" points!");
+        }
     }
 
     public void setCristal(int nb)
