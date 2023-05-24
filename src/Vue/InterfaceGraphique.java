@@ -68,6 +68,10 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		// Garde à jour l'interface graphique du controleur
         controleur.interfaceGraphique(this);
 
+		//boucle de jeu
+		Timer time = new Timer(16, new AdaptateurTemps(controleur));
+		time.start();
+
 		// Un clic sur le bouton de fermeture clos l'application
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

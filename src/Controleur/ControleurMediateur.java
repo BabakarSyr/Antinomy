@@ -310,24 +310,13 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
         }
     }
-    public void nouveauTimer()
-    {
-        if (this.timer != null)
-        {
-            this.timer.cancel();
-            this.timer=null;
-        }
-        this.timer = new Timer();
-        System.out.println("\n\n\n\n\n\n\n\n nouveau timer initialise \n\n\n\n\n\n\n\n");
-    }
 
     private void changerTour( ) {
-        //nouveauTimer();
         joue(plateauDebutTour);
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
         {
-            tourIA (jeu.joueurActif().joueCoup());
+            tourIA (jeu.joueurActif().joue());
         }
         else
         {
@@ -378,6 +367,24 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
         return false;
         
+    }
+
+    public void tourIA (ArrayList<Integer> coupIA )
+    {
+        if (etatJeu == EtatJeu.DEBUT_PARTIE)
+        {
+            clicCarteContinuum(coupIA.get(0));
+        }
+        else
+        {
+            voirMainJoueurActif = false;
+            clicCarteMain(coupIA.get(0));
+            clicCarteContinuum(coupIA.get(1));
+            if (coupIA.size()>2)
+            {
+                clicCarteContinuum(coupIA.get(2));
+            }
+        }
     }
 
     public void tourIA (Coup coupIA )
@@ -441,6 +448,12 @@ public class ControleurMediateur implements CollecteurEvenements {
         interfaceGraphique.clearDuelEgalite();
     };
 
+    Runnable duelEgalite = () ->
+    {
+        changerEtatJeu(EtatJeu.DUEL_EGALITE);
+        System.out.println("on passe au duel egalite!");
+    };
+
 
     public void duel()
     {
@@ -469,7 +482,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
         else{
             infoPlateau = "Egalité une carte va etre tiree au hasard";
-            changerEtatJeu(EtatJeu.DUEL_EGALITE);
+            timerV2.schedule(duelEgalite, 2000, TimeUnit.MILLISECONDS);
+            //changerEtatJeu(EtatJeu.DUEL_EGALITE);
 
             int indiceAdversaire = random.nextInt(3);
             int indiceJoueurActif = random.nextInt(3);
@@ -483,12 +497,18 @@ public class ControleurMediateur implements CollecteurEvenements {
                 infoPlateau = "Egalité le jeu continue !";
             }
             //timer.schedule(finTour, 3000);
-            timerV2.schedule(finTour, 2500, TimeUnit.MILLISECONDS);
+            timerV2.schedule(finTour, 3000, TimeUnit.MILLISECONDS);
             if(jeu.partieTerminee())
             {
                 changerEtatJeu(EtatJeu.FIN_PARTIE);
                 infoPlateau = jeu.nomVainqueur()+ " REMPORTE LA PARTIE !";
             }
         }
+    }
+
+    @Override
+    public void tictac() 
+    {
+
     }
 }

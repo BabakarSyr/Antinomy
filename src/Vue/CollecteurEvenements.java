@@ -18,4 +18,5 @@ public interface CollecteurEvenements {
     boolean joueurActif(int numJoueur);
     public EtatJeu etatJeu();
     void interfaceGraphique(InterfaceGraphique interfaceGraphique);
+    void tictac();
 }
