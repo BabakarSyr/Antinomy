@@ -317,6 +317,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
         {
+            voirMainJoueurActif=false;
+            voirMainAdversaire=true;
             infoPlateau = "au tour de l'IA de jouer";
             timerV2.schedule(tourIA, 2000 , TimeUnit.MILLISECONDS);
             tourIA (jeu.joueurActif().joue());
@@ -421,8 +423,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     {
         changerEtatJeu(EtatJeu.DEBUT_TOUR);
         changerTour();
-        voirMainJoueurActif = true;
-        voirMainAdversaire = false;
+
         interfaceGraphique.miseAjour();
         interfaceGraphique.clearDuelEgalite();
     };
@@ -435,7 +436,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     Runnable tourIA = () ->
     {
-        voirMainJoueurActif = false;
         System.out.println("on demare le tour de l'IA");
     };
 
