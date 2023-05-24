@@ -494,4 +494,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void setTypeJ2(String type){
         typeJ2 = type;
     }
+
+    @Override
+    public void tictac() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'tictac'");
+    }
+
+    
 }

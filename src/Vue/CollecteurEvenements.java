@@ -20,4 +20,5 @@ public interface CollecteurEvenements {
     void interfaceGraphique(InterfaceGraphique interfaceGraphique);
     void setTypeJ1(String string);
     void setTypeJ2(String string);
+    void tictac();
 }
