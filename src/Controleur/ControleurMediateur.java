@@ -58,7 +58,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void init(String nomJ1, String nomJ2, String typeJ1, String typeJ2){
-        this.jeu.plateau = new Plateau();
+        this.jeu.plateau = new Plateau(nomJ1, nomJ2, typeJ1, typeJ2);
         this.jeu.definirJoueur1(jeu.plateau.joueur1);
         changerEtatJeu(EtatJeu.DEBUT_PARTIE);
         carteSelectionnee = -1;
@@ -83,6 +83,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public boolean commande(String commande) {
+        System.out.println(commande);
         switch (commande) {
             case "Quitter":
                 System.exit(0);
@@ -114,24 +115,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "Regles":
                 interfaceGraphique.afficherPanel("Regles");
                 break;
-            case "Humain1":
-                typeJ1 = "Humain";
-                break;
-            case "IAFacile1":
-                typeJ1 = "IAFacile";
-                break;
-            case "IADifficile1":
-                typeJ1 = "IADifficileV1";
-                break;
-            case "Humain2":
-                typeJ2 = "Humain";
-                break;
-            case "IAFacile2":
-                typeJ2 = "IAFacile";
-                break;
-            case "IADifficile2":
-                typeJ2 = "IADifficileV1";
-                break;
             default:
                 return false;
         }
@@ -139,25 +122,29 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     void annule() {
-        if(etatJeu != EtatJeu.DEBUT_PARTIE) {
-            jeu.annuler();
-            interfaceGraphique.miseAjour();
-            plateauDebutTour = jeu.plateau().clone();
-
-            interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
-            interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
+        jeu.annuler();
+        interfaceGraphique.miseAjour();
+        plateauDebutTour = jeu.plateau().clone();
+        if(jeu.joueurActif().getPositionSorcier() == -1){
+            changerEtatJeu(EtatJeu.DEBUT_PARTIE);
+        }else{
+            changerEtatJeu(EtatJeu.DEBUT_TOUR);
         }
+        interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
+        interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
     }
 
     void refaire() {
-        if(etatJeu != EtatJeu.DEBUT_PARTIE) {
-            jeu.refaire();
-            interfaceGraphique.miseAjour();
-            plateauDebutTour = jeu.plateau().clone();
-            
-            interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
-            interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
+        jeu.refaire();
+        interfaceGraphique.miseAjour();
+        plateauDebutTour = jeu.plateau().clone();
+        if(jeu.joueurActif().getPositionSorcier() == -1){
+            changerEtatJeu(EtatJeu.DEBUT_PARTIE);
+        }else{
+            changerEtatJeu(EtatJeu.DEBUT_TOUR);
         }
+        interfaceGraphique.setBoutonHistoriqueAnnuler(jeu.plateau().peutAnnuler());
+        interfaceGraphique.setBoutonHistoriqueRefaire(jeu.plateau().peutRefaire());
     }
 
     public void regle(){
@@ -490,5 +477,16 @@ public class ControleurMediateur implements CollecteurEvenements {
                 infoPlateau = jeu.nomVainqueur()+ " REMPORTE LA PARTIE !";
             }
         }
+    }
+
+    public void getParametrePartie(){
+        nomJ1=interfaceGraphique.getNomJ1();
+        nomJ2= interfaceGraphique.getNomJ2();
+    }
+    public void setTypeJ1(String type){
+        typeJ1 = type;
+    }
+    public void setTypeJ2(String type){
+        typeJ2 = type;
     }
 }

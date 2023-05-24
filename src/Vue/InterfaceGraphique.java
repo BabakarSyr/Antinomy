@@ -6,6 +6,8 @@ import javax.swing.border.EmptyBorder;
 import Global.Configuration;
 
 import java.awt.* ;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import Modele.*;
@@ -27,9 +29,10 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
 	MenuGraphique panelParametrePartie;
 	JTextField nomJoueur1Defaut, nomJoueur2Defaut;
-	JComboBox comboBoxJoueur1, comboBoxJoueur2;
+	JComboBox<String> comboBoxJoueur1, comboBoxJoueur2;
 	JRadioButton radioJoueur1, radioJoueur2, radioAleatoire;
 	JButton boutonValiderParametre, boutonAnnulerParametre;
+	JLabel nomJoueur1, nomJoueur2;
 
 	public InterfaceGraphique(Jeu j, CollecteurEvenements c){
 		jeu = j;
@@ -231,7 +234,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         gbc.weightx = 0.33;
         gbc.insets = new Insets(10,10,10,10);  //top padding
 
-        JLabel nomJoueur1 = new JLabel("Joueur 1");
+        nomJoueur1 = new JLabel("Joueur 1");
         gbc.gridx = 0;
         gbc.gridy = 0;  
         panelParametrePartie.add(nomJoueur1, gbc);
@@ -244,12 +247,11 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         nomJoueur1Defaut.setText("Joueur 1");
         panelParametrePartie.add(nomJoueur1Defaut, gbc);
 
-        comboBoxJoueur1 = new JComboBox<>();
-        for(int i = 0; i < choixComboBox.length; i++){
-            comboBoxJoueur1.addItem(choixComboBox[i]);
-        }
+        comboBoxJoueur1 = new JComboBox<>(choixComboBox);
         comboBoxJoueur1.setFocusable(false);
-        comboBoxJoueur1.addActionListener(new AdaptateurCommande(controleur, comboBoxJoueur1.getSelectedItem().toString()+"1"));
+		comboBoxJoueur1.setName("cb1");
+		comboBoxJoueur1.addActionListener(new AdaptateurItem(controleur, comboBoxJoueur1));
+		comboBoxJoueur1.setSelectedIndex(0);
         
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -262,7 +264,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         gbc.insets = new Insets(10,30,0,0);  //padding elements Joueur2
 
         gbc.ipady = 0;
-        JLabel nomJoueur2 = new JLabel("Joueur 2");
+        nomJoueur2 = new JLabel("Joueur 2");
 		gbc.insets = new Insets(10,10,10,10);
         gbc.gridx = 1;
         gbc.gridy = 0; 
@@ -277,13 +279,12 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         panelParametrePartie.add(nomJoueur2Defaut, gbc);
 
 
-        comboBoxJoueur2 = new JComboBox<>();
-        for(int i = 0; i < choixComboBox.length; i++){
-            comboBoxJoueur2.addItem(choixComboBox[i]);
-        }
+        comboBoxJoueur2 = new JComboBox<>(choixComboBox);
         comboBoxJoueur2.setFocusable(false);
+		comboBoxJoueur2.setName("cb2");
+		comboBoxJoueur2.addActionListener(new AdaptateurItem(controleur, comboBoxJoueur2));
         comboBoxJoueur2.setSelectedIndex(2);
-        comboBoxJoueur2.addActionListener(new AdaptateurCommande(controleur, comboBoxJoueur2.getSelectedItem().toString()+"2"));
+		
         
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -332,4 +333,16 @@ public class InterfaceGraphique extends JFrame implements Runnable {
         plateauGraphique.setDuelEgalite(-1, -1);
     }
 
+	public String getNomJ1(){
+		if(nomJoueur1.getText() != ""){
+			return nomJoueur1.getText();
+		}
+		return nomJoueur1Defaut.getName();
+	}
+	public String getNomJ2(){
+		if(nomJoueur2.getText() != ""){
+			return nomJoueur2.getText();
+		}
+		return nomJoueur2Defaut.getText();
+	}
 }
