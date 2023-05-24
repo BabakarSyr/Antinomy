@@ -233,22 +233,23 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jeu.jouerCarte(carteSelectionnee, indiceCarteContinuum);
                     if(jeu.estParadoxe()){
                         changerEtatJeu(EtatJeu.PARADOXE);
-                        infoPlateau = "Placez votre paradoxe sur le plateau !";
+                        infoPlateau = "";
                         carteSelectionnee = -1;
                         //timer.schedule(paradoxe, 2500);
                         timerV2.schedule(paradoxe, 2500, TimeUnit.MILLISECONDS);
+                        infoPlateau = "placez votre paradoxe sur le continuum!";
                         
                     }
                     else if(jeu.estDuel()){
+                        changerEtatJeu(EtatJeu.DUEL);
                         carteSelectionnee = -1;
                         infoPlateau = "duel!";
-                        duel();
-                        //interfaceGraphique.setDuelEgalite(random.nextInt(3), random.nextInt(3));
+                        timerV2.schedule(duel, 3, TimeUnit.SECONDS);
                     }else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
                         carteSelectionnee = -1;
-                        changerTour();
+                        timerV2.schedule(finTour, 1, TimeUnit.SECONDS);
                     }
                 }
                 else
@@ -268,13 +269,13 @@ public class ControleurMediateur implements CollecteurEvenements {
                         changerEtatJeu(EtatJeu.DUEL);
                         carteSelectionnee = -1;
                         infoPlateau = "duel!";
-                        duel();
+                        timerV2.schedule(duel, 3, TimeUnit.SECONDS);
                         //interfaceGraphique.setDuelEgalite(random.nextInt(3), random.nextInt(3));
                     }
                     else{
                         changerEtatJeu(EtatJeu.DEBUT_TOUR);
                         infoPlateau = "";
-                        changerTour();
+                        timerV2.schedule(finTour, 1, TimeUnit.SECONDS);
                     }
                     carteSelectionnee = -1;
                     voirMainAdversaire = false;
@@ -297,24 +298,15 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
         }
     }
-    public void nouveauTimer()
-    {
-        if (this.timer != null)
-        {
-            this.timer.cancel();
-            this.timer=null;
-        }
-        this.timer = new Timer();
-        System.out.println("\n\n\n\n\n\n\n\n nouveau timer initialise \n\n\n\n\n\n\n\n");
-    }
 
     private void changerTour( ) {
-        //nouveauTimer();
         joue(plateauDebutTour);
         jeu.plateau().changerJoueurActif();
         if (estTourIA())
         {
-            tourIA (jeu.joueurActif().joueCoup());
+            infoPlateau = "au tour de l'IA de jouer";
+            timerV2.schedule(tourIA, 2000 , TimeUnit.MILLISECONDS);
+            tourIA (jeu.joueurActif().joue());
         }
         else
         {
@@ -367,6 +359,23 @@ public class ControleurMediateur implements CollecteurEvenements {
         
     }
 
+    public void tourIA (ArrayList<Integer> coupIA )
+    {
+        if (etatJeu == EtatJeu.DEBUT_PARTIE)
+        {
+            clicCarteContinuum(coupIA.get(0));
+        }
+        else
+        {
+            clicCarteMain(coupIA.get(0));
+            clicCarteContinuum(coupIA.get(1));
+            if (coupIA.size()>2)
+            {
+                clicCarteContinuum(coupIA.get(2));
+            }
+        }
+    }
+
     public void tourIA (Coup coupIA )
     {
         if (etatJeu == EtatJeu.DEBUT_PARTIE)
@@ -375,7 +384,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
         else
         {
-            voirMainJoueurActif = false;
             clicCarteMain(coupIA.indiceCarteJouee());
             clicCarteContinuum(coupIA.indiceCarteContinuum());
             if (coupIA.indiceParadoxe()!= -1)
@@ -389,28 +397,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     {
         return jeu.joueurActif().estIA();
     }
-
-    /*TimerTask finTour = new TimerTask() {
-        @Override
-        public void run()
-        {
-            changerEtatJeu(EtatJeu.DEBUT_TOUR);
-            changerTour();
-            voirMainJoueurActif = true;
-            voirMainAdversaire = false;
-            interfaceGraphique.miseAjour();
-            interfaceGraphique.clearDuelEgalite();
-        }
-    };
-
-    TimerTask paradoxe = new TimerTask() {
-        @Override
-        public void run()
-        {
-            changerEtatJeu(EtatJeu.PARADOXE2);
-            interfaceGraphique.miseAjour();
-        }
-    };*/
 
     Runnable paradoxe = () -> 
     {
@@ -427,6 +413,24 @@ public class ControleurMediateur implements CollecteurEvenements {
         interfaceGraphique.miseAjour();
         interfaceGraphique.clearDuelEgalite();
     };
+
+    Runnable duelEgalite = () ->
+    {
+        changerEtatJeu(EtatJeu.DUEL_EGALITE);
+        System.out.println("on passe au duel egalite!");
+    };
+
+    Runnable tourIA = () ->
+    {
+        voirMainJoueurActif = false;
+        System.out.println("on demare le tour de l'IA");
+    };
+
+    Runnable duel = () ->
+    {
+        duel();
+    };
+
 
 
     public void duel()
@@ -456,7 +460,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
         else{
             infoPlateau = "Egalité une carte va etre tiree au hasard";
-            changerEtatJeu(EtatJeu.DUEL_EGALITE);
+            timerV2.schedule(duelEgalite, 2000, TimeUnit.MILLISECONDS);
+            //changerEtatJeu(EtatJeu.DUEL_EGALITE);
 
             int indiceAdversaire = random.nextInt(3);
             int indiceJoueurActif = random.nextInt(3);
@@ -470,7 +475,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 infoPlateau = "Egalité le jeu continue !";
             }
             //timer.schedule(finTour, 3000);
-            timerV2.schedule(finTour, 2500, TimeUnit.MILLISECONDS);
+            timerV2.schedule(finTour, 3000, TimeUnit.MILLISECONDS);
             if(jeu.partieTerminee())
             {
                 changerEtatJeu(EtatJeu.FIN_PARTIE);

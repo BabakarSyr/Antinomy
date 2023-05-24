@@ -12,7 +12,8 @@ public class Aspects
 	fleche1, fleche2, fleche3, fleche4, fleche5, fleche6,
 	fond, oeil, lumiere, halo,
 	fondBouton, fondBouton2,
-	epees, paradoxe;
+	epees, paradoxe, duel,
+	fondBoutonPR, fondBoutonPers, fondBoutonRegle, fondBoutonQuitter;
 
 
 	public Aspects()
@@ -159,7 +160,12 @@ public class Aspects
 		//halo = new ImageJeu("circle2");
 		oeil= new ImageJeu("oeil");
 		epees= new ImageJeu("epees");
-		paradoxe= new ImageJeu("paradoxe");
+		paradoxe= new ImageJeu("paradoxe2");
+		duel = new ImageJeu("epees");
+		fondBoutonPR = new ImageJeu("fondBoutonPR");
+        fondBoutonPers = new ImageJeu("fondBoutonPers");
+        fondBoutonRegle = new ImageJeu("fondBoutonRegle");
+        fondBoutonQuitter = new ImageJeu("fondBoutonQuitter");
 
     }
 

@@ -2,6 +2,8 @@ package Modele;
 
 import java.util.ArrayList;
 
+import Structures.Noeud;
+
 public class IADifficileV1 extends IA
 {
     public IADifficileV1()
@@ -73,9 +75,7 @@ public class IADifficileV1 extends IA
         }
     }
 
-    @Override
-    //TODO fix
-    public int choisirSens()
+    public int choisirSens(Plateau old, Plateau nouv)
     {
         int droite;
         //Si on ne peut pas placer des cartes à gauche
@@ -90,118 +90,75 @@ public class IADifficileV1 extends IA
             //On les place à gauche
             return 0;
         }
-        //Sinon, on choisi où les placer àleatoirement
+        //Sinon, on choisi où les placer en fonction de l'ancienne àleatoirement
         else
         {
-            droite = r.nextInt(2);
-            if (droite == 1)
+            Carte a = old.getContinuum().get(positionSorcier - 1);
+            Carte b = nouv.getContinuum().get(positionSorcier - 1);
+            if (a == b)
             {
-                return 8;
+                return positionSorcier - 1;
             }
             else
             {
-                return 0;
+                return positionSorcier + 1;
             }
         }
     }
 
     @Override
-    //TODO fix
-	public Coup joueCoup() 
+	public ArrayList<Integer> joue() 
     {
-
-
-
-
-
-
-
-
-
-        int mouvementChoisi;
-        int carteChoisie;
-        ArrayList<Integer> positions;
-        Coup choix = new Coup();
-        boolean resultatDuel;
-        ArrayList<Integer> paradoxPositions = new ArrayList<Integer>();
-
+        ArrayList<Integer> choix = new ArrayList<>();
 
         if (positionSorcier==-1)
         {
-            System.out.println("positionSorcier = "+positionSorcier);
-            choix.indiceCarteContinuum=calculPosInitiale();
+            System.out.println("positionSorcier = " + positionSorcier);
+            choix.add(calculPosInitiale());
+            return choix;
         }
         else
         {
-            //Etape 1. Recuperer la position de l'adversaire
-            Integer posAdversaire = plateau.getPositionSorcier(ordreAdversaire);
+            //Step 1: Creer une arbre des configurations de profondeur 3
+            Noeud arbreMinMax = minimax(this.plateau, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
 
-            ArrayList<Integer> cartes = new ArrayList<>();
-            for (int i = 0; i < 3; i++)
+            //Step 2: Choisir le meuilleur movement en fonction du score stocké dans chque noeud
+            ArrayList <Noeud> noeudsFils = arbreMinMax.getFils();
+
+           int maxScore = Integer.MIN_VALUE;
+
+            ArrayList<Noeud> meiulleursMovements = new ArrayList<>();
+            for (Noeud n : noeudsFils)
             {
-                cartes.add(i);
+                int score = n.getScore();
+                if (score > maxScore)
+                {
+                    maxScore = score;
+                    meiulleursMovements.clear();
+                    meiulleursMovements.add(n);
+                }
+                else if (score == maxScore)
+                {
+                    meiulleursMovements.add(n);
+                }
             }
-            
 
-            //Tant qu'il y a des cartes qu'on n'a pas encore testé
-            while (cartes.size() !=  0)
+            Noeud selection = meiulleursMovements.get(r.nextInt(meiulleursMovements.size()));
+
+            //Step 3: Retourner le movement choisi
+            choix.add(this.getMain().indexOf(selection.getCarteJouee()));
+            choix.add(selection.getPositionJouee());
+            if (selection.getEtatPlateau().estParadoxe())
             {
-                //Etape 2. Choisir une carte aleatoirement
-                carteChoisie = r.nextInt(cartes.size());
-
-                //Etape 3. Obtenir tous les positions valides pour la carte actuelle
-                positions = plateau.cartesAccessibles(main.get(carteChoisie));
-
-                //Etape 4. Regarder si la position de l'adversaire est dans ce tableau
-                if (positions.contains(posAdversaire))
-                {
-                    //Etape 4a. Si oui, choisir ce mouvement
-                    mouvementChoisi = posAdversaire;
-                    resultatDuel=plateau.valeurMain(plateau.getJoueur(ordreIA))<jeu.plateau.valeurMain(plateau.getJoueur(ordreAdversaire));
-                    //resultatDuel = simulerMouvement(carteChoisie, mouvementChoisi);
-                    //Etape 4b. Si on gagne pas le duel, on l'enleve des positions valides
-                    if (!resultatDuel)
-                    {
-                        positions.remove(posAdversaire);
-                    }
-                }
-
-                //Etape 5. Parmi les positions valides, recuperer celles qui entrainnent la formation d'un paradoxe
-                paradoxPositions = peutFormerParadoxe(main.get(carteChoisie), positions);
-
-                //Etape 6. S'il y a au moins une position valide qui entrainne la formation d'un paradoxe
-                if (paradoxPositions!=null)
-                {
-
-                    if (!paradoxPositions.isEmpty())
-                    {
-                        //Choisir aleatoirement une position et jouer ça
-                        mouvementChoisi = r.nextInt(paradoxPositions.size());
-                        mouvementChoisi = paradoxPositions.get(mouvementChoisi);
-                        choix.indiceCarteJouee=carteChoisie;
-                        choix.indiceCarteContinuum=mouvementChoisi;
-                        choix.indiceParadoxe=choisirSens();
-                        return choix;
-                    }
-                }
-                //Etape 7. Sinon on passe à la carte suivante
-                cartes.remove(carteChoisie);
+                choix.add(choisirSens(this.plateau, selection.getEtatPlateau()));
             }
-            
-            //Etape 8. si aucune position ne satisfait pas nos contraintes choisir une carte et une position aleatoirement et joue ça
-            carteChoisie = r.nextInt(3);
-            positions = plateau.cartesAccessibles(main.get(carteChoisie));
-            mouvementChoisi = r.nextInt(positions.size());
-            mouvementChoisi = positions.get(mouvementChoisi);
-            choix.indiceCarteJouee=carteChoisie;
-            choix.indiceCarteContinuum=mouvementChoisi;
-            choix.indiceParadoxe=choisirSens();
+            return choix;
         }
-        return choix;
     }
 
-
-
-
-
+    @Override
+    public Coup joueCoup()
+    {
+        return null;
+    }
 }

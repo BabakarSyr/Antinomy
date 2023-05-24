@@ -23,6 +23,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 	JPanel panelMenuPrincipal;
 	CardLayout layout;
 	JPanel panelCourant;
+	JPanel panelRegle;
 	PlateauGraphique plateauGraphique;
 	ImageJeu menuBackground;
 	JFrame frame;
@@ -60,6 +61,8 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 			panelCourant.add(plateauGraphique, "Plateau");
 			creerParametrePartie();
 			panelCourant.add(panelParametrePartie, "ParametrePartie");
+			creerRegle();
+			panelCourant.add(panelRegle,"Regles");
 		}catch (IOException e) {
             Configuration.instance().logger().severe("Erreur d'affichage des menus !!!");
             e.printStackTrace();
@@ -68,11 +71,24 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		// Garde à jour l'interface graphique du controleur
         controleur.interfaceGraphique(this);
 
+		//boucle de jeu
+		Timer time = new Timer(16, new AdaptateurTemps(controleur));
+		time.start();
+
 		// Un clic sur le bouton de fermeture clos l'application
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// On fixe la taille et on demarre
 		frame.setVisible(true);
+	}
+
+	public void creerRegle(){
+		panelRegle = new MenuGraphique(controleur);
+		
+		Aspects aspects = new Aspects(2);
+
+		JLabel reg1 = new JLabel(new ImageIcon(aspects.fondBoutonPR.image()));
+		panelRegle.add(reg1);
 	}
 
 	public void creerMenuPrincipal() throws IOException {
@@ -91,8 +107,8 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		//gbc.weighty = 0.2;
 		Aspects aspects;
 		aspects = new Aspects(2);
-		Icon icon2 = new ImageIcon(aspects.fondBouton2.image());
-		JButton boutonRapide = new JButton("Partie rapide",icon2);
+		Icon icon = new ImageIcon(aspects.fondBoutonPR.image());
+		JButton boutonRapide = new JButton("Partie rapide",icon);
 		boutonRapide.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
 		//gbc.gridwidth = 3;
 		boutonRapide.setPreferredSize(new Dimension(250, 60));
@@ -103,6 +119,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		boutonRapide.setForeground(Color.BLACK);
 		panelMenuPrincipal.add(boutonRapide, gbc);
 
+		Icon icon2 = new ImageIcon(aspects.fondBoutonPers.image());
 		JButton boutonPersonnalise= new JButton("Partie personnalise",icon2);
 		boutonPersonnalise.setPreferredSize(new Dimension(250, 60));
 		boutonPersonnalise.addActionListener(new AdaptateurCommande(controleur, "ParametrePartie"));
@@ -113,7 +130,8 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		boutonPersonnalise.setForeground(Color.WHITE);
 		panelMenuPrincipal.add(boutonPersonnalise, gbc);
 	
-		JButton boutonParametre = new JButton("Regles",icon2);
+		Icon icon3 = new ImageIcon(aspects.fondBoutonRegle.image());
+		JButton boutonParametre = new JButton("Regles",icon3);
 		boutonParametre.setPreferredSize(new Dimension(250, 60));
 		boutonParametre.addActionListener(new AdaptateurCommande(controleur, "Regles"));
 		gbc.gridy = 2;
@@ -122,7 +140,8 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		boutonParametre.setForeground(Color.BLACK);
 		panelMenuPrincipal.add(boutonParametre, gbc);
 
-		JButton boutonQuitter = new JButton("Quitter",icon2);
+		Icon icon4 = new ImageIcon(aspects.fondBoutonQuitter.image());
+		JButton boutonQuitter = new JButton("Quitter",icon4);
 		boutonQuitter.setPreferredSize(new Dimension(250, 60));
 		boutonQuitter.addActionListener(new AdaptateurCommande(controleur, "Quitter"));
 		gbc.gridx = 1;

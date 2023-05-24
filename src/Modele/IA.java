@@ -316,8 +316,10 @@ public abstract class IA implements Joueur{
         return score;
     }
 
-    public Noeud minimax(Plateau p, int profondeur, int alpha, int beta, boolean maxJoueur) throws CloneNotSupportedException
+    public Noeud minimax(Plateau p, int profondeur, int alpha, int beta, boolean maxJoueur)
     {
+        boolean Paradoxe = false;
+
         if (profondeur == 0 || jeu.partieTerminee())
         {
             int score = calculScore();
@@ -354,6 +356,32 @@ public abstract class IA implements Joueur{
                     filsNoeud.setCarte(p.joueurActif().getMain().get(actionsPossibles.indexOf(e)));
                     filsNoeud.setPositionJouee(i);
                     
+                    if (!Paradoxe)
+                    {
+                        if (nouvPlateau.estParadoxe())
+                        {
+                            Plateau echangeDroite = new Plateau(nouvPlateau);
+                            Plateau echangeGauche = new Plateau(nouvPlateau);
+                            echangeDroite.echangerParadoxe(true);
+                            echangeGauche.echangerParadoxe(false);
+
+                            Noeud filsGauche = new Noeud(echangeGauche, null, -1, 0);
+                            Noeud filsDroite = new Noeud(echangeDroite, null, -1, 0);
+
+                            filsGauche.setCarte(nouvPlateau.joueurActif().getMain().get(actionsPossibles.indexOf(e)));
+                            filsGauche.setPositionJouee(i);
+
+                            filsDroite.setCarte(nouvPlateau.joueurActif().getMain().get(actionsPossibles.indexOf(e)));
+                            filsDroite.setPositionJouee(i);
+
+                            fils.add(filsGauche);
+                            fils.add(filsDroite);
+
+                            Paradoxe = true;
+                        }
+                    }
+
+
                     fils.add(filsNoeud);
 
                     maxScore = Math.max(maxScore, filsNoeud.getScore());
@@ -365,6 +393,7 @@ public abstract class IA implements Joueur{
                     }
                 }
             }
+
             noeudCour.setScore(maxScore);
         }
         else
@@ -381,6 +410,31 @@ public abstract class IA implements Joueur{
 
                     filsNoeud.setCarte(p.joueurActif().getMain().get(actionsPossibles.indexOf(e)));
                     filsNoeud.setPositionJouee(i);
+
+                    if (!Paradoxe)
+                    {
+                        if (nouvPlateau.estParadoxe())
+                        {
+                            Plateau echangeDroite = new Plateau(nouvPlateau);
+                            Plateau echangeGauche = new Plateau(nouvPlateau);
+                            echangeDroite.echangerParadoxe(true);
+                            echangeGauche.echangerParadoxe(false);
+
+                            Noeud filsGauche = new Noeud(echangeGauche, null, -1, 0);
+                            Noeud filsDroite = new Noeud(echangeDroite, null, -1, 0);
+
+                            filsGauche.setCarte(nouvPlateau.joueurActif().getMain().get(actionsPossibles.indexOf(e)));
+                            filsGauche.setPositionJouee(i);
+
+                            filsDroite.setCarte(nouvPlateau.joueurActif().getMain().get(actionsPossibles.indexOf(e)));
+                            filsDroite.setPositionJouee(i);
+
+                            fils.add(filsGauche);
+                            fils.add(filsDroite);
+
+                            Paradoxe = true;
+                        }
+                    }
 
                     fils.add(filsNoeud);
 
