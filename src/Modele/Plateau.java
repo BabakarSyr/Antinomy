@@ -127,25 +127,33 @@ public class Plateau extends Historique<Coup> implements Cloneable
 
     public List<Carte> getAll_Cartes() {
         List<Carte> All_Cartes=new ArrayList<>();
-        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VERT,1));
-        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
-        All_Cartes.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
+        
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.BLEU,4));
         All_Cartes.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
-
-        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
         All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
+        
+        
+        
+        
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.VERT,2));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.BLEU,3));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VERT,3));
+        
+        
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VIOLET,2));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.VERT,1));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
+        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
+        All_Cartes.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
+        All_Cartes.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
         All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.ROUGE,3));
         All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VERT,4));
 
-        All_Cartes.add(new Carte(Forme.CLE, Couleur.ROUGE,1));
-        All_Cartes.add(new Carte(Forme.CLE, Couleur.VERT,2));
-        All_Cartes.add(new Carte(Forme.CLE, Couleur.VIOLET,3));
-        All_Cartes.add(new Carte(Forme.CLE, Couleur.BLEU,4));
 
-        All_Cartes.add(new Carte(Forme.CRANE, Couleur.BLEU,1));
-        All_Cartes.add(new Carte(Forme.CRANE, Couleur.ROUGE,2));
-        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VERT,3));
-        All_Cartes.add(new Carte(Forme.CRANE, Couleur.VIOLET,4));
+        All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.VIOLET,1));
+
         return All_Cartes;
     }
     public void initialiser(){

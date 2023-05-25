@@ -11,6 +11,10 @@ public class Jeu{
     {
 		this.plateau = new Plateau();
     }
+    
+
+
+
 
     public Jeu (String joueur1, String joueur2, String typeJ1, String typeJ2)
     {
