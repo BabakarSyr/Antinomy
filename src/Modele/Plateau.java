@@ -76,8 +76,11 @@ public class Plateau extends Historique<Coup> implements Cloneable
       
         joueurActif = 1;
         codex=new Codex(new Carte(null, null,0));
-    
+        
         initialiser();
+        joueur1.initIA(this);
+        joueur2.initIA(this);
+    
     }
 
     public Plateau(Plateau p)
