@@ -132,7 +132,6 @@ public class Plateau extends Historique<Coup> implements Cloneable
         List<Carte> All_Cartes=new ArrayList<>();
         
         All_Cartes.add(new Carte(Forme.CLE, Couleur.BLEU,4));
-        All_Cartes.add(new Carte(Forme.PLUME, Couleur.ROUGE,4));
         All_Cartes.add(new Carte(Forme.ANNEAU, Couleur.BLEU,2));
         
         
