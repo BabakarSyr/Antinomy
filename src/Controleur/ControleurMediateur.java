@@ -46,6 +46,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         plateauDebutTour = jeu.plateau().clone();
         this.timer = new Timer();
         timerV2 = Executors.newSingleThreadScheduledExecutor();
+        imageRegle = 0;
 	}
 
     public void init(){
@@ -136,11 +137,14 @@ public class ControleurMediateur implements CollecteurEvenements {
                 typeJ2 = "IADifficileV1";
                 break;
             case "next":
-                imageRegle+=1;
+                imageRegle= (imageRegle+ 1)%7;
+                interfaceGraphique.miseAjour();
+                break;
             case "previous":
-                if(imageRegle>0){
+                if(imageRegle>1){
                     imageRegle-=1;
                 }
+                break;
             default:
                 return false;
         }
@@ -509,20 +513,10 @@ public class ControleurMediateur implements CollecteurEvenements {
             }
         }
     }
-<<<<<<< HEAD
-    public int getImageRegle(){
-        return imageRegle;
-    }
-    @Override
-    public void tictac() 
-    {
-
-=======
 
     public void getParametrePartie(){
         nomJ1=interfaceGraphique.getNomJ1();
         nomJ2= interfaceGraphique.getNomJ2();
->>>>>>> refs/remotes/origin/master
     }
     public void setTypeJ1(String type){
         typeJ1 = type;
@@ -535,6 +529,11 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void tictac() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'tictac'");
+    }
+
+    @Override
+    public int getImageRegle() {
+        return imageRegle;
     }
 
     

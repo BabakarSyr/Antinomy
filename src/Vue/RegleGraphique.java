@@ -26,6 +26,7 @@ public class RegleGraphique extends JPanel {
 
     public RegleGraphique(CollecteurEvenements c) {
         menuBackground = new ImageJeu("regle1");
+        this.c = c;
     }
 
     public void paintComponent(Graphics g) {
@@ -44,37 +45,23 @@ public class RegleGraphique extends JPanel {
         drawable.clearRect(0, 0, width, height);
 
         Aspects aspects = new Aspects(2);
-        tracerImageRegle(aspects);
-        
+        //drawable.drawImage(aspects.regle1.image(), 0, 0, width, height, null);
+        ArrayList<Image>regles = new ArrayList<>();
+        regles.add(aspects.regle1.image());
+        regles.add(aspects.regle2.image());
+        regles.add(aspects.regle3.image());
+        regles.add(aspects.regle3_1.image());
+        regles.add(aspects.regle5.image());
+        regles.add(aspects.regle6.image());
+        regles.add(aspects.regle8.image());
 
+        tracerImageRegle(regles);
     }
 
-    public void tracerImageRegle(Aspects aspects){
-        int i = c.getImageRegle();
-        switch(i){
-            case 1:
-                drawable.drawImage(aspects.regle1.image(), 0, 0, width, height, null);
-                break;
-            case 2:
-                drawable.drawImage(aspects.regle2.image(), 0, 0, width, height, null);
-                break;
-            case 3:
-                drawable.drawImage(aspects.regle3.image(), 0, 0, width, height, null);
-                break;
-            case 4:
-                drawable.drawImage(aspects.regle3_1.image(), 0, 0, width, height, null);
-                break;
-            case 5:
-                drawable.drawImage(aspects.regle5.image(), 0, 0, width, height, null);
-                break;
-            case 6:
-                drawable.drawImage(aspects.regle6.image(), 0, 0, width, height, null);
-                break;
-            case 7:
-                drawable.drawImage(aspects.regle8.image(), 0, 0, width, height, null);
-                break;
-            default:
-                break;
+    public void tracerImageRegle(ArrayList<Image>regles){
+        //System.out.println("i= "+c.getImageRegle());
+        if(c.getImageRegle()<regles.size()){
+            drawable.drawImage(regles.get(c.getImageRegle()), 0, 0, width, height, null);
         }
     }
 }

@@ -84,11 +84,17 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 
 	public void creerRegle() {
         panelRegle = new RegleGraphique(controleur);
-        JButton BoutonAvance = new JButton("→");
+        JButton boutonAvance = new JButton("→");
+		boutonAvance.addActionListener(new AdaptateurCommande(controleur, "next"));
+
+		panelRegle = new RegleGraphique(controleur);
+        JButton boutonAnnuler = new JButton("Annuler");
+		boutonAnnuler.addActionListener(new AdaptateurCommande(controleur, "MenuPrincipal"));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.SOUTHWEST;
-        panelRegle.add(BoutonAvance,gbc);
+        panelRegle.add(boutonAvance,gbc);
+		panelRegle.add(boutonAnnuler,gbc);
     }
 	public void creerMenuPrincipal() throws IOException {
 
@@ -133,7 +139,7 @@ public class InterfaceGraphique extends JFrame implements Runnable {
 		JButton boutonParametre = new JButton("Regles",icon3);
 		boutonParametre.setPreferredSize(new Dimension(250, 60));
 		boutonParametre.addActionListener(new AdaptateurCommande(controleur, "Regles"));
-		boutonParametre.setEnabled(false);
+		//boutonParametre.setEnabled(false);
 		gbc.gridy = 2;
 		boutonParametre.setBackground(Color.WHITE);
 		boutonParametre.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
